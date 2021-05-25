@@ -22,7 +22,7 @@ export default async function(parameters) {
 
 You can configure the parameters that your task will receive in the [Airplane UI](http://app.airplane.dev/). They'll be passed through the `parameters` argument to your function as an object keyed by the slugs you see in the UI.
 
-To execute your task, you will need to first [install the Airplane CLI](https://docs.airplane.dev/getting-started/install-the-airplane-cli).
+To execute your task, first [install the Airplane CLI](https://docs.airplane.dev/getting-started/install-the-airplane-cli).
 
 Once you've done that, you can execute your task locally:
 
