@@ -7,8 +7,12 @@
   "author": "hello@airplane.dev",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "rm -rf dist && tsc --outDir dist --declaration"
   },
+  "files": [
+    "dist"
+  ],
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
