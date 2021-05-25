@@ -24,13 +24,13 @@ You can configure the parameters that your task will receive in the [Airplane UI
 
 To execute your task, first [install the Airplane CLI](https://docs.airplane.dev/getting-started/install-the-airplane-cli).
 
-Once you've done that, you can execute your task locally:
+Once installed, execute your task locally:
 
 ```sh
 airplane execute ./path/to/file.js -- --name=World
 ```
 
-Once that looks good, go ahead and deploy your task to Airplane and give it a run in the UI!
+If that looks good, deploy your task to Airplane then give it a run in the UI!
 
 ```sh
 airplane deploy ./path/to/file.js
