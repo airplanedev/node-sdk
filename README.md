@@ -1,4 +1,4 @@
-# Airplane Node.js SDK [![Docs](https://img.shields.io/github/v/tag/airplanedev/node-sdk?label=docs)](https://docs.airplane.dev) [![License](https://img.shields.io/github/license/airplanedev/node-sdk)](https://github.com/airplanedev/node-sdk/blob/main/LICENSE) [![CI status](https://img.shields.io/github/workflow/status/airplanedev/node-sdk/tests/main)](https://github.com/airplanedev/node-sdk/actions?query=branch%3Amain)
+# Airplane Node.js SDK [![npm](https://img.shields.io/github/v/tag/airplanedev/node-sdk?label=npm)](https://www.npmjs.com/package/airplane) [![License](https://img.shields.io/github/license/airplanedev/node-sdk)](https://github.com/airplanedev/node-sdk/blob/main/LICENSE) [![CI status](https://img.shields.io/github/workflow/status/airplanedev/node-sdk/tests/main)](https://github.com/airplanedev/node-sdk/actions?query=branch%3Amain)
 
 Node.js SDK for writing Airplane.dev tasks in JavaScript and TypeScript.
 
