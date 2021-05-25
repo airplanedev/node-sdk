@@ -1,6 +1,6 @@
 {
   "name": "airplane",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Node.js SDK for writing Airplane.dev tasks",
   "main": "index.js",
   "repository": "ssh://git@github.com/airplanedev/node-sdk.git",
