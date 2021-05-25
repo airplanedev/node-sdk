@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf dist && tsc --outDir dist --declaration"
+    "build": "rm -rf dist && tsc"
   },
   "files": [
     "dist"
