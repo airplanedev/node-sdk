@@ -1,0 +1,28 @@
+{
+  "name": "airplane",
+  "version": "0.0.1",
+  "description": "Node.js SDK for writing Airplane.dev tasks",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/airplanedev/node-sdk.git",
+  "author": "hello@airplane.dev",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf dist && tsc --outDir dist --declaration"
+  },
+  "files": [
+    "dist"
+  ],
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.6.1",
+    "jest": "^26",
+    "np": "^7.5.0",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.2.4"
+  }
+}
