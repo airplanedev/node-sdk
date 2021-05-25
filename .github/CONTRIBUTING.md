@@ -8,5 +8,5 @@ Then, deploy a new version with `np`:
 
 ```sh
 # The --preview will do a dry-run.
-npx np patch --preview --any-branch
+npx np patch --preview
 ```
