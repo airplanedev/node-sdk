@@ -2,8 +2,8 @@
   "name": "airplane",
   "version": "0.0.2",
   "description": "Node.js SDK for writing Airplane.dev tasks",
-  "main": "index.js",
-  "repository": "ssh://git@github.com/airplanedev/node-sdk.git",
+  "main": "./dist/index.js",
+  "repository": "airplanedev/node-sdk",
   "author": "hello@airplane.dev",
   "license": "MIT",
   "scripts": {
