@@ -30,7 +30,7 @@ Once installed, execute your task locally:
 airplane execute ./path/to/file.js -- --name=World
 ```
 
-If that looks good, deploy your task to Airplane then give it a run in the UI!
+If that looks good, deploy your task to Airplane then give it a [run in the UI](https://app.airplane.dev/tasks)!
 
 ```sh
 airplane deploy ./path/to/file.js
