@@ -37,17 +37,19 @@ test("output values with keys", () => {
   airplane.output("hello", 123.456);
   airplane.output("hello", ["hello", "world"]);
   airplane.output("hello", { catchphrase: "that's too much, man!" });
+  airplane.output("hello world", { catchphrase: "that's too much, man!" });
 
   expectLogs([
-    `airplane_output:hello "world"`,
-    `airplane_output:hello null`,
-    `airplane_output:hello null`,
-    `airplane_output:hello true`,
-    `airplane_output:hello false`,
-    `airplane_output:hello 123`,
-    `airplane_output:hello 123.456`,
-    `airplane_output:hello ["hello","world"]`,
-    `airplane_output:hello {"catchphrase":"that's too much, man!"}`,
+    `airplane_output:"hello" "world"`,
+    `airplane_output:"hello" null`,
+    `airplane_output:"hello" null`,
+    `airplane_output:"hello" true`,
+    `airplane_output:"hello" false`,
+    `airplane_output:"hello" 123`,
+    `airplane_output:"hello" 123.456`,
+    `airplane_output:"hello" ["hello","world"]`,
+    `airplane_output:"hello" {"catchphrase":"that's too much, man!"}`,
+    `airplane_output:"hello world" {"catchphrase":"that's too much, man!"}`,
   ]);
 });
 
