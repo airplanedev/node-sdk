@@ -23,7 +23,7 @@ function output(keyOrValue: string | any, value?: any) {
       throw new Error("Expected keyOrValue to be type string");
     }
     const output = value === undefined ? null : JSON.stringify(value);
-    console.log(`airplane_output:${keyOrValue} ${output}`);
+    console.log(`airplane_output:"${keyOrValue}" ${output}`);
   }
 }
 
