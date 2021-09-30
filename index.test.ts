@@ -53,6 +53,139 @@ test("output values with keys", () => {
   ]);
 });
 
+test("set/append values without paths", () => {
+  airplane.setOutput("world");
+  airplane.setOutput(undefined);
+  airplane.setOutput(null);
+  airplane.setOutput(true);
+  airplane.setOutput(false);
+  airplane.setOutput(123);
+  airplane.setOutput(123.456);
+  airplane.setOutput(["hello", "world"]);
+  airplane.setOutput({ catchphrase: "that's too much, man!" });
+  airplane.appendOutput("world");
+  airplane.appendOutput(undefined);
+  airplane.appendOutput(null);
+  airplane.appendOutput(true);
+  airplane.appendOutput(false);
+  airplane.appendOutput(123);
+  airplane.appendOutput(123.456);
+  airplane.appendOutput(["hello", "world"]);
+  airplane.appendOutput({ catchphrase: "that's too much, man!" });
+
+  expectLogs([
+    `airplane_output_set "world"`,
+    `airplane_output_set null`,
+    `airplane_output_set null`,
+    `airplane_output_set true`,
+    `airplane_output_set false`,
+    `airplane_output_set 123`,
+    `airplane_output_set 123.456`,
+    `airplane_output_set ["hello","world"]`,
+    `airplane_output_set {"catchphrase":"that's too much, man!"}`,
+    `airplane_output_append "world"`,
+    `airplane_output_append null`,
+    `airplane_output_append null`,
+    `airplane_output_append true`,
+    `airplane_output_append false`,
+    `airplane_output_append 123`,
+    `airplane_output_append 123.456`,
+    `airplane_output_append ["hello","world"]`,
+    `airplane_output_append {"catchphrase":"that's too much, man!"}`,
+  ]);
+});
+
+test("set/append values with paths", () => {
+  airplane.setOutput("world", `abc["def"].ghi[0]`);
+  airplane.setOutput(undefined, `abc["def"].ghi[0]`);
+  airplane.setOutput(null, `abc["def"].ghi[0]`);
+  airplane.setOutput(true, `abc["def"].ghi[0]`);
+  airplane.setOutput(false, `abc["def"].ghi[0]`);
+  airplane.setOutput(123, `abc["def"].ghi[0]`);
+  airplane.setOutput(123.456, `abc["def"].ghi[0]`);
+  airplane.setOutput(["hello", "world"], `abc["def"].ghi[0]`);
+  airplane.setOutput({ catchphrase: "that's too much, man!" }, `abc["def"].ghi[0]`);
+  airplane.appendOutput("world", `abc["def"].ghi[0]`);
+  airplane.appendOutput(undefined, `abc["def"].ghi[0]`);
+  airplane.appendOutput(null, `abc["def"].ghi[0]`);
+  airplane.appendOutput(true, `abc["def"].ghi[0]`);
+  airplane.appendOutput(false, `abc["def"].ghi[0]`);
+  airplane.appendOutput(123, `abc["def"].ghi[0]`);
+  airplane.appendOutput(123.456, `abc["def"].ghi[0]`);
+  airplane.appendOutput(["hello", "world"], `abc["def"].ghi[0]`);
+  airplane.appendOutput({ catchphrase: "that's too much, man!" }, `abc["def"].ghi[0]`);
+
+  expectLogs([
+    `airplane_output_set:abc["def"].ghi[0] "world"`,
+    `airplane_output_set:abc["def"].ghi[0] null`,
+    `airplane_output_set:abc["def"].ghi[0] null`,
+    `airplane_output_set:abc["def"].ghi[0] true`,
+    `airplane_output_set:abc["def"].ghi[0] false`,
+    `airplane_output_set:abc["def"].ghi[0] 123`,
+    `airplane_output_set:abc["def"].ghi[0] 123.456`,
+    `airplane_output_set:abc["def"].ghi[0] ["hello","world"]`,
+    `airplane_output_set:abc["def"].ghi[0] {"catchphrase":"that's too much, man!"}`,
+    `airplane_output_append:abc["def"].ghi[0] "world"`,
+    `airplane_output_append:abc["def"].ghi[0] null`,
+    `airplane_output_append:abc["def"].ghi[0] null`,
+    `airplane_output_append:abc["def"].ghi[0] true`,
+    `airplane_output_append:abc["def"].ghi[0] false`,
+    `airplane_output_append:abc["def"].ghi[0] 123`,
+    `airplane_output_append:abc["def"].ghi[0] 123.456`,
+    `airplane_output_append:abc["def"].ghi[0] ["hello","world"]`,
+    `airplane_output_append:abc["def"].ghi[0] {"catchphrase":"that's too much, man!"}`,
+  ]);
+});
+
+test("chunking", () => {
+  airplane.setOutput("a".repeat(10000));
+  airplane.appendOutput("a".repeat(10000));
+
+  expect(log.mock.calls.length).toBe(6);
+  let getMatches : (line: string) => { chunkKey: string, remainder: string } = (line) => {
+    const chunkRegex = /^airplane_chunk(?:|_end):([^ ]*)(?:$| (.*)$)/;
+    const matches = line.match(chunkRegex);
+    return {
+      chunkKey: (matches && matches[1]) ? matches[1] : "",
+      remainder: (matches && matches[2]) ? matches[2] : "",
+    };
+  };
+
+  {
+    var {
+      chunkKey, remainder
+    } = getMatches(log.mock.calls[0][0]);
+    const {
+      chunkKey: chunkKey2, remainder: remainder2
+    } = getMatches(log.mock.calls[1][0]);
+    expect(chunkKey).toBe(chunkKey2);
+    remainder += remainder2;
+    const {
+      chunkKey: chunkKey3, remainder: remainder3
+    } = getMatches(log.mock.calls[2][0]);
+    expect(chunkKey).toBe(chunkKey3);
+    expect(remainder3).toBe("");
+    expect(remainder).toBe(`airplane_output_set "${"a".repeat(10000)}"`);
+  }
+
+  {
+    var {
+      chunkKey, remainder
+    } = getMatches(log.mock.calls[3][0]);
+    const {
+      chunkKey: chunkKey2, remainder: remainder2
+    } = getMatches(log.mock.calls[4][0]);
+    expect(chunkKey).toBe(chunkKey2);
+    remainder += remainder2;
+    const {
+      chunkKey: chunkKey3, remainder: remainder3
+    } = getMatches(log.mock.calls[5][0]);
+    expect(chunkKey).toBe(chunkKey3);
+    expect(remainder3).toBe("");
+    expect(remainder).toBe(`airplane_output_append "${"a".repeat(10000)}"`);
+  }
+});
+
 function expectLogs(logs: string[]) {
   expect(log.mock.calls.length).toBe(logs.length);
   for (let i = 0; i < logs.length; i++) {
