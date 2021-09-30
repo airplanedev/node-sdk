@@ -104,7 +104,10 @@ test("set/append values with paths", () => {
   airplane.setOutput(123, `abc["def"].ghi[0]`);
   airplane.setOutput(123.456, `abc["def"].ghi[0]`);
   airplane.setOutput(["hello", "world"], `abc["def"].ghi[0]`);
-  airplane.setOutput({ catchphrase: "that's too much, man!" }, `abc["def"].ghi[0]`);
+  airplane.setOutput(
+    { catchphrase: "that's too much, man!" },
+    `abc["def"].ghi[0]`
+  );
   airplane.appendOutput("world", `abc["def"].ghi[0]`);
   airplane.appendOutput(undefined, `abc["def"].ghi[0]`);
   airplane.appendOutput(null, `abc["def"].ghi[0]`);
@@ -113,7 +116,10 @@ test("set/append values with paths", () => {
   airplane.appendOutput(123, `abc["def"].ghi[0]`);
   airplane.appendOutput(123.456, `abc["def"].ghi[0]`);
   airplane.appendOutput(["hello", "world"], `abc["def"].ghi[0]`);
-  airplane.appendOutput({ catchphrase: "that's too much, man!" }, `abc["def"].ghi[0]`);
+  airplane.appendOutput(
+    { catchphrase: "that's too much, man!" },
+    `abc["def"].ghi[0]`
+  );
 
   expectLogs([
     `airplane_output_set:abc["def"].ghi[0] "world"`,
@@ -142,44 +148,41 @@ test("chunking", () => {
   airplane.appendOutput("a".repeat(10000));
 
   expect(log.mock.calls.length).toBe(6);
-  let getMatches : (line: string) => { chunkKey: string, remainder: string } = (line) => {
-    const chunkRegex = /^airplane_chunk(?:|_end):([^ ]*)(?:$| (.*)$)/;
-    const matches = line.match(chunkRegex);
-    return {
-      chunkKey: (matches && matches[1]) ? matches[1] : "",
-      remainder: (matches && matches[2]) ? matches[2] : "",
+  const getMatches: (line: string) => { chunkKey: string; remainder: string } =
+    (line) => {
+      const chunkRegex = /^airplane_chunk(?:|_end):([^ ]*)(?:$| (.*)$)/;
+      const matches = line.match(chunkRegex);
+      return {
+        chunkKey: matches && matches[1] ? matches[1] : "",
+        remainder: matches && matches[2] ? matches[2] : "",
+      };
     };
-  };
 
   {
-    var {
-      chunkKey, remainder
-    } = getMatches(log.mock.calls[0][0]);
-    const {
-      chunkKey: chunkKey2, remainder: remainder2
-    } = getMatches(log.mock.calls[1][0]);
+    const { chunkKey, remainder } = getMatches(log.mock.calls[0][0]);
+    const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(
+      log.mock.calls[1][0]
+    );
     expect(chunkKey).toBe(chunkKey2);
     remainder += remainder2;
-    const {
-      chunkKey: chunkKey3, remainder: remainder3
-    } = getMatches(log.mock.calls[2][0]);
+    const { chunkKey: chunkKey3, remainder: remainder3 } = getMatches(
+      log.mock.calls[2][0]
+    );
     expect(chunkKey).toBe(chunkKey3);
     expect(remainder3).toBe("");
     expect(remainder).toBe(`airplane_output_set "${"a".repeat(10000)}"`);
   }
 
   {
-    var {
-      chunkKey, remainder
-    } = getMatches(log.mock.calls[3][0]);
-    const {
-      chunkKey: chunkKey2, remainder: remainder2
-    } = getMatches(log.mock.calls[4][0]);
+    const { chunkKey, remainder } = getMatches(log.mock.calls[3][0]);
+    const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(
+      log.mock.calls[4][0]
+    );
     expect(chunkKey).toBe(chunkKey2);
     remainder += remainder2;
-    const {
-      chunkKey: chunkKey3, remainder: remainder3
-    } = getMatches(log.mock.calls[5][0]);
+    const { chunkKey: chunkKey3, remainder: remainder3 } = getMatches(
+      log.mock.calls[5][0]
+    );
     expect(chunkKey).toBe(chunkKey3);
     expect(remainder3).toBe("");
     expect(remainder).toBe(`airplane_output_append "${"a".repeat(10000)}"`);
