@@ -159,7 +159,7 @@ test("chunking", () => {
     };
 
   {
-    const { chunkKey, remainder } = getMatches(log.mock.calls[0][0]);
+    let { chunkKey, remainder } = getMatches(log.mock.calls[0][0]);
     const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(
       log.mock.calls[1][0]
     );
@@ -174,7 +174,7 @@ test("chunking", () => {
   }
 
   {
-    const { chunkKey, remainder } = getMatches(log.mock.calls[3][0]);
+    let { chunkKey, remainder } = getMatches(log.mock.calls[3][0]);
     const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(
       log.mock.calls[4][0]
     );
