@@ -40,7 +40,7 @@ function output(keyOrValue: string | any, value?: any) {
  *   setOutput("Task completed successfully.")
  *
  * @example
- *   setOutput({"values": {"error": "This is an error message"}})
+ *   setOutput({"error": "Received a 500 from the upstream API"})
  *
  * @example
  *   setOutput("Received a 500 from the upstream API", "error")
