@@ -43,11 +43,12 @@ function output(keyOrValue: string | any, value?: any) {
  *   setOutput({"values": {"error": "This is an error message"}})
  *
  * @example
- *   setOutput("A different error message", "values.error")
+ *   setOutput("A different error message", "values", "error")
  */
-function setOutput(value: any, path?: string) {
+function setOutput(value: any, ...path: (string|number)[]) {
   const output = value === undefined ? null : JSON.stringify(value);
-  const maybePath = path === undefined ? "" : `:${path}`;
+  const jsPath = toJSPath(path);
+  const maybePath = jsPath ? `:${jsPath}` : "";
   logChunks(`airplane_output_set${maybePath} ${output}`);
 }
 
@@ -65,9 +66,10 @@ function setOutput(value: any, path?: string) {
  *   appendOutput({"name": "Carolyn", "occupation": "agent"}, "rows")
  *
  */
-function appendOutput(value: any, path?: string) {
+function appendOutput(value: any, ...path: (string|number)[]) {
   const output = value === undefined ? null : JSON.stringify(value);
-  const maybePath = path === undefined ? "" : `:${path}`;
+  const jsPath = toJSPath(path);
+  const maybePath = jsPath ? `:${jsPath}` : "";
   logChunks(`airplane_output_append${maybePath} ${output}`);
 }
 
@@ -82,6 +84,26 @@ function logChunks(output: string) {
     }
     console.log(`airplane_chunk_end:${chunkKey}`);
   }
+}
+
+function toJSPath(path: (string|number)[]) {
+  let ret = "";
+  for (let i = 0; i < path.length; i++) {
+    let v = path[i];
+    if (typeof v  === "string") {
+      if (v.match(/^\w+$/)) {
+        if (i > 0) {
+          ret += ".";
+        }
+        ret += v;
+      } else {
+        ret += `["` + v.replace(/"/g, `\"`) + `"]`;
+      }
+    } else if (typeof v  === "number") {
+      ret += "[" + v + "]";
+    }
+  }
+  return ret;
 }
 
 export default {

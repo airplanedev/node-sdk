@@ -96,50 +96,56 @@ test("set/append values without paths", () => {
 });
 
 test("set/append values with paths", () => {
-  airplane.setOutput("world", `abc["def"].ghi[0]`);
-  airplane.setOutput(undefined, `abc["def"].ghi[0]`);
-  airplane.setOutput(null, `abc["def"].ghi[0]`);
-  airplane.setOutput(true, `abc["def"].ghi[0]`);
-  airplane.setOutput(false, `abc["def"].ghi[0]`);
-  airplane.setOutput(123, `abc["def"].ghi[0]`);
-  airplane.setOutput(123.456, `abc["def"].ghi[0]`);
-  airplane.setOutput(["hello", "world"], `abc["def"].ghi[0]`);
+  airplane.setOutput("world", "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(undefined, "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(null, "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(true, "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(false, "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(123, "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(123.456, "abc", `de "f`, "ghi", 0);
+  airplane.setOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
   airplane.setOutput(
     { catchphrase: "that's too much, man!" },
-    `abc["def"].ghi[0]`
+    "abc",
+    `de "f`,
+    "ghi",
+    0
   );
-  airplane.appendOutput("world", `abc["def"].ghi[0]`);
-  airplane.appendOutput(undefined, `abc["def"].ghi[0]`);
-  airplane.appendOutput(null, `abc["def"].ghi[0]`);
-  airplane.appendOutput(true, `abc["def"].ghi[0]`);
-  airplane.appendOutput(false, `abc["def"].ghi[0]`);
-  airplane.appendOutput(123, `abc["def"].ghi[0]`);
-  airplane.appendOutput(123.456, `abc["def"].ghi[0]`);
-  airplane.appendOutput(["hello", "world"], `abc["def"].ghi[0]`);
+  airplane.appendOutput("world", "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(undefined, "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(null, "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(true, "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(false, "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(123, "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(123.456, "abc", `de "f`, "ghi", 0);
+  airplane.appendOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
   airplane.appendOutput(
     { catchphrase: "that's too much, man!" },
-    `abc["def"].ghi[0]`
+    "abc",
+    `de "f`,
+    "ghi",
+    0
   );
 
   expectLogs([
-    `airplane_output_set:abc["def"].ghi[0] "world"`,
-    `airplane_output_set:abc["def"].ghi[0] null`,
-    `airplane_output_set:abc["def"].ghi[0] null`,
-    `airplane_output_set:abc["def"].ghi[0] true`,
-    `airplane_output_set:abc["def"].ghi[0] false`,
-    `airplane_output_set:abc["def"].ghi[0] 123`,
-    `airplane_output_set:abc["def"].ghi[0] 123.456`,
-    `airplane_output_set:abc["def"].ghi[0] ["hello","world"]`,
-    `airplane_output_set:abc["def"].ghi[0] {"catchphrase":"that's too much, man!"}`,
-    `airplane_output_append:abc["def"].ghi[0] "world"`,
-    `airplane_output_append:abc["def"].ghi[0] null`,
-    `airplane_output_append:abc["def"].ghi[0] null`,
-    `airplane_output_append:abc["def"].ghi[0] true`,
-    `airplane_output_append:abc["def"].ghi[0] false`,
-    `airplane_output_append:abc["def"].ghi[0] 123`,
-    `airplane_output_append:abc["def"].ghi[0] 123.456`,
-    `airplane_output_append:abc["def"].ghi[0] ["hello","world"]`,
-    `airplane_output_append:abc["def"].ghi[0] {"catchphrase":"that's too much, man!"}`,
+    `airplane_output_set:abc["de \"f"].ghi[0] "world"`,
+    `airplane_output_set:abc["de \"f"].ghi[0] null`,
+    `airplane_output_set:abc["de \"f"].ghi[0] null`,
+    `airplane_output_set:abc["de \"f"].ghi[0] true`,
+    `airplane_output_set:abc["de \"f"].ghi[0] false`,
+    `airplane_output_set:abc["de \"f"].ghi[0] 123`,
+    `airplane_output_set:abc["de \"f"].ghi[0] 123.456`,
+    `airplane_output_set:abc["de \"f"].ghi[0] ["hello","world"]`,
+    `airplane_output_set:abc["de \"f"].ghi[0] {"catchphrase":"that's too much, man!"}`,
+    `airplane_output_append:abc["de \"f"].ghi[0] "world"`,
+    `airplane_output_append:abc["de \"f"].ghi[0] null`,
+    `airplane_output_append:abc["de \"f"].ghi[0] null`,
+    `airplane_output_append:abc["de \"f"].ghi[0] true`,
+    `airplane_output_append:abc["de \"f"].ghi[0] false`,
+    `airplane_output_append:abc["de \"f"].ghi[0] 123`,
+    `airplane_output_append:abc["de \"f"].ghi[0] 123.456`,
+    `airplane_output_append:abc["de \"f"].ghi[0] ["hello","world"]`,
+    `airplane_output_append:abc["de \"f"].ghi[0] {"catchphrase":"that's too much, man!"}`,
   ]);
 });
 
