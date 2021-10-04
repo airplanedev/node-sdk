@@ -43,7 +43,7 @@ function output(keyOrValue: string | any, value?: any) {
  *   setOutput({"values": {"error": "This is an error message"}})
  *
  * @example
- *   setOutput("A different error message", "values", "error")
+ *   setOutput("Received a 500 from the upstream API", "error")
  */
 function setOutput(value: any, ...path: (string|number)[]) {
   const output = value === undefined ? null : JSON.stringify(value);
