@@ -120,7 +120,7 @@ function toJSPath(path: (string | number)[]) {
         }
         ret += v;
       } else {
-        ret += `["` + v.replace(/"/g, `\"`) + `"]`;
+        ret += `["` + v.replace(/\\/g, `\\\\`).replace(/"/g, `\\"`) + `"]`;
       }
     } else if (typeof v === "number") {
       ret += "[" + v + "]";

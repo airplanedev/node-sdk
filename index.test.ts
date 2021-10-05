@@ -96,7 +96,7 @@ test("set/append values without paths", () => {
 });
 
 test("set/append values with paths", () => {
-  airplane.setOutput("world", "abc", `de "f`, "ghi", 0);
+  airplane.setOutput("world", "abc", `de \\"f`, "ghi", 0);
   airplane.setOutput(undefined, "abc", `de "f`, "ghi", 0);
   airplane.setOutput(null, "abc", `de "f`, "ghi", 0);
   airplane.setOutput(true, "abc", `de "f`, "ghi", 0);
@@ -128,24 +128,24 @@ test("set/append values with paths", () => {
   );
 
   expectLogs([
-    `airplane_output_set:abc["de \"f"].ghi[0] "world"`,
-    `airplane_output_set:abc["de \"f"].ghi[0] null`,
-    `airplane_output_set:abc["de \"f"].ghi[0] null`,
-    `airplane_output_set:abc["de \"f"].ghi[0] true`,
-    `airplane_output_set:abc["de \"f"].ghi[0] false`,
-    `airplane_output_set:abc["de \"f"].ghi[0] 123`,
-    `airplane_output_set:abc["de \"f"].ghi[0] 123.456`,
-    `airplane_output_set:abc["de \"f"].ghi[0] ["hello","world"]`,
-    `airplane_output_set:abc["de \"f"].ghi[0] {"catchphrase":"that's too much, man!"}`,
-    `airplane_output_append:abc["de \"f"].ghi[0] "world"`,
-    `airplane_output_append:abc["de \"f"].ghi[0] null`,
-    `airplane_output_append:abc["de \"f"].ghi[0] null`,
-    `airplane_output_append:abc["de \"f"].ghi[0] true`,
-    `airplane_output_append:abc["de \"f"].ghi[0] false`,
-    `airplane_output_append:abc["de \"f"].ghi[0] 123`,
-    `airplane_output_append:abc["de \"f"].ghi[0] 123.456`,
-    `airplane_output_append:abc["de \"f"].ghi[0] ["hello","world"]`,
-    `airplane_output_append:abc["de \"f"].ghi[0] {"catchphrase":"that's too much, man!"}`,
+    `airplane_output_set:abc["de \\\\\\"f"].ghi[0] "world"`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] null`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] null`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] true`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] false`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] 123`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] 123.456`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] ["hello","world"]`,
+    `airplane_output_set:abc["de \\"f"].ghi[0] {"catchphrase":"that's too much, man!"}`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] "world"`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] null`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] null`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] true`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] false`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] 123`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] 123.456`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] ["hello","world"]`,
+    `airplane_output_append:abc["de \\"f"].ghi[0] {"catchphrase":"that's too much, man!"}`,
   ]);
 });
 
