@@ -27,7 +27,7 @@ To execute your task, first [install the Airplane CLI](https://docs.airplane.dev
 Once installed, execute your task locally:
 
 ```sh
-airplane execute ./path/to/file.js -- --name=World
+airplane dev ./path/to/file.js -- --name=World
 ```
 
 If that looks good, deploy your task to Airplane then give it a [run in the UI](https://app.airplane.dev/tasks)!
