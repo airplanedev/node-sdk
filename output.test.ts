@@ -1,57 +1,7 @@
 import { jest } from "@jest/globals";
-import { output, setOutput, appendOutput } from './output'
+import { setOutput, appendOutput } from './output'
 
 const log = jest.spyOn(console, "log");
-
-test("output values without keys", () => {
-  output("world");
-  output(undefined);
-  output(null);
-  output(true);
-  output(false);
-  output(123);
-  output(123.456);
-  output(["hello", "world"]);
-  output({ catchphrase: "that's too much, man!" });
-
-  expectLogs([
-    `airplane_output "world"`,
-    `airplane_output null`,
-    `airplane_output null`,
-    `airplane_output true`,
-    `airplane_output false`,
-    `airplane_output 123`,
-    `airplane_output 123.456`,
-    `airplane_output ["hello","world"]`,
-    `airplane_output {"catchphrase":"that's too much, man!"}`,
-  ]);
-});
-
-test("output values with keys", () => {
-  output("hello", "world");
-  output("hello", undefined);
-  output("hello", null);
-  output("hello", true);
-  output("hello", false);
-  output("hello", 123);
-  output("hello", 123.456);
-  output("hello", ["hello", "world"]);
-  output("hello", { catchphrase: "that's too much, man!" });
-  output("hello world", { catchphrase: "that's too much, man!" });
-
-  expectLogs([
-    `airplane_output:"hello" "world"`,
-    `airplane_output:"hello" null`,
-    `airplane_output:"hello" null`,
-    `airplane_output:"hello" true`,
-    `airplane_output:"hello" false`,
-    `airplane_output:"hello" 123`,
-    `airplane_output:"hello" 123.456`,
-    `airplane_output:"hello" ["hello","world"]`,
-    `airplane_output:"hello" {"catchphrase":"that's too much, man!"}`,
-    `airplane_output:"hello world" {"catchphrase":"that's too much, man!"}`,
-  ]);
-});
 
 test("set/append values without paths", () => {
   setOutput("world");
