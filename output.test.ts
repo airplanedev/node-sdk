@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import { setOutput, appendOutput } from './output'
 
-const log = jest.spyOn(console, "log");
+const log = jest.spyOn(console, "log").mockImplementation(() => {});
 
 test("set/append values without paths", () => {
   setOutput("world");

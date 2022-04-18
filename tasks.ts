@@ -1,4 +1,4 @@
-import got from 'got/dist/source'
+import fetch from 'node-fetch'
 import { version } from './package.json'
 
 export enum RunStatus {
@@ -33,6 +33,7 @@ export async function execute<Input = unknown, Output = unknown>(slug: string, p
   }
 
   const headers = {
+    'Content-Type': 'application/json',
     'X-Airplane-Token': token,
     'X-Airplane-Client-Kind': "sdk/node",
     'X-Airplane-Client-Version': version,
@@ -41,42 +42,41 @@ export async function execute<Input = unknown, Output = unknown>(slug: string, p
   // TODO: handle API errors
   // TODO: convert status codes to nice error messages
   // TODO: configure retries
-  const { runID } = await got.post(`${apiHost}/v0/tasks/execute`, {
-    json: {
+  const response = await fetch(`${apiHost}/v0/tasks/execute`, {
+    method: "post",
+    body: JSON.stringify({
       slug,
       paramValues: params ?? {},
-    },
+    }),
     headers,
-  }).json<{
+  })
+  const { runID } = await response.json() as {
     runID: string
-  }>()
-
+  }
 
   // Poll until the run is ready:
   const poller = new Poller({ delayMs: 500 })
   return poller.run(async () => {
-    const run = await got.get(`${apiHost}/v0/runs/get`, {
-      searchParams: {
-        id: runID,
-      },
+    let response = await fetch(`${apiHost}/v0/runs/get?id=${runID}`, {
+      method: "get",
       headers,
-    }).json<{
+    })
+    const run = await response.json() as {
       id: string
       status: RunStatus
       paramValues: Input
       taskID: string
-    }>()
-    
+    }
+
     if (!terminalStatuses.includes(run.status)) {
       return null
     }
 
-    const { output } = await got.get(`${apiHost}/v0/runs/getOutputs`, {
-      searchParams: {
-        id: runID,
-      },
+    response = await fetch(`${apiHost}/v0/runs/getOutputs?id=${runID}`, {
+      method: "get",
       headers,
-    }).json<{ output: Output }>()
+    })
+    const { output } = await response.json() as { output: Output }
 
     return {
       id: run.id,
