@@ -1,18 +1,18 @@
 import { jest } from "@jest/globals";
-import airplane from "./index";
+import { output, setOutput, appendOutput } from './output'
 
 const log = jest.spyOn(console, "log");
 
 test("output values without keys", () => {
-  airplane.output("world");
-  airplane.output(undefined);
-  airplane.output(null);
-  airplane.output(true);
-  airplane.output(false);
-  airplane.output(123);
-  airplane.output(123.456);
-  airplane.output(["hello", "world"]);
-  airplane.output({ catchphrase: "that's too much, man!" });
+  output("world");
+  output(undefined);
+  output(null);
+  output(true);
+  output(false);
+  output(123);
+  output(123.456);
+  output(["hello", "world"]);
+  output({ catchphrase: "that's too much, man!" });
 
   expectLogs([
     `airplane_output "world"`,
@@ -28,16 +28,16 @@ test("output values without keys", () => {
 });
 
 test("output values with keys", () => {
-  airplane.output("hello", "world");
-  airplane.output("hello", undefined);
-  airplane.output("hello", null);
-  airplane.output("hello", true);
-  airplane.output("hello", false);
-  airplane.output("hello", 123);
-  airplane.output("hello", 123.456);
-  airplane.output("hello", ["hello", "world"]);
-  airplane.output("hello", { catchphrase: "that's too much, man!" });
-  airplane.output("hello world", { catchphrase: "that's too much, man!" });
+  output("hello", "world");
+  output("hello", undefined);
+  output("hello", null);
+  output("hello", true);
+  output("hello", false);
+  output("hello", 123);
+  output("hello", 123.456);
+  output("hello", ["hello", "world"]);
+  output("hello", { catchphrase: "that's too much, man!" });
+  output("hello world", { catchphrase: "that's too much, man!" });
 
   expectLogs([
     `airplane_output:"hello" "world"`,
@@ -54,24 +54,24 @@ test("output values with keys", () => {
 });
 
 test("set/append values without paths", () => {
-  airplane.setOutput("world");
-  airplane.setOutput(undefined);
-  airplane.setOutput(null);
-  airplane.setOutput(true);
-  airplane.setOutput(false);
-  airplane.setOutput(123);
-  airplane.setOutput(123.456);
-  airplane.setOutput(["hello", "world"]);
-  airplane.setOutput({ catchphrase: "that's too much, man!" });
-  airplane.appendOutput("world");
-  airplane.appendOutput(undefined);
-  airplane.appendOutput(null);
-  airplane.appendOutput(true);
-  airplane.appendOutput(false);
-  airplane.appendOutput(123);
-  airplane.appendOutput(123.456);
-  airplane.appendOutput(["hello", "world"]);
-  airplane.appendOutput({ catchphrase: "that's too much, man!" });
+  setOutput("world");
+  setOutput(undefined);
+  setOutput(null);
+  setOutput(true);
+  setOutput(false);
+  setOutput(123);
+  setOutput(123.456);
+  setOutput(["hello", "world"]);
+  setOutput({ catchphrase: "that's too much, man!" });
+  appendOutput("world");
+  appendOutput(undefined);
+  appendOutput(null);
+  appendOutput(true);
+  appendOutput(false);
+  appendOutput(123);
+  appendOutput(123.456);
+  appendOutput(["hello", "world"]);
+  appendOutput({ catchphrase: "that's too much, man!" });
 
   expectLogs([
     `airplane_output_set "world"`,
@@ -96,30 +96,30 @@ test("set/append values without paths", () => {
 });
 
 test("set/append values with paths", () => {
-  airplane.setOutput("world", "abc", `de \\"f`, "ghi", 0);
-  airplane.setOutput(undefined, "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(null, "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(true, "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(false, "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(123, "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(123.456, "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
-  airplane.setOutput(
+  setOutput("world", "abc", `de \\"f`, "ghi", 0);
+  setOutput(undefined, "abc", `de "f`, "ghi", 0);
+  setOutput(null, "abc", `de "f`, "ghi", 0);
+  setOutput(true, "abc", `de "f`, "ghi", 0);
+  setOutput(false, "abc", `de "f`, "ghi", 0);
+  setOutput(123, "abc", `de "f`, "ghi", 0);
+  setOutput(123.456, "abc", `de "f`, "ghi", 0);
+  setOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
+  setOutput(
     { catchphrase: "that's too much, man!" },
     "abc",
     `de "f`,
     "ghi",
     0
   );
-  airplane.appendOutput("world", "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(undefined, "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(null, "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(true, "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(false, "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(123, "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(123.456, "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
-  airplane.appendOutput(
+  appendOutput("world", "abc", `de "f`, "ghi", 0);
+  appendOutput(undefined, "abc", `de "f`, "ghi", 0);
+  appendOutput(null, "abc", `de "f`, "ghi", 0);
+  appendOutput(true, "abc", `de "f`, "ghi", 0);
+  appendOutput(false, "abc", `de "f`, "ghi", 0);
+  appendOutput(123, "abc", `de "f`, "ghi", 0);
+  appendOutput(123.456, "abc", `de "f`, "ghi", 0);
+  appendOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
+  appendOutput(
     { catchphrase: "that's too much, man!" },
     "abc",
     `de "f`,
@@ -150,8 +150,8 @@ test("set/append values with paths", () => {
 });
 
 test("chunking", () => {
-  airplane.setOutput("a".repeat(10000));
-  airplane.appendOutput("a".repeat(10000));
+  setOutput("a".repeat(10000));
+  appendOutput("a".repeat(10000));
 
   expect(log.mock.calls.length).toBe(6);
   const getMatches: (line: string) => { chunkKey: string; remainder: string } =
