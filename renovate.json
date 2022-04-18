@@ -1,0 +1,7 @@
+{
+  "extends": ["config:base", "group:allNonMajor"],
+  "labels": ["merge"],
+  "reviewers": ["team:deps"],
+  "schedule": ["before 5am on Thursday"],
+  "timezone": "America/New_York"
+}
