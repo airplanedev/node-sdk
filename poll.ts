@@ -5,7 +5,7 @@ type PollOptions = {
 
 type PollFunction<Output> = () => (Promise<Output | null>)
 
-class Poller {
+export class Poller {
   private opts: PollOptions
 
   constructor(opts: PollOptions) {

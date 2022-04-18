@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+import { Poller } from './poll'
 import { version } from './package.json'
 
 export enum RunStatus {
@@ -27,7 +28,8 @@ export async function execute<Input = unknown, Output = unknown>(slug: string, p
     throw new Error("expected an api host")
   }
 
-  const token = process.env.AIRPLANE_TOKEN
+  // https://github.com/airplanedev/airport/pull/2027
+  const token = process.env.AIRPLANE_TOKEN ?? process.env.AIRPLANE_RUN_AUTHN_TOKEN
   if (!token) {
     throw new Error("expected an authentication token")
   }
