@@ -27,12 +27,12 @@ import { v4 as uuidv4 } from "uuid";
  * @example
  *   setOutput("Received a 500 from the upstream API", "error")
  */
- export function setOutput(value: any, ...path: (string | number)[]) {
+export const setOutput = (value: unknown, ...path: (string | number)[]) => {
   const output = value === undefined ? null : JSON.stringify(value);
   const jsPath = toJSPath(path);
   const maybePath = jsPath ? `:${jsPath}` : "";
   logChunks(`airplane_output_set${maybePath} ${output}`);
-}
+};
 
 /**
  * This appends `value` to the Airplane output. If a path is provided, it
@@ -59,14 +59,14 @@ import { v4 as uuidv4 } from "uuid";
  *   appendOutput({"name": "Carolyn", "occupation": "agent"}, "rows")
  *
  */
-export function appendOutput(value: any, ...path: (string | number)[]) {
+export const appendOutput = (value: unknown, ...path: (string | number)[]) => {
   const output = value === undefined ? null : JSON.stringify(value);
   const jsPath = toJSPath(path);
   const maybePath = jsPath ? `:${jsPath}` : "";
   logChunks(`airplane_output_append${maybePath} ${output}`);
-}
+};
 
-function logChunks(output: string) {
+const logChunks = (output: string) => {
   const CHUNK_SIZE = 8192;
   if (output.length <= CHUNK_SIZE) {
     console.log(output);
@@ -77,9 +77,9 @@ function logChunks(output: string) {
     }
     console.log(`airplane_chunk_end:${chunkKey}`);
   }
-}
+};
 
-function toJSPath(path: (string | number)[]) {
+const toJSPath = (path: (string | number)[]) => {
   let ret = "";
   for (let i = 0; i < path.length; i++) {
     const v = path[i];
@@ -97,4 +97,4 @@ function toJSPath(path: (string | number)[]) {
     }
   }
   return ret;
-}
+};
