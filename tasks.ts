@@ -1,6 +1,5 @@
-import fetch from 'node-fetch'
 import { Poller } from './poll'
-import { version } from './package.json'
+import { Fetcher } from './fetch'
 
 export enum RunStatus {
   NotStarted = 'NotStarted',
@@ -23,62 +22,34 @@ export type Run<Input = unknown, Output = unknown> = {
 
 // TODO: override for single type
 export async function execute<Input = unknown, Output = unknown>(slug: string, params?: Record<string, any> | undefined | null): Promise<Run<Input, Output>> {
-  const apiHost = process.env.AIRPLANE_API_HOST
-  if (!apiHost) {
-    throw new Error("expected an api host")
-  }
-
-  // https://github.com/airplanedev/airport/pull/2027
-  const token = process.env.AIRPLANE_TOKEN ?? process.env.AIRPLANE_RUN_AUTHN_TOKEN
-  if (!token) {
-    throw new Error("expected an authentication token")
-  }
-
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Airplane-Token': token,
-    'X-Airplane-Client-Kind': "sdk/node",
-    'X-Airplane-Client-Version': version,
-  }
-
-  // TODO: handle API errors
-  // TODO: convert status codes to nice error messages
-  // TODO: configure retries
-  const response = await fetch(`${apiHost}/v0/tasks/execute`, {
-    method: "post",
-    body: JSON.stringify({
-      slug,
-      paramValues: params ?? {},
-    }),
-    headers,
+  const fetcher = new Fetcher({
+    host: process.env.AIRPLANE_API_HOST ?? "",
+    // https://github.com/airplanedev/airport/pull/2027
+    token: process.env.AIRPLANE_TOKEN ?? process.env.AIRPLANE_RUN_AUTHN_TOKEN ?? "",
   })
-  const { runID } = await response.json() as {
+
+  const { runID } = await fetcher.post<{
     runID: string
-  }
+  }>("/v0/tasks/execute", {
+    slug,
+    paramValues: params ?? {},
+  })
 
   // Poll until the run is ready:
   const poller = new Poller({ delayMs: 500 })
   return poller.run(async () => {
-    let response = await fetch(`${apiHost}/v0/runs/get?id=${runID}`, {
-      method: "get",
-      headers,
-    })
-    const run = await response.json() as {
+    const run = await fetcher.get<{
       id: string
       status: RunStatus
       paramValues: Input
       taskID: string
-    }
+    }>("/v0/runs/get", { id: runID })
 
     if (!terminalStatuses.includes(run.status)) {
       return null
     }
 
-    response = await fetch(`${apiHost}/v0/runs/getOutputs?id=${runID}`, {
-      method: "get",
-      headers,
-    })
-    const { output } = await response.json() as { output: Output }
+    const { output } = await fetcher.get<{ output: Output }>("/v0/runs/getOutputs", { id: runID })
 
     return {
       id: run.id,
