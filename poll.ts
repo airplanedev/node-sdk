@@ -20,7 +20,7 @@ export class Poller {
       const fnw = async () => {
         try {
           const out = await fn()
-          if (out != null) {
+          if (out !== null) {
             return resolve(out)
           }
         } catch (err) {

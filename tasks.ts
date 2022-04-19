@@ -34,7 +34,7 @@ export async function execute<Output = unknown>(slug: string, params?: Record<st
     paramValues: params ?? {},
   })
 
-  // Poll until the run is ready:
+  // Poll until the run terminates:
   const poller = new Poller({ delayMs: 500 })
   return poller.run(async () => {
     const run = await fetcher.get<{
