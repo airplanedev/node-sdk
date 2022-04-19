@@ -27,6 +27,9 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "fetch-retry": "5.0.2",
+    "node-fetch": "3.2.3",
+    "query-string": "7.1.1",
     "uuid": "^8.3.0"
   }
 }
