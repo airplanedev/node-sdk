@@ -1,5 +1,5 @@
 import { version } from './package.json'
-import fetch, {FetchError, Response} from 'node-fetch'
+import fetch, {FetchError} from 'node-fetch'
 import querystring from 'query-string'
 import withFetchRetries, {RequestInitWithRetry} from 'fetch-retry'
 
@@ -59,7 +59,6 @@ export class Fetcher {
     const url = new URL(this.opts.host)
     url.pathname = path
     url.search = params ? querystring.stringify(params) : ''
-
 
     const response = await this.fetch(url.toString(), {
       method: "get",

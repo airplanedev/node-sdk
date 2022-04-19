@@ -21,7 +21,7 @@ export type Run<Input = unknown, Output = unknown> = {
 }
 
 // TODO: override for single type
-export async function execute<Input = unknown, Output = unknown>(slug: string, params?: Record<string, any> | undefined | null): Promise<Run<Input, Output>> {
+export async function execute<Output = unknown>(slug: string, params?: Record<string, any> | undefined | null): Promise<Run<typeof params, Output>> {
   const fetcher = new Fetcher({
     host: process.env.AIRPLANE_API_HOST ?? "",
     // https://github.com/airplanedev/airport/pull/2027
@@ -41,7 +41,7 @@ export async function execute<Input = unknown, Output = unknown>(slug: string, p
     const run = await fetcher.get<{
       id: string
       status: RunStatus
-      paramValues: Input
+      paramValues: typeof params
       taskID: string
     }>("/v0/runs/get", { id: runID })
 
