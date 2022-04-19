@@ -23,9 +23,14 @@ export type Run<Input = unknown, Output = unknown> = {
 export async function execute<Output = unknown>(slug: string, params?: Record<string, any> | undefined | null): Promise<Run<typeof params, Output>> {
   const fetcher = new Fetcher({
     host: process.env.AIRPLANE_API_HOST ?? "",
+<<<<<<< Updated upstream
     // https://github.com/airplanedev/airport/pull/2027
     token: process.env.AIRPLANE_TOKEN ?? process.env.AIRPLANE_RUN_AUTHN_TOKEN ?? "",
   })
+=======
+    token: process.env.AIRPLANE_TOKEN ?? "",
+  });
+>>>>>>> Stashed changes
 
   const { runID } = await fetcher.post<{
     runID: string
