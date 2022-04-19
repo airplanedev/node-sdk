@@ -79,7 +79,7 @@ export class Fetcher {
       },
     });
 
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status < 300) {
       return (await response.json()) as Output;
     }
 
@@ -92,7 +92,7 @@ export class Fetcher {
 
     const response = await this.fetch(url.toString(), {
       method: "post",
-      body: JSON.stringify(body),
+      body: body ? JSON.stringify(body) : undefined,
       headers: {
         "Content-Type": "application/json",
         "X-Airplane-Token": this.token,
