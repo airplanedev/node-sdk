@@ -1,10 +1,13 @@
 type PollOptions = {
-  // milliseconds to wait between requests to fn
+  // milliseconds to wait between requests
   delayMs: number
 }
 
 type PollFunction<Output> = () => (Promise<Output | null>)
 
+
+// Poller continuously executes a function until a non-null response is returned. If `null` is returned,
+// the poller will wait a configurable delay before retrying again.
 export class Poller {
   private opts: PollOptions
 
@@ -12,11 +15,6 @@ export class Poller {
     this.opts = opts
   }
 
-  // run continuously executes `fn` with a configurable delay in between calls to `fn`.
-  // 
-  // If `fn` returns `null`, it will wait a configurable delay and retry.
-  // 
-  // Useful for polling APIs.
   async run<Output = unknown>(fn: PollFunction<Output>): Promise<Output> {
     return new Promise(async (resolve, reject) => {
       const fnw = async () => {
