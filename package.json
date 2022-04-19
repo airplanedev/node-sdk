@@ -7,7 +7,7 @@
   "author": "hello@airplane.dev",
   "license": "MIT",
   "scripts": {
-    "test": "jest --detectOpenHandles --testTimeout 500",
+    "test": "jest --testTimeout 500",
     "build": "rm -rf dist && tsc",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
     "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",
