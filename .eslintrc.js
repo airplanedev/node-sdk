@@ -17,7 +17,7 @@ module.exports = {
   },
   plugins: ["import", "@typescript-eslint", "prefer-arrow"],
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
     // Upgrade this from warning to error
     "@typescript-eslint/no-unused-vars": [
       "error",
