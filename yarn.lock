@@ -1831,7 +1831,7 @@ fetch-blob@^3.1.2, fetch-blob@^3.1.4:
     node-domexception "^1.0.0"
     web-streams-polyfill "^3.0.3"
 
-fetch-retry@^5.0.2:
+fetch-retry@5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/fetch-retry/-/fetch-retry-5.0.2.tgz#4c55663a7c056cb45f182394e479464f0ff8f3e3"
   integrity sha512-57Hmu+1kc6pKFUGVIobT7qw3NeAzY/uNN26bSevERLVvf6VGFR/ooDCOFBHMNDgAxBiU2YJq1D0vFzc6U1DcPw==
@@ -4045,7 +4045,7 @@ pupa@^2.1.1:
   dependencies:
     escape-goat "^2.0.0"
 
-query-string@^7.1.1:
+query-string@7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-7.1.1.tgz#754620669db978625a90f635f12617c271a088e1"
   integrity sha512-MplouLRDHBZSG9z7fpuAAcI7aAYjDLhtsiVZsevsfaHWDS2IDdORKbSd1kWUA+V4zyva/HZoSfpwnYMMQDhb0w==
