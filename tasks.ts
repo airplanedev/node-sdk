@@ -20,7 +20,6 @@ export type Run<Input = unknown, Output = unknown> = {
   output: Output
 }
 
-// TODO: override for single type
 export async function execute<Output = unknown>(slug: string, params?: Record<string, any> | undefined | null): Promise<Run<typeof params, Output>> {
   const fetcher = new Fetcher({
     host: process.env.AIRPLANE_API_HOST ?? "",
