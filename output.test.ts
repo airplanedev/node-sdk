@@ -1,7 +1,10 @@
 import { jest } from "@jest/globals";
-import { setOutput, appendOutput } from './output'
 
-const log = jest.spyOn(console, "log").mockImplementation(() => {});
+import { setOutput, appendOutput } from "./output";
+
+const log = jest.spyOn(console, "log").mockImplementation(() => {
+  // disable output logging in tests
+});
 
 test("set/append values without paths", () => {
   setOutput("world");
@@ -54,13 +57,7 @@ test("set/append values with paths", () => {
   setOutput(123, "abc", `de "f`, "ghi", 0);
   setOutput(123.456, "abc", `de "f`, "ghi", 0);
   setOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
-  setOutput(
-    { catchphrase: "that's too much, man!" },
-    "abc",
-    `de "f`,
-    "ghi",
-    0
-  );
+  setOutput({ catchphrase: "that's too much, man!" }, "abc", `de "f`, "ghi", 0);
   appendOutput("world", "abc", `de "f`, "ghi", 0);
   appendOutput(undefined, "abc", `de "f`, "ghi", 0);
   appendOutput(null, "abc", `de "f`, "ghi", 0);
@@ -69,13 +66,7 @@ test("set/append values with paths", () => {
   appendOutput(123, "abc", `de "f`, "ghi", 0);
   appendOutput(123.456, "abc", `de "f`, "ghi", 0);
   appendOutput(["hello", "world"], "abc", `de "f`, "ghi", 0);
-  appendOutput(
-    { catchphrase: "that's too much, man!" },
-    "abc",
-    `de "f`,
-    "ghi",
-    0
-  );
+  appendOutput({ catchphrase: "that's too much, man!" }, "abc", `de "f`, "ghi", 0);
 
   expectLogs([
     `airplane_output_set:abc["de \\\\\\"f"].ghi[0] "world"`,
@@ -104,26 +95,21 @@ test("chunking", () => {
   appendOutput("a".repeat(10000));
 
   expect(log.mock.calls.length).toBe(6);
-  const getMatches: (line: string) => { chunkKey: string; remainder: string } =
-    (line) => {
-      const chunkRegex = /^airplane_chunk(?:|_end):([^ ]*)(?:$| (.*)$)/;
-      const matches = line.match(chunkRegex);
-      return {
-        chunkKey: matches && matches[1] ? matches[1] : "",
-        remainder: matches && matches[2] ? matches[2] : "",
-      };
+  const getMatches: (line: string) => { chunkKey: string; remainder: string } = (line) => {
+    const chunkRegex = /^airplane_chunk(?:|_end):([^ ]*)(?:$| (.*)$)/;
+    const matches = line.match(chunkRegex);
+    return {
+      chunkKey: matches && matches[1] ? matches[1] : "",
+      remainder: matches && matches[2] ? matches[2] : "",
     };
+  };
 
   {
     let { chunkKey, remainder } = getMatches(log.mock.calls[0][0]);
-    const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(
-      log.mock.calls[1][0]
-    );
+    const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(log.mock.calls[1][0]);
     expect(chunkKey).toBe(chunkKey2);
     remainder += remainder2;
-    const { chunkKey: chunkKey3, remainder: remainder3 } = getMatches(
-      log.mock.calls[2][0]
-    );
+    const { chunkKey: chunkKey3, remainder: remainder3 } = getMatches(log.mock.calls[2][0]);
     expect(chunkKey).toBe(chunkKey3);
     expect(remainder3).toBe("");
     expect(remainder).toBe(`airplane_output_set "${"a".repeat(10000)}"`);
@@ -131,26 +117,22 @@ test("chunking", () => {
 
   {
     let { chunkKey, remainder } = getMatches(log.mock.calls[3][0]);
-    const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(
-      log.mock.calls[4][0]
-    );
+    const { chunkKey: chunkKey2, remainder: remainder2 } = getMatches(log.mock.calls[4][0]);
     expect(chunkKey).toBe(chunkKey2);
     remainder += remainder2;
-    const { chunkKey: chunkKey3, remainder: remainder3 } = getMatches(
-      log.mock.calls[5][0]
-    );
+    const { chunkKey: chunkKey3, remainder: remainder3 } = getMatches(log.mock.calls[5][0]);
     expect(chunkKey).toBe(chunkKey3);
     expect(remainder3).toBe("");
     expect(remainder).toBe(`airplane_output_append "${"a".repeat(10000)}"`);
   }
 });
 
-function expectLogs(logs: string[]) {
+const expectLogs = (logs: string[]) => {
   expect(log.mock.calls.length).toBe(logs.length);
   for (let i = 0; i < logs.length; i++) {
     expect(log.mock.calls[i][0]).toBe(logs[i]);
   }
-}
+};
 
 afterEach(() => {
   jest.clearAllMocks();
