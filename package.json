@@ -16,6 +16,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": "^14 || ^16 || ^18"
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"

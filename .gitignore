@@ -105,3 +105,6 @@ dist
 
 # Example task for local testing
 example/
+
+# VSCode
+.vscode
