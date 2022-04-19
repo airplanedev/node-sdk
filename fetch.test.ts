@@ -23,7 +23,7 @@ test("validates options", () => {
 });
 
 describe("get", () => {
-  const host = "https://api.airplane.dev";
+  const host = "http://localhost:51234";
   const tasks = [
     { id: "task1", name: "task 1" },
     { id: "task2", name: "task 2" },

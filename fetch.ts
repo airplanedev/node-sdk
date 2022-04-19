@@ -29,7 +29,7 @@ export class Fetcher {
     this.token = opts.token;
 
     const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
-      return Math.max(Math.pow(1.3, attempt) * 100, 1000);
+      return [0, 100, 200, 400, 600, 800, 1000][attempt - 1] ?? 1000;
     };
     this.retryDelay = opts.retryDelay ?? defaultRetryDelay;
 
@@ -50,6 +50,12 @@ export class Fetcher {
             error.name === "FetchError" &&
             (error as FetchError).type === "system"
           ) {
+            // Don't retry nock matching errors (indicates an invalid tests)
+            if ((error as FetchError).errno === "ERR_NOCK_NO_MATCH") {
+              return false;
+            }
+
+            console.warn("retrying", error);
             return true;
           }
 
