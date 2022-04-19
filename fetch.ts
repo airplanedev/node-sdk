@@ -55,7 +55,6 @@ export class Fetcher {
               return false;
             }
 
-            console.warn("retrying", error);
             return true;
           }
 

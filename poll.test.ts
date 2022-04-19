@@ -1,6 +1,6 @@
 import { Poller } from "./poll";
 
-test("should retry 5 times", async () => {
+test("retries multiple times", async () => {
   expect.assertions(1);
 
   const poller = new Poller({ delayMs: 5 });
@@ -17,7 +17,7 @@ test("should retry 5 times", async () => {
   expect(out).toBe(5);
 });
 
-test("should stop on error", async () => {
+test("stops on error", async () => {
   expect.assertions(2);
 
   const poller = new Poller({ delayMs: 5 });
