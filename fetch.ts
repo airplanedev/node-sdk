@@ -21,11 +21,6 @@ export class Fetcher {
       throw new Error("expected an authentication token")
     }
 
-    // Ensure we can append a path onto the host:
-    if (opts.host.endsWith('/')) {
-      opts.host = opts.host.substring(0, opts.host.length - 1)
-    }
-
     this.opts = opts
 
     // https://github.com/jonbern/fetch-retry
