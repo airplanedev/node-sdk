@@ -10,5 +10,5 @@ Then, deploy a new version with `np`:
 # You may be prompted for 2FA authentication halfway ("waiting for input...").
 npx np
 # This previews the release. To release:
-npx np --publish
+npx np --preview=false
 ```
