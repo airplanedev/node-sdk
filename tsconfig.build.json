@@ -1,5 +1,5 @@
 {
-  "//": "When publishing, only build index file. Ignore TS from tests and examples.",
+  "//": "When publishing, only build the package itself not tests nor examples.",
   "extends": "./tsconfig.json",
   "include": ["index.ts"]
 }
