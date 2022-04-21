@@ -11,7 +11,8 @@
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
     "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublishOnly": "yarn build"
   },
   "files": [
     "dist"
@@ -54,5 +55,9 @@
     "node-fetch": "3.2.3",
     "query-string": "7.1.1",
     "uuid": "8.3.2"
+  },
+  "np": {
+    "message": "Release v%s",
+    "preview": true
   }
 }
