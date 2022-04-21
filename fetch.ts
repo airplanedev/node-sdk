@@ -29,7 +29,7 @@ export class Fetcher {
     this.token = opts.token;
 
     const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
-      return [0, 100, 200, 400, 600, 800, 1000][attempt - 1] ?? 1000;
+      return [0, 100, 200, 400, 600, 800, 1000][attempt] ?? 1000;
     };
     this.retryDelay = opts.retryDelay ?? defaultRetryDelay;
 
