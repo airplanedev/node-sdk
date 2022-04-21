@@ -7,7 +7,7 @@
   "author": "hello@airplane.dev",
   "license": "MIT",
   "scripts": {
-    "test": "jest --testTimeout 500",
+    "test": "rm -rf dist && jest --testTimeout 500",
     "build": "rm -rf dist && tsc",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
     "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",
@@ -37,6 +37,7 @@
     "husky": "7.0.4",
     "jest": "27.5.1",
     "lint-staged": "12.3.8",
+    "nock": "13.2.4",
     "np": "7.6.1",
     "prettier": "2.6.2",
     "ts-jest": "27.1.4",

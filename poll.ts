@@ -3,7 +3,7 @@ type PollOptions = {
   delayMs: number;
 };
 
-type PollFunction<Output> = () => Promise<Output | null>;
+type PollFunction<Output> = () => Output | null | Promise<Output | null>;
 
 // Poller continuously executes a function until a non-null response is returned. If `null` is returned,
 // the poller will wait a configurable delay before retrying again.
