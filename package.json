@@ -54,6 +54,7 @@
     "fetch-retry": "5.0.2",
     "node-fetch": "3.2.3",
     "query-string": "7.1.1",
+    "temporalio": "^0.22.0",
     "uuid": "8.3.2"
   },
   "np": {
