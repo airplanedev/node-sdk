@@ -2,4 +2,4 @@
 
 SDK for writing [Airplane](https://airplane.dev) tasks with Node.js in JavaScript and TypeScript.
 
-To learn more, see [the Airplane docs on Node.js tasks](https://docs.airplane.dev/creating-tasks/node).
+To learn more, see [the Airplane SDK docs](https://docs.airplane.dev/creating-tasks/node-sdk).
