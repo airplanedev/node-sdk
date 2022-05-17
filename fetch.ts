@@ -1,5 +1,5 @@
+import fetch from "cross-fetch";
 import withFetchRetries, { RequestInitWithRetry } from "fetch-retry";
-import fetch from "isomorphic-fetch";
 import type { FetchError } from "node-fetch";
 import querystring from "query-string";
 
