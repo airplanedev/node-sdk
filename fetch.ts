@@ -1,5 +1,6 @@
 import withFetchRetries, { RequestInitWithRetry } from "fetch-retry";
-import fetch, { FetchError } from "node-fetch";
+import fetch from "isomorphic-fetch";
+import type { FetchError } from "node-fetch";
 import querystring from "query-string";
 
 import { version } from "./package.json";

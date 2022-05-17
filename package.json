@@ -23,8 +23,10 @@
   "devDependencies": {
     "@babel/core": "7.17.9",
     "@babel/plugin-transform-modules-commonjs": "7.17.9",
+    "@types/isomorphic-fetch": "^0.0.36",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
+    "@types/node-fetch": "^2.6.1",
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
@@ -52,7 +54,7 @@
   },
   "dependencies": {
     "fetch-retry": "5.0.2",
-    "node-fetch": "3.2.3",
+    "isomorphic-fetch": "^3.0.0",
     "query-string": "7.1.1",
     "uuid": "8.3.2"
   },
