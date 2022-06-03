@@ -72,3 +72,19 @@ export const execute = async <Output = unknown>(
     };
   });
 };
+
+export type TaskClientOptions = {
+  host?: string;
+  token?: string;
+  apiKey?: string;
+};
+export class TaskClient {
+  constructor(private readonly opts?: TaskClientOptions) {}
+
+  async execute<Output = unknown>(
+    slug: string,
+    params?: Record<string, unknown> | undefined | null
+  ): Promise<Run<typeof params, Output>> {
+    return execute(slug, params, this.opts);
+  }
+}

@@ -7,7 +7,7 @@
   "author": "hello@airplane.dev",
   "license": "MIT",
   "scripts": {
-    "test": "rm -rf dist && jest --testTimeout 500",
+    "test": "jest --testTimeout 500",
     "test:watch": "jest --watch",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",

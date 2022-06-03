@@ -19,7 +19,7 @@ test("validates options", () => {
       host: "https://api.airplane.dev",
       token: "",
     });
-  }).toThrowError("expected an authentication token");
+  }).toThrowError("expected an authentication method");
 });
 
 describe("get", () => {

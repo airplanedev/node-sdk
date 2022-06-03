@@ -1,11 +1,18 @@
 import nock from "nock";
 
-import { execute, RunStatus } from "./tasks";
+import { execute, Run, RunStatus, TaskClient } from "./tasks";
 
 const OLD_ENV = process.env;
 
 describe("execute", () => {
   const host = "http://localhost:51234";
+  const successfulRun: Run = {
+    id: "run123",
+    taskID: "task123",
+    paramValues: { name: "colin" },
+    status: RunStatus.Succeeded,
+    output: "hello, colin!",
+  };
 
   beforeEach(() => {
     process.env = OLD_ENV;
@@ -23,15 +30,10 @@ describe("execute", () => {
         runID: "run123",
       })
       .get("/v0/runs/get?id=run123")
-      .reply(200, {
-        id: "run123",
-        status: RunStatus.Succeeded,
-        paramValues: { name: "colin" },
-        taskID: "task123",
-      })
+      .reply(200, successfulRun)
       .get("/v0/runs/getOutputs?id=run123")
       .reply(200, {
-        output: "hello, colin!",
+        output: successfulRun.output,
       });
   });
   test("with token from env var", async () => {
@@ -41,13 +43,7 @@ describe("execute", () => {
     const run = await execute<string>("hello_world", {
       name: "colin",
     });
-    expect(run).toStrictEqual({
-      id: "run123",
-      taskID: "task123",
-      paramValues: { name: "colin" },
-      status: RunStatus.Succeeded,
-      output: "hello, colin!",
-    });
+    expect(run).toStrictEqual(successfulRun);
   });
 
   test("with passed in token and host", async () => {
@@ -61,12 +57,17 @@ describe("execute", () => {
         token: "token123",
       }
     );
-    expect(run).toStrictEqual({
-      id: "run123",
-      taskID: "task123",
-      paramValues: { name: "colin" },
-      status: RunStatus.Succeeded,
-      output: "hello, colin!",
+    expect(run).toStrictEqual(successfulRun);
+  });
+
+  test("with task client", async () => {
+    const client = new TaskClient({
+      host,
+      apiKey: "apiKey",
     });
+    const run = await client.execute<string>("hello_world", {
+      name: "colin",
+    });
+    expect(run).toStrictEqual(successfulRun);
   });
 });
