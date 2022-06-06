@@ -27,6 +27,7 @@ export const execute = async <Output = unknown>(
   const fetcher = new Fetcher({
     host: process.env.AIRPLANE_API_HOST ?? "",
     token: process.env.AIRPLANE_TOKEN ?? "",
+    envID: process.env.AIRPLANE_ENV_ID ?? "",
   });
 
   const { runID } = await fetcher.post<{

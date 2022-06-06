@@ -8,6 +8,7 @@ import { version } from "./package.json";
 export type FetchOptions = {
   host: string;
   token: string;
+  envID: string;
   retryDelay?: (attempt: number) => number;
 };
 
@@ -15,6 +16,7 @@ export type FetchOptions = {
 export class Fetcher {
   private host: string;
   private token: string;
+  private envID: string;
   private fetch: ReturnType<typeof withFetchRetries>;
   private retryDelay: FetchOptions["retryDelay"];
 
@@ -28,6 +30,11 @@ export class Fetcher {
       throw new Error("expected an authentication token");
     }
     this.token = opts.token;
+
+    if (!opts.envID) {
+      throw new Error("expected an environmentID");
+    }
+    this.envID = opts.envID;
 
     const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
       return [0, 100, 200, 400, 600, 800, 1000][attempt] ?? 1000;
@@ -82,6 +89,7 @@ export class Fetcher {
         "X-Airplane-Token": this.token,
         "X-Airplane-Client-Kind": "sdk/node",
         "X-Airplane-Client-Version": version,
+        "X-Airplane-Env-ID": this.envID,
       },
     });
 
@@ -104,6 +112,7 @@ export class Fetcher {
         "X-Airplane-Token": this.token,
         "X-Airplane-Client-Kind": "sdk/node",
         "X-Airplane-Client-Version": version,
+        "X-Airplane-Env-ID": this.envID,
       },
     });
 
