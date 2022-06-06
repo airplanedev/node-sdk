@@ -92,6 +92,23 @@ describe("get", () => {
       await fetcher.get("/v0/throw/error");
     }).rejects.toThrow(new HTTPError("An unexpected error occurred", 500));
   });
+
+  test("with api key", async () => {
+    const fetcherAPIKey = new Fetcher({
+      host,
+      apiKey: "apiKey",
+      // Reduce retry delay:
+      retryDelay: () => 5,
+    });
+
+    expect.assertions(1);
+    nock(host).get("/v0/tasks/list").reply(200, tasks);
+    expect(
+      await fetcherAPIKey.get<{
+        id: string;
+      }>("/v0/tasks/list")
+    ).toStrictEqual(tasks);
+  });
 });
 
 describe("post", () => {
@@ -161,5 +178,22 @@ describe("post", () => {
     await expect(async () => {
       await fetcher.post("/v0/throw/error");
     }).rejects.toThrow(new HTTPError("An unexpected error occurred", 500));
+  });
+
+  test("with api key", async () => {
+    const fetcherAPIKey = new Fetcher({
+      host,
+      apiKey: "apiKey",
+      // Reduce retry delay:
+      retryDelay: () => 5,
+    });
+
+    expect.assertions(1);
+    nock(host).post("/v0/tasks/create").reply(200, { id: "task1" });
+    expect(
+      await fetcherAPIKey.post<{
+        id: string;
+      }>("/v0/tasks/create")
+    ).toStrictEqual({ id: "task1" });
   });
 });

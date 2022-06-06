@@ -1,6 +1,6 @@
 import nock from "nock";
 
-import { execute, Run, RunStatus, TaskClient } from "./tasks";
+import { execute, Run, RunStatus } from "./tasks";
 
 const OLD_ENV = process.env;
 
@@ -57,17 +57,6 @@ describe("execute", () => {
         token: "token123",
       }
     );
-    expect(run).toStrictEqual(successfulRun);
-  });
-
-  test("with task client", async () => {
-    const client = new TaskClient({
-      host,
-      apiKey: "apiKey",
-    });
-    const run = await client.execute<string>("hello_world", {
-      name: "colin",
-    });
     expect(run).toStrictEqual(successfulRun);
   });
 });

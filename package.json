@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --testTimeout 500",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --testTimeout 500",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
     "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",

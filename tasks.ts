@@ -31,9 +31,9 @@ export const execute = async <Output = unknown>(
   params?: Record<string, unknown> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  const host = process?.env?.AIRPLANE_API_HOST || opts?.host || "";
-  const token = process?.env?.AIRPLANE_TOKEN || opts?.token;
-  const apiKey = process?.env?.AIRPLANE_API_KEY || opts?.apiKey;
+  const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
+  const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
+  const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
   const fetcher = new Fetcher({
     host,
     token,
@@ -72,19 +72,3 @@ export const execute = async <Output = unknown>(
     };
   });
 };
-
-export type TaskClientOptions = {
-  host?: string;
-  token?: string;
-  apiKey?: string;
-};
-export class TaskClient {
-  constructor(private readonly opts?: TaskClientOptions) {}
-
-  async execute<Output = unknown>(
-    slug: string,
-    params?: Record<string, unknown> | undefined | null
-  ): Promise<Run<typeof params, Output>> {
-    return execute(slug, params, this.opts);
-  }
-}

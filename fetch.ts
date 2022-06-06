@@ -31,6 +31,9 @@ export class Fetcher {
     if (!this.token && !this.apiKey) {
       throw new Error("expected an authentication method");
     }
+    if (this.token && this.apiKey) {
+      throw new Error("expected a single authentication method");
+    }
 
     const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
       return [0, 100, 200, 400, 600, 800, 1000][attempt] ?? 1000;
