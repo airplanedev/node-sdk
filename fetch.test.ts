@@ -19,7 +19,14 @@ test("validates options", () => {
       host: "https://api.airplane.dev",
       token: "",
     });
-  }).toThrowError("expected an authentication token");
+  }).toThrowError("expected an authentication method");
+
+  expect(() => {
+    new Fetcher({
+      host: "https://api.airplane.dev",
+      token: "foobar",
+    });
+  }).toThrowError("expected an env ID");
 });
 
 describe("get", () => {
@@ -32,6 +39,7 @@ describe("get", () => {
   const fetcher = new Fetcher({
     host,
     token: "token123",
+    envID: "envfoo",
     // Reduce retry delay:
     retryDelay: () => 5,
   });
@@ -92,6 +100,24 @@ describe("get", () => {
       await fetcher.get("/v0/throw/error");
     }).rejects.toThrow(new HTTPError("An unexpected error occurred", 500));
   });
+
+  test("with api key", async () => {
+    const fetcherAPIKey = new Fetcher({
+      host,
+      apiKey: "apiKey",
+      envID: "envfoo",
+      // Reduce retry delay:
+      retryDelay: () => 5,
+    });
+
+    expect.assertions(1);
+    nock(host).get("/v0/tasks/list").reply(200, tasks);
+    expect(
+      await fetcherAPIKey.get<{
+        id: string;
+      }>("/v0/tasks/list")
+    ).toStrictEqual(tasks);
+  });
 });
 
 describe("post", () => {
@@ -100,6 +126,7 @@ describe("post", () => {
   const fetcher = new Fetcher({
     host,
     token: "token123",
+    envID: "envfoo",
     // Reduce retry delay:
     retryDelay: () => 5,
   });
@@ -161,5 +188,23 @@ describe("post", () => {
     await expect(async () => {
       await fetcher.post("/v0/throw/error");
     }).rejects.toThrow(new HTTPError("An unexpected error occurred", 500));
+  });
+
+  test("with api key", async () => {
+    const fetcherAPIKey = new Fetcher({
+      host,
+      apiKey: "apiKey",
+      envID: "envfoo",
+      // Reduce retry delay:
+      retryDelay: () => 5,
+    });
+
+    expect.assertions(1);
+    nock(host).post("/v0/tasks/create").reply(200, { id: "task1" });
+    expect(
+      await fetcherAPIKey.post<{
+        id: string;
+      }>("/v0/tasks/create")
+    ).toStrictEqual({ id: "task1" });
   });
 });

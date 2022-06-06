@@ -20,14 +20,27 @@ export type Run<Input = unknown, Output = unknown> = {
   output: Output;
 };
 
+export type ExecuteOptions = {
+  host?: string;
+  token?: string;
+  apiKey?: string;
+  envID?: string;
+};
+
 export const execute = async <Output = unknown>(
   slug: string,
-  params?: Record<string, unknown> | undefined | null
+  params?: Record<string, unknown> | undefined | null,
+  opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
+  const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
+  const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
+  const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
+  const envID = opts?.envID || process?.env?.AIRPLANE_ENV_ID;
   const fetcher = new Fetcher({
-    host: process.env.AIRPLANE_API_HOST ?? "",
-    token: process.env.AIRPLANE_TOKEN ?? "",
-    envID: process.env.AIRPLANE_ENV_ID ?? "",
+    host,
+    token,
+    apiKey,
+    envID,
   });
 
   const { runID } = await fetcher.post<{

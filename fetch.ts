@@ -7,15 +7,17 @@ import { version } from "./package.json";
 
 export type FetchOptions = {
   host: string;
-  token: string;
-  envID: string;
+  token?: string;
+  apiKey?: string;
+  envID?: string;
   retryDelay?: (attempt: number) => number;
 };
 
 // Fetcher is a wrapper around node-fetch with reasonable defaults that understands the Airplane API format.
 export class Fetcher {
   private host: string;
-  private token: string;
+  private token?: string;
+  private apiKey?: string;
   private envID: string;
   private fetch: ReturnType<typeof withFetchRetries>;
   private retryDelay: FetchOptions["retryDelay"];
@@ -25,14 +27,18 @@ export class Fetcher {
       throw new Error("expected an api host");
     }
     this.host = opts.host;
-
-    if (!opts.token) {
-      throw new Error("expected an authentication token");
-    }
     this.token = opts.token;
+    this.apiKey = opts.apiKey;
+
+    if (!this.token && !this.apiKey) {
+      throw new Error("expected an authentication method");
+    }
+    if (this.token && this.apiKey) {
+      throw new Error("expected a single authentication method");
+    }
 
     if (!opts.envID) {
-      throw new Error("expected an environmentID");
+      throw new Error("expected an env ID");
     }
     this.envID = opts.envID;
 
@@ -82,15 +88,21 @@ export class Fetcher {
     const url = new URL(this.host);
     url.pathname = path;
     url.search = params ? querystring.stringify(params) : "";
+    const headers: HeadersInit = {
+      "X-Airplane-Client-Kind": "sdk/node",
+      "X-Airplane-Env-ID": this.envID,
+      "X-Airplane-Client-Version": version,
+    };
+    if (this.token) {
+      headers["X-Airplane-Token"] = this.token;
+    }
+    if (this.apiKey) {
+      headers["X-Airplane-API-Key"] = this.apiKey;
+    }
 
     const response = await this.fetch(url.toString(), {
       method: "get",
-      headers: {
-        "X-Airplane-Token": this.token,
-        "X-Airplane-Client-Kind": "sdk/node",
-        "X-Airplane-Client-Version": version,
-        "X-Airplane-Env-ID": this.envID,
-      },
+      headers,
     });
 
     if (response.status >= 200 && response.status < 300) {
@@ -103,17 +115,23 @@ export class Fetcher {
   async post<Output = unknown>(path: string, body?: Record<string, unknown>): Promise<Output> {
     const url = new URL(this.host);
     url.pathname = path;
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+      "X-Airplane-Env-ID": this.envID,
+      "X-Airplane-Client-Kind": "sdk/node",
+      "X-Airplane-Client-Version": version,
+    };
+    if (this.token) {
+      headers["X-Airplane-Token"] = this.token;
+    }
+    if (this.apiKey) {
+      headers["X-Airplane-API-Key"] = this.apiKey;
+    }
 
     const response = await this.fetch(url.toString(), {
       method: "post",
       body: body ? JSON.stringify(body) : undefined,
-      headers: {
-        "Content-Type": "application/json",
-        "X-Airplane-Token": this.token,
-        "X-Airplane-Client-Kind": "sdk/node",
-        "X-Airplane-Client-Version": version,
-        "X-Airplane-Env-ID": this.envID,
-      },
+      headers,
     });
 
     if (response.status >= 200 && response.status < 300) {
