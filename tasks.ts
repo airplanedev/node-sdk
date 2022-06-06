@@ -1,5 +1,11 @@
+import * as wf from "@temporalio/workflow";
+import { proxyActivities } from "@temporalio/workflow";
+
+import type * as activities from "./activities";
 import { Fetcher } from "./fetch";
 import { Poller } from "./poll";
+
+const { executeTask } = proxyActivities<typeof activities>({});
 
 export enum RunStatus {
   NotStarted = "NotStarted",
@@ -24,6 +30,7 @@ export type ExecuteOptions = {
   host?: string;
   token?: string;
   apiKey?: string;
+  runtime?: string;
 };
 
 export const execute = async <Output = unknown>(
@@ -34,6 +41,18 @@ export const execute = async <Output = unknown>(
   const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
   const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
   const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
+  const runtime = opts?.runtime || process?.env?.AIRPLANE_RUNTIME || "standard";
+
+  if (runtime === "workflow") {
+    return durableExecute({
+      host,
+      token,
+      apiKey,
+      slug,
+      params,
+    });
+  }
+
   const fetcher = new Fetcher({
     host,
     token,
@@ -71,4 +90,47 @@ export const execute = async <Output = unknown>(
       output,
     };
   });
+};
+
+export const durableExecute = async <Output = unknown>(args: {
+  host: string;
+  token?: string;
+  apiKey?: string;
+  slug: string;
+  params: Record<string, unknown> | undefined | null;
+}): Promise<Run<typeof args.params, Output>> => {
+  let isTaskCompleted = false;
+  let taskID = "";
+  let status: RunStatus = RunStatus.NotStarted;
+  let paramValues = undefined;
+  let output = {};
+
+  const taskSignal = wf.defineSignal("task-completed-signal");
+  // @ts-ignore
+  wf.setHandler(taskSignal, (payload) => {
+    isTaskCompleted = true;
+    taskID = payload.taskID;
+    paramValues = payload.paramValues;
+    status = payload.status;
+    output = payload.output;
+  });
+
+  const runID = await executeTask({
+    host: args.host,
+    token: args.token,
+    apiKey: args.apiKey,
+    slug: args.slug,
+    params: args.params,
+  });
+
+  // Defer workflow execution until the task has been completed.
+  await wf.condition(() => isTaskCompleted);
+
+  return {
+    id: runID,
+    taskID,
+    paramValues,
+    status,
+    output: output as Output,
+  };
 };
