@@ -39,6 +39,7 @@ describe("execute", () => {
   test("with token from env var", async () => {
     process.env.AIRPLANE_API_HOST = host;
     process.env.AIRPLANE_TOKEN = "token123";
+    process.env.AIRPLANE_ENV_ID = "envfoo";
 
     const run = await execute<string>("hello_world", {
       name: "colin",
@@ -55,6 +56,7 @@ describe("execute", () => {
       {
         host,
         token: "token123",
+        envID: "envfoo",
       }
     );
     expect(run).toStrictEqual(successfulRun);

@@ -20,6 +20,13 @@ test("validates options", () => {
       token: "",
     });
   }).toThrowError("expected an authentication method");
+
+  expect(() => {
+    new Fetcher({
+      host: "https://api.airplane.dev",
+      token: "foobar",
+    });
+  }).toThrowError("expected an env ID");
 });
 
 describe("get", () => {
@@ -32,6 +39,7 @@ describe("get", () => {
   const fetcher = new Fetcher({
     host,
     token: "token123",
+    envID: "envfoo",
     // Reduce retry delay:
     retryDelay: () => 5,
   });
@@ -97,6 +105,7 @@ describe("get", () => {
     const fetcherAPIKey = new Fetcher({
       host,
       apiKey: "apiKey",
+      envID: "envfoo",
       // Reduce retry delay:
       retryDelay: () => 5,
     });
@@ -117,6 +126,7 @@ describe("post", () => {
   const fetcher = new Fetcher({
     host,
     token: "token123",
+    envID: "envfoo",
     // Reduce retry delay:
     retryDelay: () => 5,
   });
@@ -184,6 +194,7 @@ describe("post", () => {
     const fetcherAPIKey = new Fetcher({
       host,
       apiKey: "apiKey",
+      envID: "envfoo",
       // Reduce retry delay:
       retryDelay: () => 5,
     });
