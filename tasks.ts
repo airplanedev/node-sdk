@@ -5,7 +5,9 @@ import type * as activities from "./activities";
 import { Fetcher } from "./fetch";
 import { Poller } from "./poll";
 
-const { executeTask } = proxyActivities<typeof activities>({});
+const { executeTask } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "10m",
+});
 
 export enum RunStatus {
   NotStarted = "NotStarted",
