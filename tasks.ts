@@ -32,10 +32,11 @@ export const execute = async <Output = unknown>(
   params?: Record<string, unknown> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
-  const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
-  const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
-  const envID = opts?.envID || process?.env?.AIRPLANE_ENV_ID;
+  const env = typeof process === "undefined" ? {} : process?.env;
+  const host = opts?.host || env?.AIRPLANE_API_HOST || "";
+  const token = opts?.token || env?.AIRPLANE_TOKEN;
+  const apiKey = opts?.apiKey || env?.AIRPLANE_API_KEY;
+  const envID = opts?.envID || env?.AIRPLANE_ENV_ID;
   const fetcher = new Fetcher({
     host,
     token,
