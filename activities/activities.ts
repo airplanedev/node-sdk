@@ -1,4 +1,4 @@
-import { Fetcher } from "./fetch";
+import { Fetcher } from "../fetch";
 
 export const executeTask = async (args: {
   host: string;

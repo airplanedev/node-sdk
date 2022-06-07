@@ -1,7 +1,7 @@
 import * as wf from "@temporalio/workflow";
 import { proxyActivities } from "@temporalio/workflow";
 
-import type * as activities from "./activities";
+import type * as activities from "./activities/activities";
 import { Fetcher } from "./fetch";
 import { Poller } from "./poll";
 
