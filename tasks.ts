@@ -5,7 +5,7 @@ import type * as activities from "./activities/activities";
 import { Fetcher } from "./fetch";
 import { Poller } from "./poll";
 
-const { executeTask } = proxyActivities<typeof activities>({
+const { executeTask, fetchTaskOutput } = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: "10m",
 });
 
@@ -40,99 +40,97 @@ export const execute = async <Output = unknown>(
   params?: Record<string, unknown> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
-  const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
-  const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
-  const runtime = opts?.runtime || process?.env?.AIRPLANE_RUNTIME || "standard";
+  const runtime = opts?.runtime || "standard";
 
   if (runtime === "workflow") {
     return durableExecute({
-      host,
-      token,
-      apiKey,
+      opts,
       slug,
       params,
     });
+  } else {
+    const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
+    const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
+    const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
+
+    const fetcher = new Fetcher({
+      host,
+      token,
+      apiKey,
+    });
+
+    const { runID } = await fetcher.post<{
+      runID: string;
+    }>("/v0/tasks/execute", {
+      slug,
+      paramValues: params ?? {},
+    });
+
+    // Poll until the run terminates:
+    const poller = new Poller({ delayMs: 500 });
+    return poller.run(async () => {
+      const run = await fetcher.get<{
+        id: string;
+        status: RunStatus;
+        paramValues: typeof params;
+        taskID: string;
+      }>("/v0/runs/get", { id: runID });
+
+      if (!terminalStatuses.includes(run.status)) {
+        return null;
+      }
+
+      const { output } = await fetcher.get<{ output: Output }>("/v0/runs/getOutputs", {
+        id: runID,
+      });
+
+      return {
+        id: run.id,
+        taskID: run.taskID,
+        paramValues: run.paramValues,
+        status: run.status,
+        output,
+      };
+    });
   }
-
-  const fetcher = new Fetcher({
-    host,
-    token,
-    apiKey,
-  });
-
-  const { runID } = await fetcher.post<{
-    runID: string;
-  }>("/v0/tasks/execute", {
-    slug,
-    paramValues: params ?? {},
-  });
-
-  // Poll until the run terminates:
-  const poller = new Poller({ delayMs: 500 });
-  return poller.run(async () => {
-    const run = await fetcher.get<{
-      id: string;
-      status: RunStatus;
-      paramValues: typeof params;
-      taskID: string;
-    }>("/v0/runs/get", { id: runID });
-
-    if (!terminalStatuses.includes(run.status)) {
-      return null;
-    }
-
-    const { output } = await fetcher.get<{ output: Output }>("/v0/runs/getOutputs", { id: runID });
-
-    return {
-      id: run.id,
-      taskID: run.taskID,
-      paramValues: run.paramValues,
-      status: run.status,
-      output,
-    };
-  });
 };
 
 export const durableExecute = async <Output = unknown>(args: {
-  host: string;
-  token?: string;
-  apiKey?: string;
+  opts?: ExecuteOptions;
   slug: string;
   params: Record<string, unknown> | undefined | null;
 }): Promise<Run<typeof args.params, Output>> => {
-  let isTaskCompleted = false;
   let taskID = "";
   let status: RunStatus = RunStatus.NotStarted;
   let paramValues = undefined;
-  let output = {};
 
-  const taskSignal = wf.defineSignal("task-completed-signal");
+  const taskSignal = wf.defineSignal("task-terminated-signal");
   // @ts-ignore
   wf.setHandler(taskSignal, (payload) => {
-    isTaskCompleted = true;
     taskID = payload.taskID;
     paramValues = payload.paramValues;
     status = payload.status;
-    output = payload.output;
   });
 
   const runID = await executeTask({
-    host: args.host,
-    token: args.token,
-    apiKey: args.apiKey,
+    opts: args.opts,
     slug: args.slug,
     params: args.params,
   });
 
   // Defer workflow execution until the task has been completed.
-  await wf.condition(() => isTaskCompleted);
+  await wf.condition(() => terminalStatuses.includes(status));
+
+  const output = await fetchTaskOutput<Output>({
+    opts: args.opts,
+    runID: runID,
+  });
 
   return {
     id: runID,
     taskID,
     paramValues,
     status,
-    output: output as Output,
+    output,
   };
 };
