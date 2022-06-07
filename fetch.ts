@@ -10,6 +10,7 @@ export type FetchOptions = {
   token?: string;
   apiKey?: string;
   envID?: string;
+  envSlug?: string;
   retryDelay?: (attempt: number) => number;
 };
 
@@ -18,7 +19,8 @@ export class Fetcher {
   private host: string;
   private token?: string;
   private apiKey?: string;
-  private envID: string;
+  private envID?: string;
+  private envSlug?: string;
   private fetch: ReturnType<typeof withFetchRetries>;
   private retryDelay: FetchOptions["retryDelay"];
 
@@ -37,10 +39,8 @@ export class Fetcher {
       throw new Error("expected a single authentication method");
     }
 
-    if (!opts.envID) {
-      throw new Error("expected an env ID");
-    }
     this.envID = opts.envID;
+    this.envSlug = opts.envSlug;
 
     const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
       return [0, 100, 200, 400, 600, 800, 1000][attempt] ?? 1000;
@@ -90,7 +90,6 @@ export class Fetcher {
     url.search = params ? querystring.stringify(params) : "";
     const headers: HeadersInit = {
       "X-Airplane-Client-Kind": "sdk/node",
-      "X-Airplane-Env-ID": this.envID,
       "X-Airplane-Client-Version": version,
     };
     if (this.token) {
@@ -98,6 +97,12 @@ export class Fetcher {
     }
     if (this.apiKey) {
       headers["X-Airplane-API-Key"] = this.apiKey;
+    }
+    if (this.envID) {
+      headers["X-Airplane-Env-ID"] = this.envID;
+    }
+    if (this.envSlug) {
+      headers["X-Airplane-Env-Slug"] = this.envSlug;
     }
 
     const response = await this.fetch(url.toString(), {
@@ -117,7 +122,6 @@ export class Fetcher {
     url.pathname = path;
     const headers: HeadersInit = {
       "Content-Type": "application/json",
-      "X-Airplane-Env-ID": this.envID,
       "X-Airplane-Client-Kind": "sdk/node",
       "X-Airplane-Client-Version": version,
     };
@@ -126,6 +130,12 @@ export class Fetcher {
     }
     if (this.apiKey) {
       headers["X-Airplane-API-Key"] = this.apiKey;
+    }
+    if (this.envID) {
+      headers["X-Airplane-Env-ID"] = this.envID;
+    }
+    if (this.envSlug) {
+      headers["X-Airplane-Env-Slug"] = this.envSlug;
     }
 
     const response = await this.fetch(url.toString(), {

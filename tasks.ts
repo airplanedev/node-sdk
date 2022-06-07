@@ -25,6 +25,7 @@ export type ExecuteOptions = {
   token?: string;
   apiKey?: string;
   envID?: string;
+  envSlug?: string;
 };
 
 export const execute = async <Output = unknown>(
@@ -37,11 +38,13 @@ export const execute = async <Output = unknown>(
   const token = opts?.token || env?.AIRPLANE_TOKEN;
   const apiKey = opts?.apiKey || env?.AIRPLANE_API_KEY;
   const envID = opts?.envID || env?.AIRPLANE_ENV_ID;
+  const envSlug = opts?.envSlug || env?.AIRPLANE_ENV_SLUG;
   const fetcher = new Fetcher({
     host,
     token,
     apiKey,
     envID,
+    envSlug,
   });
 
   const { runID } = await fetcher.post<{
