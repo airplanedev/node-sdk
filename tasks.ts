@@ -1,11 +1,13 @@
 import * as wf from "@temporalio/workflow";
 import { proxyActivities } from "@temporalio/workflow";
 
-import type * as activities from "./activities";
+import type { registerActivities } from "./activities";
 import { Poller } from "./poll";
 import { executeTask, fetchTaskOutput, getFetcher } from "./tasks_utils";
 
-const { executeTaskActivity, fetchTaskOutputActivity } = proxyActivities<typeof activities>({
+const { executeTaskActivity, fetchTaskOutputActivity } = proxyActivities<
+  ReturnType<typeof registerActivities>
+>({
   scheduleToCloseTimeout: "10m",
 });
 
