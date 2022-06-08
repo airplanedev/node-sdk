@@ -8,7 +8,7 @@ import { Poller } from "./poll";
 const { executeTaskActivity, getRunOutputActivity } = proxyActivities<
   ReturnType<typeof registerActivities>
 >({
-  scheduleToCloseTimeout: "10m",
+  startToCloseTimeout: "120s",
 });
 
 export enum RunStatus {
@@ -83,14 +83,19 @@ export const durableExecute = async <Output = unknown>(
 ): Promise<Run<typeof params, Output>> => {
   const runID = await executeTaskActivity(slug, params, opts);
 
+  type runTerminationSignal = {
+    taskID: string;
+    paramValues: typeof params;
+    status: RunStatus;
+  };
+
   let taskID = "";
   let status: RunStatus = RunStatus.NotStarted;
   let paramValues = undefined;
   // Register termination signal for the workflow. We ensure signal name uniqueness by utilizing the run ID of the task
   // being executed, since a workflow task may execute an arbitrary number of other tasks.
-  const taskSignal = wf.defineSignal(runID);
-  // @ts-ignore
-  wf.setHandler(taskSignal, (payload) => {
+  const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
+  wf.setHandler(taskSignal, (payload: runTerminationSignal) => {
     taskID = payload.taskID;
     paramValues = payload.paramValues;
     status = payload.status;
