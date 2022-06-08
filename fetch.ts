@@ -11,6 +11,7 @@ export type FetchOptions = {
   apiKey?: string;
   envID?: string;
   envSlug?: string;
+  source?: string;
   retryDelay?: (attempt: number) => number;
 };
 
@@ -21,6 +22,7 @@ export class Fetcher {
   private apiKey?: string;
   private envID?: string;
   private envSlug?: string;
+  private source?: string;
   private fetch: ReturnType<typeof withFetchRetries>;
   private retryDelay: FetchOptions["retryDelay"];
 
@@ -41,6 +43,7 @@ export class Fetcher {
 
     this.envID = opts.envID;
     this.envSlug = opts.envSlug;
+    this.source = opts.source;
 
     const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
       return [0, 100, 200, 400, 600, 800, 1000][attempt] ?? 1000;
@@ -104,6 +107,9 @@ export class Fetcher {
     if (this.envSlug) {
       headers["X-Airplane-Env-Slug"] = this.envSlug;
     }
+    if (this.source) {
+      headers["X-Airplane-Client-Source"] = this.source;
+    }
 
     const response = await this.fetch(url.toString(), {
       method: "get",
@@ -136,6 +142,9 @@ export class Fetcher {
     }
     if (this.envSlug) {
       headers["X-Airplane-Env-Slug"] = this.envSlug;
+    }
+    if (this.source) {
+      headers["X-Airplane-Client-Source"] = this.source;
     }
 
     const response = await this.fetch(url.toString(), {

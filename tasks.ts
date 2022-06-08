@@ -26,6 +26,7 @@ export type ExecuteOptions = {
   apiKey?: string;
   envID?: string;
   envSlug?: string;
+  source?: string;
 };
 
 export const execute = async <Output = unknown>(
@@ -45,6 +46,7 @@ export const execute = async <Output = unknown>(
     apiKey,
     envID,
     envSlug,
+    source: opts?.source,
   });
 
   const { runID } = await fetcher.post<{
