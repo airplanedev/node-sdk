@@ -8,16 +8,16 @@ export const registerActivities = () => ({
     params: Record<string, unknown> | undefined | null,
     opts?: ExecuteOptions
   ): Promise<string> => {
-    // We re-initialize the fetcher in each activity because there is an issue with Temporal proxy activities where it
-    // strips the methods of any return values.
+    // We re-initialize the fetcher in each activity because there seems to be an issue with Temporal serializing
+    // classes - the object that is returned by the activity will have no methods associated with it.
     const fetcher = getFetcher(opts);
-    return await executeTask(fetcher, slug, params);
+    return executeTask(fetcher, slug, params);
   },
   getRunOutputActivity: async <Output = unknown>(
     runID: string,
     opts?: ExecuteOptions
   ): Promise<Output> => {
     const fetcher = getFetcher(opts);
-    return await getRunOutput(fetcher, runID);
+    return getRunOutput(fetcher, runID);
   },
 });

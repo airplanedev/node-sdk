@@ -1,5 +1,5 @@
 // This file contains various utility methods used by both standard and workflow tasks. This means that the Temporal
-// activities defined in activities/activities.ts are essentially wrappers around the methods below.
+// activities defined in activities.ts are essentially wrappers around the methods below.
 
 import { Fetcher } from "./fetch";
 import { ExecuteOptions } from "./tasks";

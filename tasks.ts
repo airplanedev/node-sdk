@@ -83,18 +83,18 @@ export const durableExecute = async <Output = unknown>(
 ): Promise<Run<typeof params, Output>> => {
   const runID = await executeTaskActivity(slug, params, opts);
 
+  // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
+  // being executed in the signal name, as a workflow task may execute any number of other tasks.
   type runTerminationSignal = {
     taskID: string;
     paramValues: typeof params;
     status: RunStatus;
   };
+  const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
 
   let taskID = "";
+  let paramValues: typeof params = undefined;
   let status: RunStatus = RunStatus.NotStarted;
-  let paramValues = undefined;
-  // Register termination signal for the workflow. We ensure signal name uniqueness by utilizing the run ID of the task
-  // being executed, since a workflow task may execute an arbitrary number of other tasks.
-  const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
   wf.setHandler(taskSignal, (payload: runTerminationSignal) => {
     taskID = payload.taskID;
     paramValues = payload.paramValues;
