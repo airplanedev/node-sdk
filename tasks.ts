@@ -1,11 +1,11 @@
 import * as wf from "@temporalio/workflow";
 import { proxyActivities } from "@temporalio/workflow";
 
-import type * as activities from "./activities/activities";
-import { Fetcher } from "./fetch";
+import type * as activities from "./activities";
 import { Poller } from "./poll";
+import { executeTask, fetchTaskOutput, getFetcher } from "./tasks_utils";
 
-const { executeTask, fetchTaskOutput } = proxyActivities<typeof activities>({
+const { executeTaskActivity, fetchTaskOutputActivity } = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: "10m",
 });
 
@@ -32,6 +32,7 @@ export type ExecuteOptions = {
   host?: string;
   token?: string;
   apiKey?: string;
+  envID?: string;
   runtime?: string;
 };
 
@@ -41,30 +42,11 @@ export const execute = async <Output = unknown>(
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
   const runtime = opts?.runtime || "standard";
-
   if (runtime === "workflow") {
-    return durableExecute({
-      opts,
-      slug,
-      params,
-    });
+    return await durableExecute(slug, params, opts);
   } else {
-    const host = opts?.host || process?.env?.AIRPLANE_API_HOST || "";
-    const token = opts?.token || process?.env?.AIRPLANE_TOKEN;
-    const apiKey = opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
-
-    const fetcher = new Fetcher({
-      host,
-      token,
-      apiKey,
-    });
-
-    const { runID } = await fetcher.post<{
-      runID: string;
-    }>("/v0/tasks/execute", {
-      slug,
-      paramValues: params ?? {},
-    });
+    const fetcher = getFetcher(opts);
+    const runID = await executeTask(fetcher, slug, params);
 
     // Poll until the run terminates:
     const poller = new Poller({ delayMs: 500 });
@@ -80,9 +62,7 @@ export const execute = async <Output = unknown>(
         return null;
       }
 
-      const { output } = await fetcher.get<{ output: Output }>("/v0/runs/getOutputs", {
-        id: runID,
-      });
+      const output = await fetchTaskOutput<Output>(fetcher, runID);
 
       return {
         id: run.id,
@@ -95,36 +75,29 @@ export const execute = async <Output = unknown>(
   }
 };
 
-export const durableExecute = async <Output = unknown>(args: {
-  opts?: ExecuteOptions;
-  slug: string;
-  params: Record<string, unknown> | undefined | null;
-}): Promise<Run<typeof args.params, Output>> => {
+export const durableExecute = async <Output = unknown>(
+  slug: string,
+  params: Record<string, unknown> | undefined | null,
+  opts?: ExecuteOptions
+): Promise<Run<typeof params, Output>> => {
+  const runID = await executeTaskActivity(slug, params, opts);
+
   let taskID = "";
   let status: RunStatus = RunStatus.NotStarted;
   let paramValues = undefined;
-
-  const taskSignal = wf.defineSignal("task-terminated-signal");
-  // @ts-ignore
+  // Register termination signal for the workflow. We ensure signal name uniqueness by utilizing the run ID of the task
+  // being executed, since a workflow task may execute an arbitrary number of other tasks.
+  const taskSignal = wf.defineSignal(runID);
   wf.setHandler(taskSignal, (payload) => {
     taskID = payload.taskID;
     paramValues = payload.paramValues;
     status = payload.status;
   });
 
-  const runID = await executeTask({
-    opts: args.opts,
-    slug: args.slug,
-    params: args.params,
-  });
-
   // Defer workflow execution until the task has been completed.
   await wf.condition(() => terminalStatuses.includes(status));
 
-  const output = await fetchTaskOutput<Output>({
-    opts: args.opts,
-    runID: runID,
-  });
+  const output = await fetchTaskOutputActivity<Output>(runID, opts);
 
   return {
     id: runID,

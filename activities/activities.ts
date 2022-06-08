@@ -1,49 +1,21 @@
-import { Fetcher } from "../fetch";
 import { ExecuteOptions } from "../tasks";
+import { executeTask, fetchTaskOutput, getFetcher } from "../tasks_utils";
 
-export const executeTask = async (args: {
-  opts?: ExecuteOptions;
-  slug: string;
-  params: Record<string, unknown> | undefined | null;
-}): Promise<string> => {
-  console.log("inside execute task activity");
-  const host = args.opts?.host || process?.env?.AIRPLANE_API_HOST || "";
-  const token = args.opts?.token || process?.env?.AIRPLANE_TOKEN;
-  const apiKey = args.opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
-
-  const fetcher = new Fetcher({
-    host,
-    token,
-    apiKey,
-  });
-
-  const { runID } = await fetcher.post<{
-    runID: string;
-  }>("/v0/tasks/execute", {
-    slug: args.slug,
-    paramValues: args.params ?? {},
-  });
-
-  return runID;
+export const executeTaskActivity = async (
+  slug: string,
+  params: Record<string, unknown> | undefined | null,
+  opts?: ExecuteOptions
+): Promise<string> => {
+  // We re-initialize the fetcher in each activity because there is an issue with Temporal proxy activities where it
+  // strips the methods of any return values.
+  const fetcher = getFetcher(opts);
+  return await executeTask(fetcher, slug, params);
 };
 
-export const fetchTaskOutput = async <Output = unknown>(args: {
-  opts?: ExecuteOptions;
-  runID: string;
-}): Promise<Output> => {
-  const host = args.opts?.host || process?.env?.AIRPLANE_API_HOST || "";
-  const token = args.opts?.token || process?.env?.AIRPLANE_TOKEN;
-  const apiKey = args.opts?.apiKey || process?.env?.AIRPLANE_API_KEY;
-
-  const fetcher = new Fetcher({
-    host,
-    token,
-    apiKey,
-  });
-
-  const { output } = await fetcher.get<{ output: Output }>("/v0/runs/getOutputs", {
-    id: args.runID,
-  });
-
-  return output;
+export const fetchTaskOutputActivity = async <Output = unknown>(
+  runID: string,
+  opts?: ExecuteOptions
+): Promise<Output> => {
+  const fetcher = getFetcher(opts);
+  return fetchTaskOutput(fetcher, runID);
 };
