@@ -88,6 +88,7 @@ export const durableExecute = async <Output = unknown>(
   // Register termination signal for the workflow. We ensure signal name uniqueness by utilizing the run ID of the task
   // being executed, since a workflow task may execute an arbitrary number of other tasks.
   const taskSignal = wf.defineSignal(runID);
+  // @ts-ignore
   wf.setHandler(taskSignal, (payload) => {
     taskID = payload.taskID;
     paramValues = payload.paramValues;
