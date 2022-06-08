@@ -6174,7 +6174,7 @@ tapable@^2.1.1, tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
-temporalio@^0.23.2:
+temporalio@0.23.2:
   version "0.23.2"
   resolved "https://registry.yarnpkg.com/temporalio/-/temporalio-0.23.2.tgz#e9ce4c25bf8e550c4ac795fe55d85fc5faaa3105"
   integrity sha512-NRpW+hm3gyAoa0KOQPnjlKBwhZP2JCK067rWLHIOc98cTdeUpnTfpK4E7LX0CLFsEbfZLgR9HayO8qi+1Wj/8g==

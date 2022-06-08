@@ -34,7 +34,7 @@ export const executeTask = async (
   return runID;
 };
 
-export const fetchTaskOutput = async <Output = unknown>(
+export const getRunOutput = async <Output = unknown>(
   fetcher: Fetcher,
   runID: string
 ): Promise<Output> => {

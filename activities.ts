@@ -1,5 +1,5 @@
+import { executeTask, getRunOutput, getFetcher } from "./api";
 import { ExecuteOptions } from "./tasks";
-import { executeTask, fetchTaskOutput, getFetcher } from "./tasks_utils";
 
 // Recommended activity factory by Temporal: https://docs.temporal.io/typescript/activities/#important-design-patterns
 export const registerActivities = () => ({
@@ -13,11 +13,11 @@ export const registerActivities = () => ({
     const fetcher = getFetcher(opts);
     return await executeTask(fetcher, slug, params);
   },
-  fetchTaskOutputActivity: async <Output = unknown>(
+  getRunOutputActivity: async <Output = unknown>(
     runID: string,
     opts?: ExecuteOptions
   ): Promise<Output> => {
     const fetcher = getFetcher(opts);
-    return fetchTaskOutput(fetcher, runID);
+    return await getRunOutput(fetcher, runID);
   },
 });
