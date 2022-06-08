@@ -30,6 +30,7 @@ export type ExecuteOptions = {
 export const execute = async <Output = unknown>(
   slug: string,
   params?: Record<string, unknown> | undefined | null,
+  resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
   const env = typeof process === "undefined" ? {} : process?.env;
@@ -49,6 +50,7 @@ export const execute = async <Output = unknown>(
   }>("/v0/tasks/execute", {
     slug,
     paramValues: params ?? {},
+    resources: resources ?? {},
   });
 
   // Poll until the run terminates:
