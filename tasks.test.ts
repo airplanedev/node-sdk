@@ -25,6 +25,7 @@ describe("execute", () => {
         paramValues: {
           name: "colin",
         },
+        resources: {},
       })
       .reply(200, {
         runID: "run123",
@@ -53,6 +54,7 @@ describe("execute", () => {
       {
         name: "colin",
       },
+      {},
       {
         host,
         token: "token123",
