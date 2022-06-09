@@ -1,3 +1,4 @@
+export { registerActivities } from "activities";
 import { sql } from "builtins/sql";
 import { appendOutput, setOutput } from "output";
 import { execute } from "tasks";

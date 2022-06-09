@@ -20,13 +20,6 @@ test("validates options", () => {
       token: "",
     });
   }).toThrowError("expected an authentication method");
-
-  expect(() => {
-    new Fetcher({
-      host: "https://api.airplane.dev",
-      token: "foobar",
-    });
-  }).toThrowError("expected an env ID");
 });
 
 describe("get", () => {
