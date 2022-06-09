@@ -35,6 +35,8 @@ export type ExecuteOptions = {
   token?: string;
   apiKey?: string;
   envID?: string;
+  envSlug?: string;
+  source?: string;
   runtime?: string;
 };
 

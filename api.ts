@@ -10,12 +10,15 @@ export const getFetcher = (opts?: ExecuteOptions): Fetcher => {
   const token = opts?.token || env?.AIRPLANE_TOKEN;
   const apiKey = opts?.apiKey || env?.AIRPLANE_API_KEY;
   const envID = opts?.envID || env?.AIRPLANE_ENV_ID;
+  const envSlug = opts?.envSlug || env?.AIRPLANE_ENV_SLUG;
 
   return new Fetcher({
     host,
     token,
     apiKey,
     envID,
+    envSlug,
+    source: opts?.source,
   });
 };
 
