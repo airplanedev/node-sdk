@@ -54,7 +54,6 @@ describe("execute", () => {
       {
         name: "colin",
       },
-      {},
       {
         host,
         token: "token123",
