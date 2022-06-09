@@ -43,6 +43,14 @@ export type ExecuteOptions = {
 export const execute = async <Output = unknown>(
   slug: string,
   params?: Record<string, unknown> | undefined | null,
+  opts?: ExecuteOptions
+): Promise<Run<typeof params, Output>> => {
+  return executeAndGetRun(slug, params, {}, opts);
+};
+
+export const executeAndGetRun = async <Output = unknown>(
+  slug: string,
+  params?: Record<string, unknown> | undefined | null,
   resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
@@ -61,6 +69,10 @@ export const execute = async <Output = unknown>(
       status: RunStatus;
       paramValues: typeof params;
       taskID: string;
+      isStdAPI: boolean;
+      stdAPIRequest: {
+        request: typeof params;
+      };
     }>("/v0/runs/get", { id: runID });
 
     if (!terminalStatuses.includes(run.status)) {
@@ -69,10 +81,14 @@ export const execute = async <Output = unknown>(
 
     const output = await getRunOutput<Output>(fetcher, runID);
 
+    let runParamValues = run.paramValues;
+    if (run.isStdAPI) {
+      runParamValues = run.stdAPIRequest.request;
+    }
     return {
       id: run.id,
       taskID: run.taskID,
-      paramValues: run.paramValues,
+      paramValues: runParamValues,
       status: run.status,
       output,
     };
