@@ -81,14 +81,24 @@ export const durableExecute = async <Output = unknown>(
   params: Record<string, unknown> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
+  const authnTokenSignal = wf.defineSignal<[string]>(`authn-token`);
+  wf.setHandler(authnTokenSignal, (authnToken: string) => {
+    if (opts != null) {
+      opts.token = opts.token ?? authnToken;
+    }
+  });
+
   const runID = await executeTaskActivity(slug, params, opts);
 
   // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
   // being executed in the signal name, as a workflow task may execute any number of other tasks.
+  // Note: the properties of the signal type below must be capitalized due to limitations in other Temporal SDKs. For
+  // example, in Go, a signal field must be public in order for Temporal to properly serialize it:
+  // https://docs.temporal.io/go/how-to-use-signals-in-go/#define-signal-type
   type runTerminationSignal = {
-    taskID: string;
-    paramValues: typeof params;
-    status: RunStatus;
+    TaskID: string;
+    ParamValues: typeof params;
+    Status: RunStatus;
   };
   const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
 
@@ -96,9 +106,9 @@ export const durableExecute = async <Output = unknown>(
   let paramValues: typeof params = undefined;
   let status: RunStatus = RunStatus.NotStarted;
   wf.setHandler(taskSignal, (payload: runTerminationSignal) => {
-    taskID = payload.taskID;
-    paramValues = payload.paramValues;
-    status = payload.status;
+    taskID = payload.TaskID;
+    paramValues = payload.ParamValues;
+    status = payload.Status;
   });
 
   // Defer workflow execution until the task has been completed.
