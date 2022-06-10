@@ -45,10 +45,10 @@ export const execute = async <Output = unknown>(
   params?: Record<string, unknown> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  return executeAndGetRun(slug, params, {}, opts);
+  return executeInternal(slug, params, {}, opts);
 };
 
-export const executeAndGetRun = async <Output = unknown>(
+export const executeInternal = async <Output = unknown>(
   slug: string,
   params?: Record<string, unknown> | undefined | null,
   resources?: Record<string, string> | undefined | null,
@@ -81,14 +81,14 @@ export const executeAndGetRun = async <Output = unknown>(
 
     const output = await getRunOutput<Output>(fetcher, runID);
 
-    let runParamValues = run.paramValues;
+    let paramValues = run.paramValues;
     if (run.isStdAPI) {
-      runParamValues = run.stdAPIRequest.request;
+      paramValues = run.stdAPIRequest.request;
     }
     return {
       id: run.id,
       taskID: run.taskID,
-      paramValues: runParamValues,
+      paramValues: paramValues,
       status: run.status,
       output,
     };
