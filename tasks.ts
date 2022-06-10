@@ -45,12 +45,21 @@ export const execute = async <Output = unknown>(
   params?: Record<string, unknown> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
+  return executeInternal(slug, params, {}, opts);
+};
+
+export const executeInternal = async <Output = unknown>(
+  slug: string,
+  params?: Record<string, unknown> | undefined | null,
+  resources?: Record<string, string> | undefined | null,
+  opts?: ExecuteOptions
+): Promise<Run<typeof params, Output>> => {
   if (opts?.runtime === "workflow") {
     return durableExecute(slug, params, opts);
   }
 
   const fetcher = getFetcher(opts);
-  const runID = await executeTask(fetcher, slug, params);
+  const runID = await executeTask(fetcher, slug, params, resources);
 
   // Poll until the run terminates:
   const poller = new Poller({ delayMs: 500 });
@@ -60,6 +69,10 @@ export const execute = async <Output = unknown>(
       status: RunStatus;
       paramValues: typeof params;
       taskID: string;
+      isStdAPI: boolean;
+      stdAPIRequest: {
+        request: typeof params;
+      };
     }>("/v0/runs/get", { id: runID });
 
     if (!terminalStatuses.includes(run.status)) {
@@ -68,10 +81,14 @@ export const execute = async <Output = unknown>(
 
     const output = await getRunOutput<Output>(fetcher, runID);
 
+    let paramValues = run.paramValues;
+    if (run.isStdAPI) {
+      paramValues = run.stdAPIRequest.request;
+    }
     return {
       id: run.id,
       taskID: run.taskID,
-      paramValues: run.paramValues,
+      paramValues: paramValues,
       status: run.status,
       output,
     };
