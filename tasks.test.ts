@@ -25,6 +25,7 @@ describe("execute", () => {
         paramValues: {
           name: "colin",
         },
+        resources: {},
       })
       .reply(200, {
         runID: "run123",

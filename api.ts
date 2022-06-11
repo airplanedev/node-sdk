@@ -25,13 +25,15 @@ export const getFetcher = (opts?: ExecuteOptions): Fetcher => {
 export const executeTask = async (
   fetcher: Fetcher,
   slug: string,
-  params: Record<string, unknown> | undefined | null
+  params: Record<string, unknown> | undefined | null,
+  resources: Record<string, string> | undefined | null
 ): Promise<string> => {
   const { runID } = await fetcher.post<{
     runID: string;
   }>("/v0/tasks/execute", {
     slug: slug,
     paramValues: params ?? {},
+    resources: resources ?? {},
   });
 
   return runID;
