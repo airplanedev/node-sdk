@@ -5,8 +5,10 @@ export type Contact = {
   name: string;
 };
 
+export type EmailRequestOutput = Record<string, number>;
+
 export default {
-  message: async <Output = unknown>(
+  message: async <Output = EmailRequestOutput | undefined | null>(
     emailResourceID: string,
     sender: Contact,
     recipients: Contact[] | string[] | string,

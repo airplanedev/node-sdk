@@ -1,7 +1,7 @@
 import { Run, ExecuteOptions, executeInternal } from "./tasks";
 
 export default {
-  query: async <Output = unknown>(
+  query: async <Output = undefined | null>(
     slackResourceID: string,
     channelName: string,
     message: string,

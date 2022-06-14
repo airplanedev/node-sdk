@@ -16,11 +16,15 @@ export enum BodyType {
   FormURLEncoded = "x-www-form-urlencoded",
 }
 
+export type RESTRequestOutput = {
+  response: Record<string, unknown> | string;
+};
+
 export default {
   Method,
   BodyType,
 
-  request: async <Output = unknown>(
+  request: async <Output = RESTRequestOutput | undefined | null>(
     restResourceID: string,
     method: Method,
     path: string,

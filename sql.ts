@@ -7,10 +7,12 @@ export enum TransactionMode {
   None = "none",
 }
 
+export type SQLRequestOutput = Record<string, unknown[]>;
+
 export default {
   TransactionMode,
 
-  query: async <Output = unknown>(
+  query: async <Output = SQLRequestOutput | undefined | null>(
     sqlResourceID: string,
     query: string,
     queryArgs?: Record<string, unknown> | undefined | null,
