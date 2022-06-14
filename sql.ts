@@ -1,5 +1,6 @@
+import { ExecuteOptions } from "./api";
 import { SQLResource } from "./resources";
-import { Run, ExecuteOptions, executeInternal } from "./tasks";
+import { Run, executeInternal } from "./tasks";
 
 export enum TransactionMode {
   Auto = "auto",

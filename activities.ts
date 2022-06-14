@@ -1,8 +1,7 @@
-import { executeTask, getRunOutput, getFetcher } from "./api";
-import { ExecuteOptions } from "./tasks";
+import { executeTask, getRunOutput, getFetcher, ExecuteOptions } from "./api";
 
 // Recommended activity factory by Temporal: https://docs.temporal.io/typescript/activities/#important-design-patterns
-export const registerActivities = () => ({
+export const _registerActivities = () => ({
   executeTaskActivity: async (
     slug: string,
     params: Record<string, unknown> | undefined | null,
