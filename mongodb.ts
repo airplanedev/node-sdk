@@ -22,7 +22,7 @@ export type DeleteRequestOutput = {
 };
 
 export default {
-  find: async <Output = DocumentRequestOutput[]>(
+  find: async <Output = DocumentRequestOutput[] | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown> | undefined | null = null,
@@ -40,7 +40,7 @@ export default {
     );
   },
 
-  findOne: async <Output = DocumentRequestOutput>(
+  findOne: async <Output = DocumentRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown> | undefined | null = null,
@@ -56,7 +56,7 @@ export default {
     );
   },
 
-  findOneAndDelete: async <Output = DocumentRequestOutput>(
+  findOneAndDelete: async <Output = DocumentRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown> | undefined | null = null,
@@ -72,7 +72,7 @@ export default {
     );
   },
 
-  findOneAndUpdate: async <Output = DocumentRequestOutput>(
+  findOneAndUpdate: async <Output = DocumentRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     update: Record<string, unknown>,
@@ -89,7 +89,7 @@ export default {
     );
   },
 
-  findOneAndReplace: async <Output = Document>(
+  findOneAndReplace: async <Output = Document | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     replacement: Record<string, unknown>,
@@ -107,7 +107,7 @@ export default {
     );
   },
 
-  insertOne: async <Output = InsertOneRequestOutput>(
+  insertOne: async <Output = InsertOneRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     document: Record<string, unknown>,
@@ -121,7 +121,7 @@ export default {
     );
   },
 
-  insertMany: async <Output = InsertManyRequestOutput>(
+  insertMany: async <Output = InsertManyRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     documents: Record<string, unknown>[],
@@ -135,7 +135,7 @@ export default {
     );
   },
 
-  updateOne: async <Output = UpdateRequestOutput>(
+  updateOne: async <Output = UpdateRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     update: Record<string, unknown>,
@@ -151,7 +151,7 @@ export default {
     );
   },
 
-  updateMany: async <Output = UpdateRequestOutput>(
+  updateMany: async <Output = UpdateRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     update: Record<string, unknown>,
@@ -167,7 +167,7 @@ export default {
     );
   },
 
-  deleteOne: async <Output = DeleteRequestOutput>(
+  deleteOne: async <Output = DeleteRequestOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown>,
@@ -195,7 +195,7 @@ export default {
     );
   },
 
-  aggregate: async <Output = DocumentRequestOutput[]>(
+  aggregate: async <Output = DocumentRequestOutput[] | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     pipeline: Record<string, unknown>[],
@@ -209,7 +209,7 @@ export default {
     );
   },
 
-  countDocuments: async <Output = number>(
+  countDocuments: async <Output = number | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown>,
@@ -223,7 +223,7 @@ export default {
     );
   },
 
-  distinct: async <Output = unknown[]>(
+  distinct: async <Output = unknown[] | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     field: string,
