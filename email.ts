@@ -1,22 +1,15 @@
 import { Run, ExecuteOptions, executeInternal } from "./tasks";
 
-export class Sender {
-  email = "";
-  name = "";
-
-  constructor(email: string, name: string) {
-    this.email = email;
-    this.name = name;
-  }
-}
+export type Contact = {
+  email: string;
+  name: string;
+};
 
 export default {
-  Sender,
-
   message: async <Output = unknown>(
-    email_resource_id: string,
-    sender: Sender,
-    recipients: unknown,
+    emailResourceID: string,
+    sender: Contact,
+    recipients: Contact[] | string[] | string,
     subject = "",
     message = "",
     opts?: ExecuteOptions
@@ -24,7 +17,7 @@ export default {
     return executeInternal(
       "airplane:email_message",
       { sender, recipients, subject, message },
-      { email: email_resource_id },
+      { email: emailResourceID },
       opts
     );
   },

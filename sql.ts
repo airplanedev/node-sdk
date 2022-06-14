@@ -11,7 +11,7 @@ export default {
   TransactionMode,
 
   query: async <Output = unknown>(
-    sql_resource_id: string,
+    sqlResourceID: string,
     query: string,
     queryArgs?: Record<string, unknown> | undefined | null,
     transactionMode: TransactionMode = TransactionMode.Auto,
@@ -20,7 +20,7 @@ export default {
     return executeInternal(
       "airplane:sql_query",
       { query, queryArgs, transactionMode },
-      { db: sql_resource_id },
+      { db: sqlResourceID },
       opts
     );
   },

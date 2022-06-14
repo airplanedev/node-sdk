@@ -21,20 +21,20 @@ export default {
   BodyType,
 
   request: async <Output = unknown>(
-    rest_resource_id: string,
+    restResourceID: string,
     method: Method,
     path: string,
     headers: Record<string, unknown> = {},
     urlParams: Record<string, unknown> = {},
     bodyType: BodyType = BodyType.Unknown,
-    body: unknown = null,
+    body: Record<string, unknown> | string | undefined | null = null,
     formData: Record<string, unknown> | undefined | null = null,
     opts?: ExecuteOptions
   ): Promise<Run<Record<string, unknown> | undefined | null, Output>> => {
     return executeInternal(
       "airplane:rest_request",
       { method, path, headers, urlParams, bodyType, body, formData },
-      { rest: rest_resource_id },
+      { rest: restResourceID },
       opts
     );
   },

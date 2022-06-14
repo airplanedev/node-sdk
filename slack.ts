@@ -2,7 +2,7 @@ import { Run, ExecuteOptions, executeInternal } from "./tasks";
 
 export default {
   query: async <Output = unknown>(
-    slack_resource_id: string,
+    slackResourceID: string,
     channelName: string,
     message: string,
     opts?: ExecuteOptions
@@ -10,7 +10,7 @@ export default {
     return executeInternal(
       "airplane:slack_message",
       { channelName, message },
-      { slack: slack_resource_id },
+      { slack: slackResourceID },
       opts
     );
   },
