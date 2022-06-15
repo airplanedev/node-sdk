@@ -38,7 +38,6 @@ export type ExecuteOptions = {
   envID?: string;
   envSlug?: string;
   source?: string;
-  runtime?: string;
 };
 
 export const execute = async <Output = unknown>(
