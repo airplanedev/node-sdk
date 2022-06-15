@@ -55,8 +55,8 @@ export const executeInternal = async <Output = unknown>(
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
   const env = typeof process === "undefined" ? {} : process?.env;
-  const envSlug = opts?.runtime || env?.AIRPLANE_RUNTIME;
-  if (envSlug === "workflow") {
+  const runtime = opts?.runtime || env?.AIRPLANE_RUNTIME || "standard";
+  if (runtime === "workflow") {
     return durableExecute(slug, params, opts);
   }
 
