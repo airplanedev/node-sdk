@@ -3,18 +3,18 @@ import { Run, ExecuteOptions, executeInternal } from "./tasks";
 export type DocumentOutput = Record<string, unknown>;
 
 export type InsertOneOutput = {
-  InsertedID: unknown;
+  InsertedID: string;
 };
 
 export type InsertManyOutput = {
-  InsertedIDs: unknown[];
+  InsertedIDs: string[];
 };
 
 export type UpdateOutput = {
   MatchedCount: number;
   ModifiedCount: number;
   UpsertedCount: number;
-  UpsertedID: unknown;
+  UpsertedID: string;
 };
 
 export type DeleteOutput = {
