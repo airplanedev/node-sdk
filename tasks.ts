@@ -3,6 +3,7 @@ import { proxyActivities } from "@temporalio/workflow";
 
 import type { registerActivities } from "./activities";
 import { executeTask, getRunOutput, getFetcher } from "./api";
+import { _storage } from "./async";
 import { Poller } from "./poll";
 
 const { executeTaskActivity, getRunOutputActivity } = proxyActivities<
@@ -54,8 +55,12 @@ export const executeInternal = async <Output = unknown>(
   resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  if (opts?.runtime === "workflow") {
-    return durableExecute(slug, params, opts);
+  // The _storage object will be empty if not executed in the context of a Temporal workflow.
+  if (Object.prototype.hasOwnProperty.call(_storage, "enabled")) {
+    const store = _storage.getStore();
+    if (store != null && store.runtime === "workflow") {
+      return durableExecute(slug, params, resources, opts);
+    }
   }
 
   const fetcher = getFetcher(opts);
@@ -98,9 +103,10 @@ export const executeInternal = async <Output = unknown>(
 export const durableExecute = async <Output = unknown>(
   slug: string,
   params: Record<string, unknown> | undefined | null,
+  resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  const runID = await executeTaskActivity(slug, params, opts);
+  const runID = await executeTaskActivity(slug, params, resources, opts);
 
   // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
   // being executed in the signal name, as a workflow task may execute any number of other tasks.

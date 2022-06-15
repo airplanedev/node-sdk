@@ -5,6 +5,8 @@ import { execute } from "./tasks";
 export { ExecuteOptions } from "./tasks";
 export * as resources from "./resources";
 
+export { _storage, AirplaneStore } from "./async";
+
 export default {
   appendOutput,
   setOutput,
