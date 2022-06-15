@@ -1,4 +1,3 @@
-import { SQLResource } from "./resources";
 import { Run, ExecuteOptions, executeInternal } from "./tasks";
 
 export enum TransactionMode {
@@ -8,11 +7,13 @@ export enum TransactionMode {
   None = "none",
 }
 
+export type SQLRequestOutput = Record<string, unknown[]>;
+
 export default {
   TransactionMode,
 
-  query: async <Output = unknown>(
-    db: SQLResource,
+  query: async <Output = SQLRequestOutput | undefined | null>(
+    sqlResourceID: string,
     query: string,
     queryArgs?: Record<string, unknown> | undefined | null,
     transactionMode: TransactionMode = TransactionMode.Auto,
@@ -21,7 +22,7 @@ export default {
     return executeInternal(
       "airplane:sql_query",
       { query, queryArgs, transactionMode },
-      { db: db.identifier },
+      { db: sqlResourceID },
       opts
     );
   },
