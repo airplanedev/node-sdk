@@ -59,7 +59,7 @@ export const executeInternal = async <Output = unknown>(
   if (Object.prototype.hasOwnProperty.call(_storage, "enabled")) {
     const store = _storage.getStore();
     if (store != null && store.runtime === "workflow") {
-      return durableExecute(slug, params, resources, opts);
+      return durableExecute(slug, params, opts);
     }
   }
 
@@ -103,10 +103,9 @@ export const executeInternal = async <Output = unknown>(
 export const durableExecute = async <Output = unknown>(
   slug: string,
   params: Record<string, unknown> | undefined | null,
-  resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  const runID = await executeTaskActivity(slug, params, resources, opts);
+  const runID = await executeTaskActivity(slug, params, opts);
 
   // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
   // being executed in the signal name, as a workflow task may execute any number of other tasks.
