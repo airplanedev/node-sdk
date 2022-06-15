@@ -1,28 +1,28 @@
 import { Run, ExecuteOptions, executeInternal } from "./tasks";
 
-export type DocumentRequestOutput = Record<string, unknown>;
+export type DocumentOutput = Record<string, unknown>;
 
-export type InsertOneRequestOutput = {
+export type InsertOneOutput = {
   InsertedID: unknown;
 };
 
-export type InsertManyRequestOutput = {
+export type InsertManyOutput = {
   InsertedIDs: unknown[];
 };
 
-export type UpdateRequestOutput = {
+export type UpdateOutput = {
   MatchedCount: number;
   ModifiedCount: number;
   UpsertedCount: number;
   UpsertedID: unknown;
 };
 
-export type DeleteRequestOutput = {
+export type DeleteOutput = {
   DeletedCount: number;
 };
 
 export default {
-  find: async <Output = DocumentRequestOutput[] | undefined | null>(
+  find: async <Output = DocumentOutput[] | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown> | undefined | null = null,
@@ -40,7 +40,7 @@ export default {
     );
   },
 
-  findOne: async <Output = DocumentRequestOutput | undefined | null>(
+  findOne: async <Output = DocumentOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown> | undefined | null = null,
@@ -56,7 +56,7 @@ export default {
     );
   },
 
-  findOneAndDelete: async <Output = DocumentRequestOutput | undefined | null>(
+  findOneAndDelete: async <Output = DocumentOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown> | undefined | null = null,
@@ -72,7 +72,7 @@ export default {
     );
   },
 
-  findOneAndUpdate: async <Output = DocumentRequestOutput | undefined | null>(
+  findOneAndUpdate: async <Output = DocumentOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     update: Record<string, unknown>,
@@ -89,7 +89,7 @@ export default {
     );
   },
 
-  findOneAndReplace: async <Output = Document | undefined | null>(
+  findOneAndReplace: async <Output = DocumentOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     replacement: Record<string, unknown>,
@@ -107,7 +107,7 @@ export default {
     );
   },
 
-  insertOne: async <Output = InsertOneRequestOutput | undefined | null>(
+  insertOne: async <Output = InsertOneOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     document: Record<string, unknown>,
@@ -121,7 +121,7 @@ export default {
     );
   },
 
-  insertMany: async <Output = InsertManyRequestOutput | undefined | null>(
+  insertMany: async <Output = InsertManyOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     documents: Record<string, unknown>[],
@@ -135,7 +135,7 @@ export default {
     );
   },
 
-  updateOne: async <Output = UpdateRequestOutput | undefined | null>(
+  updateOne: async <Output = UpdateOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     update: Record<string, unknown>,
@@ -151,7 +151,7 @@ export default {
     );
   },
 
-  updateMany: async <Output = UpdateRequestOutput | undefined | null>(
+  updateMany: async <Output = UpdateOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     update: Record<string, unknown>,
@@ -167,7 +167,7 @@ export default {
     );
   },
 
-  deleteOne: async <Output = DeleteRequestOutput | undefined | null>(
+  deleteOne: async <Output = DeleteOutput | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown>,
@@ -181,7 +181,7 @@ export default {
     );
   },
 
-  deleteMany: async <Output = DeleteRequestOutput>(
+  deleteMany: async <Output = DeleteOutput>(
     mongodbResourceID: string,
     collection: string,
     filter: Record<string, unknown>,
@@ -195,7 +195,7 @@ export default {
     );
   },
 
-  aggregate: async <Output = DocumentRequestOutput[] | undefined | null>(
+  aggregate: async <Output = DocumentOutput[] | undefined | null>(
     mongodbResourceID: string,
     collection: string,
     pipeline: Record<string, unknown>[],
