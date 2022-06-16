@@ -8,7 +8,7 @@ import sql from "./sql";
 import { execute } from "./tasks";
 export { ExecuteOptions } from "./api";
 
-export { appendOutput, setOutput, execute, sql };
+export { appendOutput, setOutput, execute, email, mongodb, rest, slack, sql };
 
 export default {
   appendOutput,
