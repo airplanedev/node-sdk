@@ -2,7 +2,16 @@
 // activities defined in activities.ts are essentially wrappers around the methods below.
 
 import { Fetcher } from "./fetch";
-import { ExecuteOptions } from "./tasks";
+
+export type ExecuteOptions = {
+  host?: string;
+  token?: string;
+  apiKey?: string;
+  envID?: string;
+  envSlug?: string;
+  source?: string;
+  runtime?: string;
+};
 
 export const getFetcher = (opts?: ExecuteOptions): Fetcher => {
   const env = typeof process === "undefined" ? {} : process?.env;

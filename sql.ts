@@ -1,4 +1,5 @@
-import { Run, ExecuteOptions, executeInternal } from "./tasks";
+import { ExecuteOptions } from "./api";
+import { Run, executeInternal } from "./tasks";
 
 export enum TransactionMode {
   Auto = "auto",

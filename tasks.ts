@@ -1,12 +1,12 @@
 import * as wf from "@temporalio/workflow";
 import { proxyActivities } from "@temporalio/workflow";
 
-import type { registerActivities } from "./activities";
-import { executeTask, getRunOutput, getFetcher } from "./api";
+import type { _registerActivities } from "./activities";
+import { executeTask, getRunOutput, getFetcher, ExecuteOptions } from "./api";
 import { Poller } from "./poll";
 
 const { executeTaskActivity, getRunOutputActivity } = proxyActivities<
-  ReturnType<typeof registerActivities>
+  ReturnType<typeof _registerActivities>
 >({
   startToCloseTimeout: "120s",
 });
@@ -30,16 +30,6 @@ export type Run<Input = unknown, Output = unknown> = {
   output: Output;
 };
 
-export type ExecuteOptions = {
-  host?: string;
-  token?: string;
-  apiKey?: string;
-  envID?: string;
-  envSlug?: string;
-  source?: string;
-  runtime?: string;
-};
-
 export const execute = async <Output = unknown>(
   slug: string,
   params?: Record<string, unknown> | undefined | null,
@@ -57,7 +47,7 @@ export const executeInternal = async <Output = unknown>(
   const env = typeof process === "undefined" ? {} : process?.env;
   const runtime = opts?.runtime || env?.AIRPLANE_RUNTIME || "standard";
   if (runtime === "workflow") {
-    return durableExecute(slug, params, opts);
+    return durableExecute(slug, params, resources, opts);
   }
 
   const fetcher = getFetcher(opts);
@@ -99,10 +89,11 @@ export const executeInternal = async <Output = unknown>(
 
 export const durableExecute = async <Output = unknown>(
   slug: string,
-  params: Record<string, unknown> | undefined | null,
+  params?: Record<string, unknown> | undefined | null,
+  resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
-  const runID = await executeTaskActivity(slug, params, opts);
+  const runID = await executeTaskActivity(slug, params, resources, opts);
 
   // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
   // being executed in the signal name, as a workflow task may execute any number of other tasks.
