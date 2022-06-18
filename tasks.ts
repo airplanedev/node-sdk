@@ -47,7 +47,7 @@ export const executeInternal = async <Output = unknown>(
   const env = typeof process === "undefined" ? {} : process?.env;
   const runtime = opts?.runtime || env?.AIRPLANE_RUNTIME || "standard";
   if (runtime === "workflow") {
-    return durableExecute(slug, params, resources, opts);
+    return durableExecute(slug, params, resources, opts ?? {});
   }
 
   const fetcher = getFetcher(opts);
@@ -93,14 +93,23 @@ export const durableExecute = async <Output = unknown>(
   resources?: Record<string, string> | undefined | null,
   opts?: ExecuteOptions
 ): Promise<Run<typeof params, Output>> => {
+  // While we monkey-patch env vars into the workflow's global, activities run in the main Node.js thread and so have a
+  // different set of env vars. We instead pass the required values to initialize the fetcher using the ExecuteOptions
+  // object from Workflow -> Activity.
+  if (opts != null) {
+    opts.token = opts?.token || process.env.AIRPLANE_TOKEN;
+    opts.apiKey = opts?.apiKey || process.env.AIRPLANE_API_KEY;
+    opts.envID = opts?.envID || process.env.AIRPLANE_ENV_ID;
+    opts.envSlug = opts?.envSlug || process.env.AIRPLANE_ENV_SLUG;
+  }
   const runID = await executeTaskActivity(slug, params, resources, opts);
 
   // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
   // being executed in the signal name, as a workflow task may execute any number of other tasks.
   type runTerminationSignal = {
-    taskID: string;
-    paramValues: typeof params;
-    status: RunStatus;
+    TaskID: string;
+    ParamValues: typeof params;
+    Status: RunStatus;
   };
   const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
 
@@ -108,9 +117,9 @@ export const durableExecute = async <Output = unknown>(
   let paramValues: typeof params = undefined;
   let status: RunStatus = RunStatus.NotStarted;
   wf.setHandler(taskSignal, (payload: runTerminationSignal) => {
-    taskID = payload.taskID;
-    paramValues = payload.paramValues;
-    status = payload.status;
+    taskID = payload.TaskID;
+    paramValues = payload.ParamValues;
+    status = payload.Status;
   });
 
   // Defer workflow execution until the task has been completed.
