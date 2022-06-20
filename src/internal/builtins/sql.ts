@@ -2,22 +2,22 @@ import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
 import { runtime } from "../runtime";
 
-export enum TransactionMode {
+export enum SQLTransactionMode {
   Auto = "auto",
   ReadOnly = "readOnly",
   ReadWrite = "readWrite",
   None = "none",
 }
 
-export type QueryOutput = Record<string, unknown[]>;
+export type SQLQueryOutput = Record<string, unknown[]>;
 
 export const query = async (
   sqlResourceID: string,
   query: string,
   queryArgs?: Record<string, unknown> | undefined | null,
-  transactionMode: TransactionMode = TransactionMode.Auto,
+  transactionMode: SQLTransactionMode = SQLTransactionMode.Auto,
   opts?: ClientOptions
-): Promise<Run<Record<string, unknown> | undefined | null, QueryOutput | undefined | null>> => {
+): Promise<Run<Record<string, unknown> | undefined | null, SQLQueryOutput | undefined | null>> => {
   return runtime.execute(
     "airplane:sql_query",
     { query, queryArgs, transactionMode },

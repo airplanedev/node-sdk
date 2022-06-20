@@ -216,12 +216,14 @@ export const aggregate = async (
   );
 };
 
+export type CountOutput = number;
+
 export const countDocuments = async (
   mongodbResourceID: string,
   collection: string,
   filter: Record<string, unknown>,
   opts?: ClientOptions
-): Promise<Run<Record<string, unknown> | undefined | null, number | undefined | null>> => {
+): Promise<Run<Record<string, unknown> | undefined | null, CountOutput | undefined | null>> => {
   return runtime.execute(
     "airplane:mongodb_countDocuments",
     { collection, filter },
@@ -230,13 +232,15 @@ export const countDocuments = async (
   );
 };
 
+export type DistinctOutput = unknown[];
+
 export const distinct = async (
   mongodbResourceID: string,
   collection: string,
   field: string,
   filter: Record<string, unknown>,
   opts?: ClientOptions
-): Promise<Run<Record<string, unknown> | undefined | null, unknown[] | undefined | null>> => {
+): Promise<Run<Record<string, unknown> | undefined | null, DistinctOutput | undefined | null>> => {
   return runtime.execute(
     "airplane:mongodb_distinct",
     { collection, field, filter },

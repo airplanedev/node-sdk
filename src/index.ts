@@ -1,10 +1,32 @@
-// Methods
-export { appendOutput, setOutput } from "./internal/output";
-export { execute } from "./internal/execute";
+import * as email from "./internal/builtins/email";
+import * as mongodb from "./internal/builtins/mongodb";
+import * as rest from "./internal/builtins/rest";
+import * as slack from "./internal/builtins/slack";
+import * as sql from "./internal/builtins/sql";
+import { execute } from "./internal/execute";
+import { appendOutput, setOutput } from "./internal/output";
 
-// Built-ins
-export * from "./internal/builtins";
+// Export the core methods so they can be directly imported:
+//
+// import { execute } from 'airplane'
+export { appendOutput, setOutput, execute };
 
-// API
+// Default export the entire airplane SDK for convenience, e.g.:
+//
+// import airplane from 'airplane'
+// airplane.execute(...)
+// airplane.email.message(...)
+export default {
+  appendOutput,
+  setOutput,
+  execute,
+  email,
+  mongodb,
+  rest,
+  slack,
+  sql,
+};
+
+// Exported types
 export type { ClientOptions } from "./internal/api/client";
 export type { RunStatus, Run } from "./internal/api/types";
