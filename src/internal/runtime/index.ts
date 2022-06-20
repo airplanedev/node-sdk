@@ -17,6 +17,7 @@ export enum RuntimeKind {
   Workflow = "workflow",
 }
 
-const env = typeof process === "undefined" ? {} : process?.env;
-export const runtime: RuntimeInterface =
-  env?.AIRPLANE_RUNTIME === RuntimeKind.Workflow ? workflowRuntime : standardRuntime;
+export const getRuntime = (): RuntimeInterface => {
+  const env = typeof process === "undefined" ? {} : process?.env;
+  return env?.AIRPLANE_RUNTIME === RuntimeKind.Workflow ? workflowRuntime : standardRuntime;
+};

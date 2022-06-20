@@ -1,6 +1,6 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
-import { runtime } from "../runtime";
+import { getRuntime } from "../runtime";
 
 export type DocumentOutput = Record<string, unknown>;
 
@@ -16,7 +16,7 @@ export const find = async (
 ): Promise<
   Run<Record<string, unknown> | undefined | null, DocumentOutput[] | undefined | null>
 > => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_find",
     { collection, filter, projection, sort, skip, limit },
     { db: mongodbResourceID },
@@ -32,7 +32,7 @@ export const findOne = async (
   sort: Record<string, unknown> | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, DocumentOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_findOne",
     { collection, filter, projection, sort },
     { db: mongodbResourceID },
@@ -48,7 +48,7 @@ export const findOneAndDelete = async (
   sort: Record<string, unknown> | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, DocumentOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_findOneAndDelete",
     { collection, filter, projection, sort },
     { db: mongodbResourceID },
@@ -65,7 +65,7 @@ export const findOneAndUpdate = async (
   sort: Record<string, unknown> | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, DocumentOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_findOneAndUpdate",
     { collection, update, filter, projection, sort },
     { db: mongodbResourceID },
@@ -83,7 +83,7 @@ export const findOneAndReplace = async (
   upsert: boolean | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, DocumentOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_findOneAndReplace",
     { collection, replacement, filter, projection, sort, upsert },
     { db: mongodbResourceID },
@@ -101,7 +101,7 @@ export const insertOne = async (
   document: Record<string, unknown>,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, InsertOneOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_insertOne",
     { collection, document },
     { db: mongodbResourceID },
@@ -121,7 +121,7 @@ export const insertMany = async (
 ): Promise<
   Run<Record<string, unknown> | undefined | null, InsertManyOutput | undefined | null>
 > => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_insertMany",
     { collection, documents },
     { db: mongodbResourceID },
@@ -144,7 +144,7 @@ export const updateOne = async (
   upsert: boolean | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, UpdateOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_updateOne",
     { collection, update, filter, upsert },
     { db: mongodbResourceID },
@@ -160,7 +160,7 @@ export const updateMany = async (
   upsert: boolean | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, UpdateOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_updateMany",
     { collection, update, filter, upsert },
     { db: mongodbResourceID },
@@ -178,7 +178,7 @@ export const deleteOne = async (
   filter: Record<string, unknown>,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, DeleteOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_deleteOne",
     { collection, filter },
     { db: mongodbResourceID },
@@ -192,7 +192,7 @@ export const deleteMany = async (
   filter: Record<string, unknown>,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, DeleteOutput | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_deleteMany",
     { collection, filter },
     { db: mongodbResourceID },
@@ -208,7 +208,7 @@ export const aggregate = async (
 ): Promise<
   Run<Record<string, unknown> | undefined | null, DocumentOutput[] | undefined | null>
 > => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_aggregate",
     { collection, pipeline },
     { db: mongodbResourceID },
@@ -222,7 +222,7 @@ export const countDocuments = async (
   filter: Record<string, unknown>,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, number | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_countDocuments",
     { collection, filter },
     { db: mongodbResourceID },
@@ -237,7 +237,7 @@ export const distinct = async (
   filter: Record<string, unknown>,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, unknown[] | undefined | null>> => {
-  return runtime.execute(
+  return getRuntime().execute(
     "airplane:mongodb_distinct",
     { collection, field, filter },
     { db: mongodbResourceID },
