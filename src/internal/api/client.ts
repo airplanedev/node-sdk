@@ -57,7 +57,7 @@ export class Client {
   }
 
   async getRun<ParamValues = unknown>(runID: string) {
-    return await this.fetcher.get<{
+    return this.fetcher.get<{
       id: string;
       status: RunStatus;
       paramValues: ParamValues;

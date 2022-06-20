@@ -17,7 +17,9 @@ export type Run<Input = unknown, Output = unknown> = {
 
 export const isStatusTerminal = (status: RunStatus): boolean => {
   switch (status) {
-    case (RunStatus.Succeeded, RunStatus.Failed, RunStatus.Cancelled):
+    case RunStatus.Succeeded:
+    case RunStatus.Failed:
+    case RunStatus.Cancelled:
       return true;
     default:
       return false;
