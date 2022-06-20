@@ -1,6 +1,6 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
-import { getRuntime } from "../runtime";
+import { runtime } from "../runtime";
 
 export enum Method {
   Get = "GET",
@@ -32,7 +32,7 @@ export const request = async (
   formData: Record<string, unknown> | undefined | null = null,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, RequestOutput | undefined | null>> => {
-  return getRuntime().execute(
+  return runtime.execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },
     { rest: restResourceID },

@@ -1,6 +1,6 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
-import { getRuntime } from "../runtime";
+import { runtime } from "../runtime";
 
 export type Contact = {
   email: string;
@@ -17,7 +17,7 @@ export const message = async (
   message = "",
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, MessageOutput>> => {
-  return getRuntime().execute(
+  return runtime.execute(
     "airplane:email_message",
     { sender, recipients, subject, message },
     { email: emailResourceID },

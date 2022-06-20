@@ -1,6 +1,6 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
-import { getRuntime } from "../runtime";
+import { runtime } from "../runtime";
 
 export enum TransactionMode {
   Auto = "auto",
@@ -18,7 +18,7 @@ export const query = async (
   transactionMode: TransactionMode = TransactionMode.Auto,
   opts?: ClientOptions
 ): Promise<Run<Record<string, unknown> | undefined | null, QueryOutput | undefined | null>> => {
-  return getRuntime().execute(
+  return runtime.execute(
     "airplane:sql_query",
     { query, queryArgs, transactionMode },
     { db: sqlResourceID },
