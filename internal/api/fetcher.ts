@@ -3,7 +3,7 @@ import withFetchRetries, { RequestInitWithRetry } from "fetch-retry";
 import type { FetchError } from "node-fetch";
 import querystring from "query-string";
 
-import { version } from "../../../package.json";
+import { version } from "../../package.json";
 
 export type FetcherOptions = {
   host: string;

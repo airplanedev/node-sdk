@@ -10,15 +10,11 @@
   "scripts": {
     "test": "jest --testTimeout 500",
     "test:watch": "jest --watch --testTimeout 500",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "rm -rf dist && mkdir dist && cp -t dist LICENSE README.md package.json && tsc -p tsconfig.build.json",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
     "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",
-    "prepare": "husky install",
     "prepublishOnly": "yarn build"
   },
-  "files": [
-    "dist"
-  ],
   "engines": {
     "node": "^14 || ^16 || ^18"
   },
@@ -62,6 +58,7 @@
   },
   "np": {
     "message": "Release v%s",
-    "preview": true
+    "preview": true,
+    "contents": "dist"
   }
 }
