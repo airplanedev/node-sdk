@@ -18,6 +18,9 @@
   "engines": {
     "node": "^14 || ^16 || ^18"
   },
+  "files": [
+    "**/*"
+  ],
   "devDependencies": {
     "@babel/core": "7.17.9",
     "@babel/plugin-transform-modules-commonjs": "7.17.9",
