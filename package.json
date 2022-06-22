@@ -12,8 +12,7 @@
     "test:watch": "jest --watch --testTimeout 500",
     "build": "rm -rf dist && mkdir dist && cp -t dist LICENSE README.md package.json && tsc -p tsconfig.build.json",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
-    "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",
-    "prepublishOnly": "yarn build"
+    "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix ."
   },
   "engines": {
     "node": "^14 || ^16 || ^18"
@@ -38,7 +37,6 @@
     "jest": "27.5.1",
     "lint-staged": "12.3.8",
     "nock": "13.2.4",
-    "np": "7.6.1",
     "prettier": "2.6.2",
     "ts-jest": "27.1.4",
     "typescript": "4.6.3"
@@ -55,10 +53,5 @@
     "query-string": "7.1.1",
     "temporalio": "0.23.2",
     "uuid": "8.3.2"
-  },
-  "np": {
-    "message": "Release v%s",
-    "preview": true,
-    "contents": "dist"
   }
 }
