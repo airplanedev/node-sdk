@@ -33,31 +33,43 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 18
-      - name: yarn publish
+      - name: Publish
         run: |
           VERSION=$(cat package.json | jq -r .version)
-          echo "Expected version: ${VERSION}"
+          echo "Version: ${VERSION}"
 
-          OUT="$(npm show airplane@${VERSION} version)"
-          echo $OUT
-          if [ ! "${OUT}" = "" ]; then
+          if [ ! "$(npm show airplane@${VERSION} version)" = "" ]; then
             echo "Version is already published. Skipping."
             exit 0
           fi
 
           TAG="latest"
+          GH_ARGS=""
           # Check if the version is a pre-release (e.g. `0.2.0-1`).
           if [[ "${VERSION}" == *"-"* ]]; then
             TAG="next"
+            GH_ARGS="--prerelease"
           fi
-          echo "Tagging with @${TAG}"
+          echo "Publishing as airplane@${TAG}"
 
+          echo "::group::Building..."
           yarn
           yarn build
+          echo "::endgroup::"
+
+          echo "::group::Publishing..."
           cd dist
-          echo "yarn publish --new-version ${VERSION} --tag=${TAG}"
-          # yarn publish --new-version ${VERSION} --tag=${TAG}
-          # todo: git tag
-          # todo: auto git release?
-          # todo: download archive and print files
+          TMP_DIR=$(mktemp -d -t publish-XXXXXXXXXX)
+          TARBALL="${TMP_DIR}/package.tgz"
+          yarn pack -f ${TARBALL}
+          tar -tf ${TARBALL} | tree --fromfile .
+
+          echo "yarn publish ${TARBALL} --new-version ${VERSION} --tag=${TAG}"
+          # TODO
+          echo "::endgroup::"
+
+          echo "::group::Creating GitHub release..."
+          echo "gh release create ${VERSION} --generate-notes ${GH_ARGS} --target $(git rev-parse HEAD)"
+          # TODO
+          echo "::endgroup::"
 
