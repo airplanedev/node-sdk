@@ -25,14 +25,10 @@ export const runtime: RuntimeInterface = {
 
       const output = await client.getRunOutput<Output>(runID);
 
-      let paramValues = run.paramValues;
-      if (run.isStdAPI) {
-        paramValues = run.stdAPIRequest.request;
-      }
       return {
         id: run.id,
         taskID: run.taskID,
-        paramValues: paramValues,
+        paramValues: run.paramValues,
         status: run.status,
         output,
       };

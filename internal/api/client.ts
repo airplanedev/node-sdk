@@ -61,10 +61,6 @@ export class Client {
       status: RunStatus;
       paramValues: ParamValues;
       taskID: string;
-      isStdAPI: boolean;
-      stdAPIRequest: {
-        request: ParamValues;
-      };
     }>("/v0/runs/get", { id: runID });
   }
 }
