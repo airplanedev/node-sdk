@@ -26,7 +26,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     concurrency: publish
-    needs: run
+    # needs: run
     if: github.ref == 'refs/heads/colin-06-22-fix_publish'
     steps:
       - uses: actions/checkout@v2
