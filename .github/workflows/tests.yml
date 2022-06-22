@@ -28,6 +28,9 @@ jobs:
     concurrency: publish
     # needs: run
     if: github.ref == 'refs/heads/colin-06-22-fix_publish'
+    env:
+      PACKAGE_NAME: airplane
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -36,8 +39,8 @@ jobs:
       - name: Publish
         run: |
           VERSION=$(cat package.json | jq -r .version)
-          if [ ! "$(npm show airplane@${VERSION} version)" = "" ]; then
-            echo "Version ${VERSION} is already published: https://www.npmjs.com/package/airplane/v/${VERSION}"
+          if [ ! "$(npm show ${PACKAGE_NAME}@${VERSION} version)" = "" ]; then
+            echo "Version ${VERSION} is already published: https://www.npmjs.com/package/${PACKAGE_NAME}/v/${VERSION}"
             exit 0
           fi
 
@@ -48,7 +51,7 @@ jobs:
             TAG="next"
             GH_ARGS="--prerelease"
           fi
-          echo "Publishing ${VERSION} as airplane@${TAG}"
+          echo "Publishing ${VERSION} as ${PACKAGE_NAME}@${TAG}"
 
           echo "::group::Building..."
           yarn
