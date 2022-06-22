@@ -13,13 +13,13 @@ export type ClientOptions = {
 export class Client {
   private readonly fetcher: Fetcher;
 
-  constructor(opts?: ClientOptions) {
+  constructor(opts: ClientOptions = {}) {
     const env = globalThis.process?.env;
-    const host = opts?.host || env?.AIRPLANE_API_HOST || "";
-    const token = opts?.token || env?.AIRPLANE_TOKEN;
-    const apiKey = opts?.apiKey || env?.AIRPLANE_API_KEY;
-    const envID = opts?.envID || env?.AIRPLANE_ENV_ID;
-    const envSlug = opts?.envSlug || env?.AIRPLANE_ENV_SLUG;
+    const host = opts.host || env?.AIRPLANE_API_HOST || "";
+    const token = opts.token || env?.AIRPLANE_TOKEN;
+    const apiKey = opts.apiKey || env?.AIRPLANE_API_KEY;
+    const envID = opts.envID || env?.AIRPLANE_ENV_ID;
+    const envSlug = opts.envSlug || env?.AIRPLANE_ENV_SLUG;
 
     this.fetcher = new Fetcher({
       host,
