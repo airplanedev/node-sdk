@@ -34,20 +34,29 @@ jobs:
         with:
           node-version: 18
       - run: |
-          VERSION=$(cat package.json | jq .version)
-          TAG_ARGS="--tag=next"
+          VERSION=$(cat package.json | jq -r .version)
+          echo "Expected version: ${VERSION}"
+
           ACTUAL_VERSION=$(npm show airplane version ${TAG_ARGS})
+          echo "Actual version: ${ACTUAL_VERSION}"
 
           if [ "$VERSION" = "$ACTUAL_VERSION" ]; then
-            echo "Version ${VERSION} is already deployed. Skipping publish."
+            echo "Skipping publish."
             exit 0
           fi
-          echo "Publishing package from ${ACTUAL_VERSION} -> ${VERSION}..."
+
+          TAG="latest"
+          # Check if the version is a pre-release (e.g. `0.2.0-1`).
+          if [ "${VERSION}" == *"-"* ]; then
+            TAG="next"
+          fi
+          echo "Tagging with @${TAG}"
 
           yarn
           yarn build
           cd dist
-          echo "yarn publish --new-version ${VERSION} ${TAG_ARGS}"
-          # yarn publish --new-version ${VERSION} ${TAG_ARGS}
-
+          echo "yarn publish --new-version ${VERSION} --tag=${TAG}"
+          # yarn publish --new-version ${VERSION} --tag=${TAG}
+          # todo: git tag
+          # todo: auto git release?
 
