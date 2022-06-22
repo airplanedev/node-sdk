@@ -15,7 +15,7 @@ export class Client {
   private readonly fetcher: Fetcher;
 
   constructor(opts?: ClientOptions) {
-    const env = typeof process === "undefined" ? {} : process?.env;
+    const env = globalThis.process?.env;
     const host = opts?.host || env?.AIRPLANE_API_HOST || "";
     const token = opts?.token || env?.AIRPLANE_TOKEN;
     const apiKey = opts?.apiKey || env?.AIRPLANE_API_KEY;

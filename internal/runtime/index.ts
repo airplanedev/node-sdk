@@ -1,7 +1,7 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
 import { runtime as standardRuntime } from "./standard";
-import { runtime as workflowRuntime } from "./standard";
+import { runtime as workflowRuntime } from "./workflow";
 
 export type RuntimeInterface = {
   execute<Output = unknown>(
@@ -17,6 +17,7 @@ export enum RuntimeKind {
   Workflow = "workflow",
 }
 
-const env = typeof process === "undefined" ? {} : process?.env;
-export const runtime =
-  env?.AIRPLANE_RUNTIME === RuntimeKind.Workflow ? workflowRuntime : standardRuntime;
+export const getRuntime = () => {
+  const kind = globalThis.process?.env.AIRPLANE_RUNTIME;
+  return kind === RuntimeKind.Workflow ? workflowRuntime : standardRuntime;
+};

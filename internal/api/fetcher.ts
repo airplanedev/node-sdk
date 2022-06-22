@@ -3,7 +3,7 @@ import withFetchRetries, { RequestInitWithRetry } from "fetch-retry";
 import type { FetchError } from "node-fetch";
 import querystring from "query-string";
 
-import { version } from "../../package.json";
+import pkg from "../../package.json";
 
 export type FetcherOptions = {
   host: string;
@@ -93,7 +93,7 @@ export class Fetcher {
     url.search = params ? querystring.stringify(params) : "";
     const headers: HeadersInit = {
       "X-Airplane-Client-Kind": "sdk/node",
-      "X-Airplane-Client-Version": version,
+      "X-Airplane-Client-Version": pkg.version,
     };
     if (this.token) {
       headers["X-Airplane-Token"] = this.token;
@@ -129,7 +129,7 @@ export class Fetcher {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
       "X-Airplane-Client-Kind": "sdk/node",
-      "X-Airplane-Client-Version": version,
+      "X-Airplane-Client-Version": pkg.version,
     };
     if (this.token) {
       headers["X-Airplane-Token"] = this.token;
