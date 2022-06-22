@@ -8,7 +8,6 @@ export type ClientOptions = {
   envID?: string;
   envSlug?: string;
   source?: string;
-  runtime?: string;
 };
 
 export class Client {
