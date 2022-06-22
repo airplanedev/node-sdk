@@ -39,7 +39,7 @@ jobs:
           echo "Version: ${VERSION}"
 
           if [ ! "$(npm show airplane@${VERSION} version)" = "" ]; then
-            echo "Version is already published. Skipping."
+            echo "Version is already published, skipping: https://www.npmjs.com/package/airplane/v/${VERSION}"
             exit 0
           fi
 
@@ -62,7 +62,8 @@ jobs:
           TMP_DIR=$(mktemp -d -t publish-XXXXXXXXXX)
           TARBALL="${TMP_DIR}/package.tgz"
           yarn pack -f ${TARBALL}
-          tar -tf ${TARBALL} | tree --fromfile .
+          tar -xf ${TARBALL} -C ${TMP_DIR}
+          tree ${TMP_DIR}/package
 
           echo "yarn publish ${TARBALL} --new-version ${VERSION} --tag=${TAG}"
           # TODO
