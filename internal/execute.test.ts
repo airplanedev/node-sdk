@@ -1,6 +1,7 @@
 import nock from "nock";
 
-import { execute, Run, RunStatus } from "./tasks";
+import { Run, RunStatus } from "./api/types";
+import { execute } from "./execute";
 
 const OLD_ENV = process.env;
 

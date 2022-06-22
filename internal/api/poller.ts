@@ -1,4 +1,4 @@
-type PollOptions = {
+type PollerOptions = {
   // milliseconds to wait between requests
   delayMs: number;
 };
@@ -8,9 +8,9 @@ type PollFunction<Output> = () => Output | null | Promise<Output | null>;
 // Poller continuously executes a function until a non-null response is returned. If `null` is returned,
 // the poller will wait a configurable delay before retrying again.
 export class Poller {
-  private opts: PollOptions;
+  private opts: PollerOptions;
 
-  constructor(opts: PollOptions) {
+  constructor(opts: PollerOptions) {
     this.opts = opts;
   }
 

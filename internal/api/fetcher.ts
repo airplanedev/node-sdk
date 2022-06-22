@@ -3,9 +3,9 @@ import withFetchRetries, { RequestInitWithRetry } from "fetch-retry";
 import type { FetchError } from "node-fetch";
 import querystring from "query-string";
 
-import { version } from "./package.json";
+import pkg from "../../package.json";
 
-export type FetchOptions = {
+export type FetcherOptions = {
   host: string;
   token?: string;
   apiKey?: string;
@@ -24,9 +24,9 @@ export class Fetcher {
   private envSlug?: string;
   private source?: string;
   private fetch: ReturnType<typeof withFetchRetries>;
-  private retryDelay: FetchOptions["retryDelay"];
+  private retryDelay: FetcherOptions["retryDelay"];
 
-  constructor(opts: FetchOptions) {
+  constructor(opts: FetcherOptions) {
     if (!opts.host) {
       throw new Error("expected an api host");
     }
@@ -45,7 +45,7 @@ export class Fetcher {
     this.envSlug = opts.envSlug;
     this.source = opts.source;
 
-    const defaultRetryDelay: FetchOptions["retryDelay"] = (attempt) => {
+    const defaultRetryDelay: FetcherOptions["retryDelay"] = (attempt) => {
       return [0, 100, 200, 400, 600, 800, 1000][attempt] ?? 1000;
     };
     this.retryDelay = opts.retryDelay ?? defaultRetryDelay;
@@ -93,7 +93,7 @@ export class Fetcher {
     url.search = params ? querystring.stringify(params) : "";
     const headers: HeadersInit = {
       "X-Airplane-Client-Kind": "sdk/node",
-      "X-Airplane-Client-Version": version,
+      "X-Airplane-Client-Version": pkg.version,
     };
     if (this.token) {
       headers["X-Airplane-Token"] = this.token;
@@ -129,7 +129,7 @@ export class Fetcher {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
       "X-Airplane-Client-Kind": "sdk/node",
-      "X-Airplane-Client-Version": version,
+      "X-Airplane-Client-Version": pkg.version,
     };
     if (this.token) {
       headers["X-Airplane-Token"] = this.token;

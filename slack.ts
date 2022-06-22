@@ -1,16 +1,7 @@
-import { Run, ExecuteOptions, executeInternal } from "./tasks";
+// Supports:
+// import { message } from 'airplane/slack'
+export * from "./internal/builtins/slack";
 
-export default {
-  message: async <Output = undefined | null>(
-    channelName: string,
-    message: string,
-    opts?: ExecuteOptions
-  ): Promise<Run<Record<string, unknown> | undefined | null, Output>> => {
-    return executeInternal(
-      "airplane:slack_message",
-      { channelName, message },
-      { slack: "res00000000zteamslack" },
-      opts
-    );
-  },
-};
+// Supports:
+// import slack from 'airplane/slack'
+export * as default from "./internal/builtins/slack";

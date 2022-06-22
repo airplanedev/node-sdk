@@ -1,30 +1,7 @@
-import { ExecuteOptions } from "./api";
-import { Run, executeInternal } from "./tasks";
+// Supports:
+// import { query, QueryOutput } from 'airplane/sql'
+export * from "./internal/builtins/sql";
 
-export enum TransactionMode {
-  Auto = "auto",
-  ReadOnly = "readOnly",
-  ReadWrite = "readWrite",
-  None = "none",
-}
-
-export type SQLRequestOutput = Record<string, unknown[]>;
-
-export default {
-  TransactionMode,
-
-  query: async <Output = SQLRequestOutput | undefined | null>(
-    sqlResourceID: string,
-    query: string,
-    queryArgs?: Record<string, unknown> | undefined | null,
-    transactionMode: TransactionMode = TransactionMode.Auto,
-    opts?: ExecuteOptions
-  ): Promise<Run<Record<string, unknown> | undefined | null, Output>> => {
-    return executeInternal(
-      "airplane:sql_query",
-      { query, queryArgs, transactionMode },
-      { db: sqlResourceID },
-      opts
-    );
-  },
-};
+// Supports:
+// import sql from 'airplane/sql'
+export * as default from "./internal/builtins/sql";
