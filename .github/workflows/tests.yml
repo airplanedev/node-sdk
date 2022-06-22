@@ -37,11 +37,10 @@ jobs:
           VERSION=$(cat package.json | jq -r .version)
           echo "Expected version: ${VERSION}"
 
-          ACTUAL_VERSION=$(npm show airplane version ${TAG_ARGS})
-          echo "Actual version: ${ACTUAL_VERSION}"
-
-          if [ "$VERSION" = "$ACTUAL_VERSION" ]; then
-            echo "Skipping publish."
+          OUT="$(npm show airplane@${VERSION} version)"
+          echo $OUT
+          if [ ! "${OUT}" = "" ]; then
+            echo "Version is already published. Skipping."
             exit 0
           fi
 
