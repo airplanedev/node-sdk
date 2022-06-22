@@ -13,7 +13,7 @@
     "build": "rm -rf dist && mkdir dist && cp -t dist LICENSE README.md package.json && tsc -p tsconfig.build.json",
     "lint": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 .",
     "lint:fix": "eslint --ext js,ts,yml,yaml,json --max-warnings=0 --fix .",
-    "release:check": "yarn build && yarn lint"
+    "prepack": "yarn build"
   },
   "engines": {
     "node": "^14 || ^16 || ^18"
@@ -59,7 +59,6 @@
   "np": {
     "message": "Release v%s",
     "preview": true,
-    "contents": "dist",
-    "testScript": "release:check"
+    "contents": "dist"
   }
 }
