@@ -1,6 +1,6 @@
 import nock from "nock";
 
-import { Fetcher, HTTPError } from "./fetch";
+import { Fetcher, HTTPError } from "./fetcher";
 
 beforeAll(() => {
   nock.disableNetConnect();

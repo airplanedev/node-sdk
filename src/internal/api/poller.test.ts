@@ -1,4 +1,4 @@
-import { Poller } from "./poll";
+import { Poller } from "./poller";
 
 test("retries multiple times", async () => {
   expect.assertions(1);
