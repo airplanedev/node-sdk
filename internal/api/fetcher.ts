@@ -34,9 +34,6 @@ export class Fetcher {
     this.token = opts.token;
     this.apiKey = opts.apiKey;
 
-    if (!this.token && !this.apiKey) {
-      throw new Error("expected an authentication method");
-    }
     if (this.token && this.apiKey) {
       throw new Error("expected a single authentication method");
     }
