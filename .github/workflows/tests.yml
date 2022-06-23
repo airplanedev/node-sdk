@@ -30,13 +30,15 @@ jobs:
     if: github.ref == 'refs/heads/colin-06-22-fix_publish'
     env:
       PACKAGE_NAME: airplane
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: 'https://registry.npmjs.org'
       - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         run: |
           VERSION=$(cat package.json | jq -r .version)
           if [ ! "$(npm show ${PACKAGE_NAME}@${VERSION} version)" = "" ]; then
