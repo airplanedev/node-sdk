@@ -23,3 +23,60 @@ jobs:
       - run: yarn
       - run: yarn lint
       - run: yarn test
+  publish:
+    runs-on: ubuntu-latest
+    concurrency: publish
+    needs: run
+    if: github.ref == 'refs/heads/main'
+    env:
+      PACKAGE_NAME: airplane
+    permissions:
+      # Grant the GITHUB_TOKEN permission to create releases.
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          # Creates an .npmrc that looks for a `NODE_AUTH_TOKEN` env var to authenticate.
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(cat package.json | jq -r .version)
+          if [ ! "$(npm show ${PACKAGE_NAME}@${VERSION} version)" = "" ]; then
+            echo "Already published ${VERSION}, skipping: https://www.npmjs.com/package/${PACKAGE_NAME}/v/${VERSION}"
+            exit 0
+          fi
+
+          TAG="latest"
+          GH_ARGS=""
+          # Check if the version is a pre-release (e.g. `0.2.0-1`).
+          if [[ "${VERSION}" == *"-"* ]]; then
+            TAG="next"
+            GH_ARGS="--prerelease"
+          fi
+          echo "Publishing ${VERSION} as ${PACKAGE_NAME}@${TAG}"
+
+          echo "::group::Building..."
+          yarn
+          yarn build
+          echo "::endgroup::"
+
+          echo "::group::Publishing..."
+          cd dist
+          TMP_DIR=$(mktemp -d -t publish-XXXXXXXXXX)
+          TARBALL="${TMP_DIR}/package.tgz"
+          yarn pack -f ${TARBALL}
+          tar -xf ${TARBALL} -C ${TMP_DIR}
+          tree ${TMP_DIR}/package
+
+          yarn publish ${TARBALL} --new-version ${VERSION} --tag=${TAG}
+          echo "::endgroup::"
+
+          echo "::group::Creating GitHub release..."
+          gh release create "v${VERSION}" --generate-notes ${GH_ARGS} --target $(git rev-parse HEAD)
+          echo "::endgroup::"
+
