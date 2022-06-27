@@ -77,6 +77,6 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::Creating GitHub release..."
-          gh release create ${VERSION} --generate-notes ${GH_ARGS} --target $(git rev-parse HEAD)
+          gh release create "v${VERSION}" --generate-notes ${GH_ARGS} --target $(git rev-parse HEAD)
           echo "::endgroup::"
 
