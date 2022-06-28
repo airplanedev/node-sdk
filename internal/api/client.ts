@@ -1,5 +1,5 @@
 import { Fetcher } from "./fetcher";
-import { RunStatus } from "./types";
+import { ParamSchema, Prompt, RunStatus } from "./types";
 
 export type ClientOptions = {
   host?: string;
@@ -47,20 +47,34 @@ export class Client {
     return runID;
   }
 
-  async getRunOutput<Output = unknown>(runID: string): Promise<Output> {
-    const { output } = await this.fetcher.get<{ output: Output }>("/v0/runs/getOutputs", {
+  async getRunOutput<O = unknown>(runID: string): Promise<O> {
+    const { output } = await this.fetcher.get<{ output: O }>("/v0/runs/getOutputs", {
       id: runID,
     });
 
     return output;
   }
 
-  async getRun<ParamValues = unknown>(runID: string) {
+  async getRun<P = unknown>(runID: string) {
     return this.fetcher.get<{
       id: string;
       status: RunStatus;
-      paramValues: ParamValues;
+      paramValues: P;
       taskID: string;
     }>("/v0/runs/get", { id: runID });
+  }
+
+  async createPrompt(params: ParamSchema[]): Promise<string> {
+    const resp = await this.fetcher.post<{
+      id: string;
+    }>("/v0/prompts/create", { schema: { parameters: params } });
+    return resp.id;
+  }
+
+  async getPrompt(id: string): Promise<Prompt> {
+    const resp = await this.fetcher.get<{
+      prompt: Prompt;
+    }>("/v0/prompts/get", { id });
+    return resp.prompt;
   }
 }
