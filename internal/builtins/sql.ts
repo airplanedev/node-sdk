@@ -1,6 +1,7 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
 import { getRuntime } from "../runtime";
+import { convertResourceAliasToID } from "./builtins";
 
 export enum TransactionMode {
   Auto = "auto",
@@ -12,7 +13,7 @@ export enum TransactionMode {
 export type QueryOutput = Record<string, unknown[]>;
 
 export const query = async (
-  sqlResourceID: string,
+  sqlResourceAlias: string,
   query: string,
   queryArgs?: Record<string, unknown> | undefined | null,
   transactionMode: TransactionMode = TransactionMode.Auto,
@@ -21,7 +22,7 @@ export const query = async (
   return getRuntime().execute(
     "airplane:sql_query",
     { query, queryArgs, transactionMode },
-    { db: sqlResourceID },
+    { db: convertResourceAliasToID(sqlResourceAlias) },
     opts
   );
 };

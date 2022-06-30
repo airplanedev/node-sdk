@@ -1,6 +1,7 @@
 import { ClientOptions } from "../api/client";
 import { Run } from "../api/types";
 import { getRuntime } from "../runtime";
+import { convertResourceAliasToID } from "./builtins";
 
 export type Contact = {
   email: string;
@@ -10,7 +11,7 @@ export type Contact = {
 export type MessageOutput = Record<string, number>;
 
 export const message = async (
-  emailResourceID: string,
+  emailResourceAlias: string,
   sender: Contact,
   recipients: Contact[] | string[],
   subject = "",
@@ -20,7 +21,7 @@ export const message = async (
   return getRuntime().execute(
     "airplane:email_message",
     { sender, recipients, subject, message },
-    { email: emailResourceID },
+    { email: convertResourceAliasToID(emailResourceAlias) },
     opts
   );
 };
