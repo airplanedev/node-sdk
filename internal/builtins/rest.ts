@@ -1,5 +1,5 @@
 import { ClientOptions } from "../api/client";
-import { Run } from "../api/types";
+import { ParamValues, Run } from "../api/types";
 import { getRuntime } from "../runtime";
 
 export enum Method {
@@ -31,7 +31,7 @@ export const request = async (
   body: Record<string, unknown> | string | undefined | null = null,
   formData: Record<string, unknown> | undefined | null = null,
   opts?: ClientOptions
-): Promise<Run<Record<string, unknown> | undefined | null, RequestOutput | undefined | null>> => {
+): Promise<Run<ParamValues, RequestOutput | undefined | null>> => {
   return getRuntime().execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },

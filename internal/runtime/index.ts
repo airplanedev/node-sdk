@@ -1,15 +1,17 @@
 import { ClientOptions } from "../api/client";
-import { Run } from "../api/types";
+import { ParamSchema, ParamValues, Run } from "../api/types";
 import { runtime as standardRuntime } from "./standard";
 import { runtime as workflowRuntime } from "./workflow";
 
 export type RuntimeInterface = {
   execute<Output = unknown>(
     slug: string,
-    params?: Record<string, unknown> | undefined | null,
+    params: ParamValues,
     resources?: Record<string, string> | undefined | null,
     opts?: ClientOptions
   ): Promise<Run<typeof params, Output>>;
+
+  prompt(params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues>;
 };
 
 export enum RuntimeKind {
