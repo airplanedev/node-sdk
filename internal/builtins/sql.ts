@@ -12,13 +12,18 @@ export enum TransactionMode {
 
 export type QueryOutput = Record<string, unknown[]>;
 
+export type Params = {
+  queryArgs?: Record<string, unknown> | undefined | null
+  transactionMode: TransactionMode
+};
+
 export const query = async (
   sqlResource: string,
   query: string,
-  queryArgs?: Record<string, unknown> | undefined | null,
-  transactionMode: TransactionMode = TransactionMode.Auto,
+  params: Params = {queryArgs: null, transactionMode: TransactionMode.Auto},
   opts?: ClientOptions
 ): Promise<Run<ParamValues, QueryOutput | undefined | null>> => {
+  const {queryArgs, transactionMode } = params
   return getRuntime().execute(
     "airplane:sql_query",
     { query, queryArgs, transactionMode },
