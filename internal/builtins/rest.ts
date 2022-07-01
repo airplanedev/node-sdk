@@ -22,17 +22,22 @@ export type RequestOutput = {
   response: Record<string, unknown> | string;
 };
 
+export type Params = {
+  headers: Record<string, unknown>;
+  urlParams: Record<string, unknown>;
+  bodyType: BodyType | undefined | null;
+  body: Record<string, unknown> | string | undefined | null;
+  formData: Record<string, unknown> | undefined | null;
+};
+
 export const request = async (
   restResource: string,
   method: Method,
   path: string,
-  headers: Record<string, unknown> = {},
-  urlParams: Record<string, unknown> = {},
-  bodyType: BodyType | undefined | null = null,
-  body: Record<string, unknown> | string | undefined | null = null,
-  formData: Record<string, unknown> | undefined | null = null,
+  params: Params = { headers: {}, urlParams: {}, bodyType: null, body: null, formData: null },
   opts?: ClientOptions
 ): Promise<Run<ParamValues, RequestOutput | undefined | null>> => {
+  const { headers, urlParams, bodyType, body, formData } = params;
   return getRuntime().execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },
