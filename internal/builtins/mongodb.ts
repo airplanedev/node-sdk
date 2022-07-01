@@ -6,7 +6,7 @@ import { convertResourceAliasToID } from "./builtins";
 export type DocumentOutput = Record<string, unknown>;
 
 export const find = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   filter: Record<string, unknown> | undefined | null = null,
   projection: Record<string, unknown> | undefined | null = null,
@@ -20,13 +20,13 @@ export const find = async (
   return getRuntime().execute(
     "airplane:mongodb_find",
     { collection, filter, projection, sort, skip, limit },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const findOne = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   filter: Record<string, unknown> | undefined | null = null,
   projection: Record<string, unknown> | undefined | null = null,
@@ -36,13 +36,13 @@ export const findOne = async (
   return getRuntime().execute(
     "airplane:mongodb_findOne",
     { collection, filter, projection, sort },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const findOneAndDelete = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   filter: Record<string, unknown> | undefined | null = null,
   projection: Record<string, unknown> | undefined | null = null,
@@ -52,13 +52,13 @@ export const findOneAndDelete = async (
   return getRuntime().execute(
     "airplane:mongodb_findOneAndDelete",
     { collection, filter, projection, sort },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const findOneAndUpdate = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
   filter: Record<string, unknown> | undefined | null = null,
@@ -69,13 +69,13 @@ export const findOneAndUpdate = async (
   return getRuntime().execute(
     "airplane:mongodb_findOneAndUpdate",
     { collection, update, filter, projection, sort },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const findOneAndReplace = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   replacement: Record<string, unknown>,
   filter: Record<string, unknown> | undefined | null = null,
@@ -87,7 +87,7 @@ export const findOneAndReplace = async (
   return getRuntime().execute(
     "airplane:mongodb_findOneAndReplace",
     { collection, replacement, filter, projection, sort, upsert },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
@@ -97,7 +97,7 @@ export type InsertOneOutput = {
 };
 
 export const insertOne = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   document: Record<string, unknown>,
   opts?: ClientOptions
@@ -105,7 +105,7 @@ export const insertOne = async (
   return getRuntime().execute(
     "airplane:mongodb_insertOne",
     { collection, document },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
@@ -115,7 +115,7 @@ export type InsertManyOutput = {
 };
 
 export const insertMany = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   documents: Record<string, unknown>[],
   opts?: ClientOptions
@@ -125,7 +125,7 @@ export const insertMany = async (
   return getRuntime().execute(
     "airplane:mongodb_insertMany",
     { collection, documents },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
@@ -138,7 +138,7 @@ export type UpdateOutput = {
 };
 
 export const updateOne = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
   filter: Record<string, unknown> | undefined | null = null,
@@ -148,13 +148,13 @@ export const updateOne = async (
   return getRuntime().execute(
     "airplane:mongodb_updateOne",
     { collection, update, filter, upsert },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const updateMany = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
   filter: Record<string, unknown> | undefined | null = null,
@@ -182,13 +182,13 @@ export const deleteOne = async (
   return getRuntime().execute(
     "airplane:mongodb_deleteOne",
     { collection, filter },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const deleteMany = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   filter: Record<string, unknown>,
   opts?: ClientOptions
@@ -196,13 +196,13 @@ export const deleteMany = async (
   return getRuntime().execute(
     "airplane:mongodb_deleteMany",
     { collection, filter },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
 
 export const aggregate = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   pipeline: Record<string, unknown>[],
   opts?: ClientOptions
@@ -212,7 +212,7 @@ export const aggregate = async (
   return getRuntime().execute(
     "airplane:mongodb_aggregate",
     { collection, pipeline },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
@@ -220,7 +220,7 @@ export const aggregate = async (
 export type CountOutput = number;
 
 export const countDocuments = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   filter: Record<string, unknown>,
   opts?: ClientOptions
@@ -228,7 +228,7 @@ export const countDocuments = async (
   return getRuntime().execute(
     "airplane:mongodb_countDocuments",
     { collection, filter },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };
@@ -236,7 +236,7 @@ export const countDocuments = async (
 export type DistinctOutput = unknown[];
 
 export const distinct = async (
-  mongodbResourceAlias: string,
+  mongodbResource: string,
   collection: string,
   field: string,
   filter: Record<string, unknown>,
@@ -245,7 +245,7 @@ export const distinct = async (
   return getRuntime().execute(
     "airplane:mongodb_distinct",
     { collection, field, filter },
-    { db: convertResourceAliasToID(mongodbResourceAlias) },
+    { db: convertResourceAliasToID(mongodbResource) },
     opts
   );
 };

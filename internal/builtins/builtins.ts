@@ -1,8 +1,8 @@
 export const convertResourceAliasToID = (alias: string) => {
   const resources = JSON.parse(process.env.AIRPLANE_RESOURCES ?? "{}");
-  const resource_version = process.env.AIRPLANE_RESOURCES_VERSION ?? null;
+  const resourceVersion = process.env.AIRPLANE_RESOURCES_VERSION ?? null;
 
-  if (!resource_version || resource_version !== "2") {
+  if (!resourceVersion || resourceVersion !== "2") {
     throw new Error("resources version unsupported");
   }
 

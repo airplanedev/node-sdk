@@ -13,7 +13,7 @@ export enum TransactionMode {
 export type QueryOutput = Record<string, unknown[]>;
 
 export const query = async (
-  sqlResourceAlias: string,
+  sqlResource: string,
   query: string,
   queryArgs?: Record<string, unknown> | undefined | null,
   transactionMode: TransactionMode = TransactionMode.Auto,
@@ -22,7 +22,7 @@ export const query = async (
   return getRuntime().execute(
     "airplane:sql_query",
     { query, queryArgs, transactionMode },
-    { db: convertResourceAliasToID(sqlResourceAlias) },
+    { db: convertResourceAliasToID(sqlResource) },
     opts
   );
 };

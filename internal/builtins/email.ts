@@ -11,7 +11,7 @@ export type Contact = {
 export type MessageOutput = Record<string, number>;
 
 export const message = async (
-  emailResourceAlias: string,
+  emailResource: string,
   sender: Contact,
   recipients: Contact[] | string[],
   subject = "",
@@ -21,7 +21,7 @@ export const message = async (
   return getRuntime().execute(
     "airplane:email_message",
     { sender, recipients, subject, message },
-    { email: convertResourceAliasToID(emailResourceAlias) },
+    { email: convertResourceAliasToID(emailResource) },
     opts
   );
 };

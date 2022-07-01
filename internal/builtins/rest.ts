@@ -23,7 +23,7 @@ export type RequestOutput = {
 };
 
 export const request = async (
-  restResourceAlias: string,
+  restResource: string,
   method: Method,
   path: string,
   headers: Record<string, unknown> = {},
@@ -36,7 +36,7 @@ export const request = async (
   return getRuntime().execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },
-    { rest: convertResourceAliasToID(restResourceAlias) },
+    { rest: convertResourceAliasToID(restResource) },
     opts
   );
 };
