@@ -160,7 +160,7 @@ export const updateMany = async (
   return getRuntime().execute(
     "airplane:mongodb_updateMany",
     { collection, update, filter, upsert },
-    { db: convertResourceAliasToID(mongodbResource) },
+    { db: convertResourceAliasToID(mongodbResourceAlias) },
     opts
   );
 };
@@ -170,7 +170,7 @@ export type DeleteOutput = {
 };
 
 export const deleteOne = async (
-  mongodbResource: string,
+  mongodbResourceAlias: string,
   collection: string,
   filter: Record<string, unknown>,
   opts?: ClientOptions
