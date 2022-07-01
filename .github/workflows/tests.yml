@@ -1,6 +1,15 @@
 name: tests
 on: push
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn
+      - run: yarn build
   run:
     name: node:${{ matrix.node-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -26,7 +35,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     concurrency: publish
-    needs: run
+    needs: [run, build]
     if: github.ref == 'refs/heads/main'
     env:
       PACKAGE_NAME: airplane
