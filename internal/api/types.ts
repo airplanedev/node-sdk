@@ -39,10 +39,15 @@ export type ParamSchema<T extends ParamType = ParamType> = {
 export type ParamConstraints<T extends ParamType = ParamType> = {
   optional?: boolean;
   regex?: string;
-  options?: Array<ParamJSTypes[T] | { label: string; value: ParamJSTypes[T] }>;
+  options?: Array<ParamJSTypes[T] | ParamLabeledOption<ParamJSTypes[T]>>;
 };
 
-type ParamJSTypes = {
+export type ParamLabeledOption<T> = {
+  label?: string;
+  value: T;
+};
+
+export type ParamJSTypes = {
   string: string;
   boolean: boolean;
   upload: string;
