@@ -1,6 +1,7 @@
 import { ClientOptions } from "../api/client";
 import { ParamValues, Run } from "../api/types";
 import { getRuntime } from "../runtime";
+import { convertResourceAliasToID } from "./builtins";
 
 export enum Method {
   Get = "GET",
@@ -22,7 +23,7 @@ export type RequestOutput = {
 };
 
 export const request = async (
-  restResourceID: string,
+  restResource: string,
   method: Method,
   path: string,
   headers: Record<string, unknown> = {},
@@ -35,7 +36,7 @@ export const request = async (
   return getRuntime().execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },
-    { rest: restResourceID },
+    { rest: convertResourceAliasToID(restResource) },
     opts
   );
 };
