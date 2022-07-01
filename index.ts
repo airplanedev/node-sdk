@@ -4,6 +4,7 @@ import * as rest from "./internal/builtins/rest";
 import * as slack from "./internal/builtins/slack";
 import * as sql from "./internal/builtins/sql";
 import { execute } from "./internal/execute";
+import * as input from "./internal/input";
 import { appendOutput, setOutput } from "./internal/output";
 
 // Export the core methods so they can be directly imported:
@@ -25,6 +26,7 @@ export default {
   rest,
   slack,
   sql,
+  input,
 };
 
 // Exported types

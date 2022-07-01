@@ -2,7 +2,7 @@ import * as wf from "@temporalio/workflow";
 import { proxyActivities } from "@temporalio/workflow";
 
 import { Client, ClientOptions } from "../api/client";
-import { isStatusTerminal, Run, RunStatus } from "../api/types";
+import { isStatusTerminal, ParamSchema, ParamValues, Run, RunStatus } from "../api/types";
 import { RuntimeInterface } from "./index";
 
 // Recommended activity factory by Temporal: https://docs.temporal.io/typescript/activities/#important-design-patterns
@@ -37,7 +37,7 @@ const { executeTaskActivity, getRunOutputActivity } = proxyActivities<
 export const runtime: RuntimeInterface = {
   execute: async <Output = unknown>(
     slug: string,
-    params?: Record<string, unknown> | undefined | null,
+    params: ParamValues = {},
     resources?: Record<string, string> | undefined | null,
     opts: ClientOptions = {}
   ): Promise<Run<typeof params, Output>> => {
@@ -60,7 +60,7 @@ export const runtime: RuntimeInterface = {
     const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
 
     let taskID = "";
-    let paramValues: typeof params = undefined;
+    let paramValues: typeof params = {};
     let status: RunStatus = RunStatus.NotStarted;
     wf.setHandler(taskSignal, (payload: runTerminationSignal) => {
       taskID = payload.TaskID;
@@ -80,5 +80,9 @@ export const runtime: RuntimeInterface = {
       status,
       output,
     };
+  },
+
+  prompt: async (params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues> => {
+    throw new Error(`Prompts are not yet supported by the workflow runtime`);
   },
 };

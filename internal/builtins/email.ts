@@ -1,5 +1,5 @@
 import { ClientOptions } from "../api/client";
-import { Run } from "../api/types";
+import { ParamValues, Run } from "../api/types";
 import { getRuntime } from "../runtime";
 import { convertResourceAliasToID } from "./builtins";
 
@@ -17,7 +17,7 @@ export const message = async (
   subject = "",
   message = "",
   opts?: ClientOptions
-): Promise<Run<Record<string, unknown> | undefined | null, MessageOutput>> => {
+): Promise<Run<ParamValues, MessageOutput>> => {
   return getRuntime().execute(
     "airplane:email_message",
     { sender, recipients, subject, message },
