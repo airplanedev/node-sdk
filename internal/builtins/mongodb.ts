@@ -173,7 +173,7 @@ export const updateMany = async (
   },
   opts?: ClientOptions
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
-  const { filter = null, upsert = null } = params|| {};
+  const { filter = null, upsert = null } = params || {};
   return getRuntime().execute(
     "airplane:mongodb_updateMany",
     { collection, update, filter, upsert },
