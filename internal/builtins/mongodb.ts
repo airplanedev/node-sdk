@@ -8,16 +8,16 @@ export type DocumentOutput = Record<string, unknown>;
 export const find = async (
   mongodbResource: string,
   collection: string,
-  params: {
+  params?: {
     filter: Record<string, unknown> | undefined | null;
     projection: Record<string, unknown> | undefined | null;
     sort: Record<string, unknown> | undefined | null;
     skip: number | undefined | null;
     limit: number | undefined | null;
-  } = { filter: null, projection: null, sort: null, skip: null, limit: null },
+  },
   opts?: ClientOptions
 ): Promise<Run<ParamValues, DocumentOutput[] | undefined | null>> => {
-  const { filter, projection, sort, skip, limit } = params;
+  const { filter = null, projection = null, sort = null, skip = null, limit = null } = params || {};
   return getRuntime().execute(
     "airplane:mongodb_find",
     { collection, filter, projection, sort, skip, limit },
@@ -35,10 +35,10 @@ export type Params = {
 export const findOne = async (
   mongodbResource: string,
   collection: string,
-  params: Params = { filter: null, projection: null, sort: null },
+  params?: Params,
   opts?: ClientOptions
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter, projection, sort } = params;
+  const { filter = null, projection = null, sort = null } = params || {};
   return getRuntime().execute(
     "airplane:mongodb_findOne",
     { collection, filter, projection, sort },
@@ -50,10 +50,10 @@ export const findOne = async (
 export const findOneAndDelete = async (
   mongodbResource: string,
   collection: string,
-  params: Params = { filter: null, projection: null, sort: null },
+  params?: Params,
   opts?: ClientOptions
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter, projection, sort } = params;
+  const { filter = null, projection = null, sort = null } = params || {};
   return getRuntime().execute(
     "airplane:mongodb_findOneAndDelete",
     { collection, filter, projection, sort },
@@ -66,10 +66,10 @@ export const findOneAndUpdate = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  params: Params = { filter: null, projection: null, sort: null },
+  params?: Params,
   opts?: ClientOptions
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter, projection, sort } = params;
+  const { filter = null, projection = null, sort = null } = params || {};
 
   return getRuntime().execute(
     "airplane:mongodb_findOneAndUpdate",
@@ -83,20 +83,16 @@ export const findOneAndReplace = async (
   mongodbResource: string,
   collection: string,
   replacement: Record<string, unknown>,
-  params: {
+  params?: {
     filter: Record<string, unknown> | undefined | null;
     projection: Record<string, unknown> | undefined | null;
     sort: Record<string, unknown> | undefined | null;
     upsert: boolean | undefined | null;
-  } = {
-    filter: null,
-    projection: null,
-    sort: null,
-    upsert: null,
   },
   opts?: ClientOptions
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter, projection, sort, upsert } = params;
+  const { filter = null, projection = null, sort = null, upsert = null } = params || {};
+
   return getRuntime().execute(
     "airplane:mongodb_findOneAndReplace",
     { collection, replacement, filter, projection, sort, upsert },
@@ -152,16 +148,13 @@ export const updateOne = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  params: {
+  params?: {
     filter: Record<string, unknown> | undefined | null;
     upsert: boolean | undefined | null;
-  } = {
-    filter: null,
-    upsert: null,
   },
   opts?: ClientOptions
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
-  const { filter, upsert } = params;
+  const { filter = null, upsert = null } = params || {};
   return getRuntime().execute(
     "airplane:mongodb_updateOne",
     { collection, update, filter, upsert },
@@ -174,16 +167,13 @@ export const updateMany = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  params: {
+  params?: {
     filter: Record<string, unknown> | undefined | null;
     upsert: boolean | undefined | null;
-  } = {
-    filter: null,
-    upsert: null,
   },
   opts?: ClientOptions
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
-  const { filter, upsert } = params;
+  const { filter = null, upsert = null } = params|| {};
   return getRuntime().execute(
     "airplane:mongodb_updateMany",
     { collection, update, filter, upsert },
