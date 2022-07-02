@@ -20,10 +20,10 @@ export type Params = {
 export const query = async (
   sqlResource: string,
   query: string,
-  params: Params = { queryArgs: null, transactionMode: TransactionMode.Auto },
+  params?: Params,
   opts?: ClientOptions
 ): Promise<Run<ParamValues, QueryOutput | undefined | null>> => {
-  const { queryArgs, transactionMode } = params;
+  const { queryArgs = null, transactionMode = TransactionMode.Auto } = params || {};
   return getRuntime().execute(
     "airplane:sql_query",
     { query, queryArgs, transactionMode },

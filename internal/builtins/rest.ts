@@ -34,10 +34,16 @@ export const request = async (
   restResource: string,
   method: Method,
   path: string,
-  params: Params = { headers: {}, urlParams: {}, bodyType: null, body: null, formData: null },
+  params?: Params,
   opts?: ClientOptions
 ): Promise<Run<ParamValues, RequestOutput | undefined | null>> => {
-  const { headers, urlParams, bodyType, body, formData } = params;
+  const {
+    headers = {},
+    urlParams = {},
+    bodyType = null,
+    body = null,
+    formData = null,
+  } = params || {};
   return getRuntime().execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },
