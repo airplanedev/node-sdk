@@ -45,7 +45,8 @@ export const runtime: RuntimeInterface = {
     resources?: Record<string, string> | undefined | null,
     opts: ClientOptions = {}
   ): Promise<Run<typeof params, Output>> => {
-    const runID = await executeTaskActivity(slug, params, resources, passthroughOptions(opts));
+    opts = passthroughOptions(opts);
+    const runID = await executeTaskActivity(slug, params, resources, opts);
 
     // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
     // being executed in the signal name, as a workflow task may execute any number of other tasks.
@@ -83,7 +84,8 @@ export const runtime: RuntimeInterface = {
   },
 
   prompt: async (params: ParamSchema[], opts: ClientOptions = {}): Promise<ParamValues> => {
-    const promptID = await createPromptActivity(params, passthroughOptions(opts));
+    opts = passthroughOptions(opts);
+    const promptID = await createPromptActivity(params, opts);
 
     // Register a signal that is fired when this prompt is submitted.
     const taskSignal = wf.defineSignal<
