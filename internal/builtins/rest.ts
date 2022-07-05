@@ -22,7 +22,7 @@ export type RequestOutput = {
   response: Record<string, unknown> | string;
 };
 
-export type InputOptions = {
+export type RequestOptions = {
   headers?: Record<string, unknown>;
   urlParams?: Record<string, unknown>;
   bodyType?: BodyType | undefined | null;
@@ -35,7 +35,7 @@ export const request = async (
   restResource: string,
   method: Method,
   path: string,
-  opts: InputOptions = {}
+  opts: RequestOptions = {}
 ): Promise<Run<ParamValues, RequestOutput | undefined | null>> => {
   const { headers = {}, urlParams = {}, bodyType, body, formData, client } = opts;
   return getRuntime().execute(

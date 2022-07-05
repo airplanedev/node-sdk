@@ -8,20 +8,25 @@ export type Contact = {
   name: string;
 };
 
+export type EmailOptions = {
+  subject?: string;
+  message?: string;
+  client?: ClientOptions;
+};
+
 export type MessageOutput = Record<string, number>;
 
 export const message = async (
   emailResource: string,
   sender: Contact,
   recipients: Contact[] | string[],
-  subject = "",
-  message = "",
-  opts?: ClientOptions
+  opts: EmailOptions = {}
 ): Promise<Run<ParamValues, MessageOutput>> => {
+  const { subject = "", message = "", client } = opts;
   return getRuntime().execute(
     "airplane:email_message",
     { sender, recipients, subject, message },
     { email: convertResourceAliasToID(emailResource) },
-    opts
+    client
   );
 };
