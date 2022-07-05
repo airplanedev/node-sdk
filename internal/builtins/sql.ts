@@ -21,9 +21,9 @@ export type QueryOptions = {
 export const query = async (
   sqlResource: string,
   query: string,
-  opts?: QueryOptions
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, QueryOutput | undefined | null>> => {
-  const { args, transactionMode = TransactionMode.Auto, client } = opts || {};
+  const { args, transactionMode = TransactionMode.Auto, client } = opts;
   return getRuntime().execute(
     "airplane:sql_query",
     { query, args, transactionMode },
