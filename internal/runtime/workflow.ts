@@ -88,7 +88,7 @@ export const runtime: RuntimeInterface = {
     const promptID = await createPromptActivity(params, opts);
 
     // Register a signal that is fired when this prompt is submitted.
-    const taskSignal = wf.defineSignal<
+    const signal = wf.defineSignal<
       [
         {
           Values: ParamValues;
@@ -98,7 +98,7 @@ export const runtime: RuntimeInterface = {
 
     let done = false;
     let values: ParamValues = {};
-    wf.setHandler(taskSignal, (payload) => {
+    wf.setHandler(signal, (payload) => {
       values = payload.Values;
       done = true;
     });
