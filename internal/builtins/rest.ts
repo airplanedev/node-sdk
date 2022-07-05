@@ -28,23 +28,16 @@ export type InputOptions = {
   bodyType?: BodyType | undefined | null;
   body?: Record<string, unknown> | string | undefined | null;
   formData?: Record<string, unknown> | undefined | null;
-  client?: ClientOptions
+  client?: ClientOptions;
 };
 
 export const request = async (
   restResource: string,
   method: Method,
   path: string,
-  opts: InputOptions = {},
+  opts: InputOptions = {}
 ): Promise<Run<ParamValues, RequestOutput | undefined | null>> => {
-  const {
-    headers = {},
-    urlParams = {},
-    bodyType,
-    body,
-    formData,
-    client
-  } = opts;
+  const { headers = {}, urlParams = {}, bodyType, body, formData, client } = opts;
   return getRuntime().execute(
     "airplane:rest_request",
     { method, path, headers, urlParams, bodyType, body, formData },
