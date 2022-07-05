@@ -26,9 +26,13 @@ export const createActivities = () => ({
     const client = new Client(opts);
     return client.getRunOutput(runID);
   },
+  createPromptActivity: async (params: ParamSchema[], opts?: ClientOptions): Promise<string> => {
+    const client = new Client(opts);
+    return client.createPrompt(params);
+  },
 });
 
-const { executeTaskActivity, getRunOutputActivity } = proxyActivities<
+const { executeTaskActivity, getRunOutputActivity, createPromptActivity } = proxyActivities<
   ReturnType<typeof createActivities>
 >({
   startToCloseTimeout: "120s",
@@ -41,28 +45,25 @@ export const runtime: RuntimeInterface = {
     resources?: Record<string, string> | undefined | null,
     opts: ClientOptions = {}
   ): Promise<Run<typeof params, Output>> => {
-    // While we monkey-patch env vars into the workflow's global, activities run in the main Node.js thread and so have a
-    // different set of env vars. We instead pass the required values to initialize the fetcher using the ExecuteOptions
-    // object from Workflow -> Activity.
-    opts.token = opts.token || process.env.AIRPLANE_TOKEN;
-    opts.apiKey = opts.apiKey || process.env.AIRPLANE_API_KEY;
-    opts.envID = opts.envID || process.env.AIRPLANE_ENV_ID;
-    opts.envSlug = opts.envSlug || process.env.AIRPLANE_ENV_SLUG;
+    opts = passthroughOptions(opts);
     const runID = await executeTaskActivity(slug, params, resources, opts);
 
     // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
     // being executed in the signal name, as a workflow task may execute any number of other tasks.
-    type runTerminationSignal = {
-      TaskID: string;
-      ParamValues: typeof params;
-      Status: RunStatus;
-    };
-    const taskSignal = wf.defineSignal<[runTerminationSignal]>(`${runID}-termination`);
+    const taskSignal = wf.defineSignal<
+      [
+        {
+          TaskID: string;
+          ParamValues: typeof params;
+          Status: RunStatus;
+        }
+      ]
+    >(`${runID}-termination`);
 
     let taskID = "";
     let paramValues: typeof params = {};
     let status: RunStatus = RunStatus.NotStarted;
-    wf.setHandler(taskSignal, (payload: runTerminationSignal) => {
+    wf.setHandler(taskSignal, (payload) => {
       taskID = payload.TaskID;
       paramValues = payload.ParamValues;
       status = payload.Status;
@@ -82,7 +83,46 @@ export const runtime: RuntimeInterface = {
     };
   },
 
-  prompt: async (params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues> => {
-    throw new Error(`Prompts are not yet supported by the workflow runtime`);
+  prompt: async (params: ParamSchema[], opts: ClientOptions = {}): Promise<ParamValues> => {
+    opts = passthroughOptions(opts);
+    const promptID = await createPromptActivity(params, opts);
+
+    // Register a signal that is fired when this prompt is submitted.
+    const signal = wf.defineSignal<
+      [
+        {
+          Values: ParamValues;
+        }
+      ]
+    >(`${promptID}-submitted`);
+
+    let done = false;
+    let values: ParamValues = {};
+    wf.setHandler(signal, (payload) => {
+      values = payload.Values;
+      done = true;
+    });
+
+    // Defer execution until the signal fires.
+    await wf.condition(() => done);
+
+    return values;
   },
+};
+
+const passthroughOptions = (opts: ClientOptions): ClientOptions => {
+  // Activities do not (currently) have access to run environment variables. This is because
+  // environment variables are passed as workflow arg that is monkey-patched into
+  // `process.env` from the workflow shim. For the environment variables that need to be
+  // accessed from activities, pass them through as options.
+  //
+  // The primary exception is the API host. This _is_ set within activities since it is
+  // specific to the agent/worker.
+  return {
+    ...opts,
+    token: opts.token || process.env.AIRPLANE_TOKEN,
+    apiKey: opts.apiKey || process.env.AIRPLANE_API_KEY,
+    envID: opts.envID || process.env.AIRPLANE_ENV_ID,
+    envSlug: opts.envSlug || process.env.AIRPLANE_ENV_SLUG,
+  };
 };
