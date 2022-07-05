@@ -8,57 +8,56 @@ export type DocumentOutput = Record<string, unknown>;
 export const find = async (
   mongodbResource: string,
   collection: string,
-  params?: {
-    filter: Record<string, unknown> | undefined | null;
-    projection: Record<string, unknown> | undefined | null;
-    sort: Record<string, unknown> | undefined | null;
-    skip: number | undefined | null;
-    limit: number | undefined | null;
-  },
-  opts?: ClientOptions
+  opts: {
+    filter?: Record<string, unknown> | undefined | null;
+    projection?: Record<string, unknown> | undefined | null;
+    sort?: Record<string, unknown> | undefined | null;
+    skip?: number | undefined | null;
+    limit?: number | undefined | null;
+    client?: ClientOptions;
+  } = {}
 ): Promise<Run<ParamValues, DocumentOutput[] | undefined | null>> => {
-  const { filter = null, projection = null, sort = null, skip = null, limit = null } = params || {};
+  const { filter, projection, sort, skip, limit, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_find",
     { collection, filter, projection, sort, skip, limit },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
-export type Params = {
-  filter: Record<string, unknown> | undefined | null;
-  projection: Record<string, unknown> | undefined | null;
-  sort: Record<string, unknown> | undefined | null;
+export type InputOptions = {
+  filter?: Record<string, unknown> | undefined | null;
+  projection?: Record<string, unknown> | undefined | null;
+  sort?: Record<string, unknown> | undefined | null;
+  client?: ClientOptions;
 };
 
 export const findOne = async (
   mongodbResource: string,
   collection: string,
-  params?: Params,
-  opts?: ClientOptions
+  opts: InputOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter = null, projection = null, sort = null } = params || {};
+  const { filter, projection, sort, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_findOne",
     { collection, filter, projection, sort },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
 export const findOneAndDelete = async (
   mongodbResource: string,
   collection: string,
-  params?: Params,
-  opts?: ClientOptions
+  opts: InputOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter = null, projection = null, sort = null } = params || {};
+  const { filter, projection, sort, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_findOneAndDelete",
     { collection, filter, projection, sort },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -66,16 +65,15 @@ export const findOneAndUpdate = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  params?: Params,
-  opts?: ClientOptions
+  opts: InputOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter = null, projection = null, sort = null } = params || {};
+  const { filter, projection, sort, client } = opts;
 
   return getRuntime().execute(
     "airplane:mongodb_findOneAndUpdate",
     { collection, update, filter, projection, sort },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -83,21 +81,21 @@ export const findOneAndReplace = async (
   mongodbResource: string,
   collection: string,
   replacement: Record<string, unknown>,
-  params?: {
-    filter: Record<string, unknown> | undefined | null;
-    projection: Record<string, unknown> | undefined | null;
-    sort: Record<string, unknown> | undefined | null;
-    upsert: boolean | undefined | null;
-  },
-  opts?: ClientOptions
+  opts: {
+    filter?: Record<string, unknown> | undefined | null;
+    projection?: Record<string, unknown> | undefined | null;
+    sort?: Record<string, unknown> | undefined | null;
+    upsert?: boolean | undefined | null;
+    client?: ClientOptions;
+  } = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
-  const { filter = null, projection = null, sort = null, upsert = null } = params || {};
+  const { filter, projection, sort, upsert, client } = opts;
 
   return getRuntime().execute(
     "airplane:mongodb_findOneAndReplace",
     { collection, replacement, filter, projection, sort, upsert },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -148,18 +146,18 @@ export const updateOne = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  params?: {
-    filter: Record<string, unknown> | undefined | null;
-    upsert: boolean | undefined | null;
-  },
-  opts?: ClientOptions
+  opts: {
+    filter?: Record<string, unknown> | undefined | null;
+    upsert?: boolean | undefined | null;
+    client?: ClientOptions;
+  } = {}
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
-  const { filter = null, upsert = null } = params || {};
+  const { filter, upsert, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_updateOne",
     { collection, update, filter, upsert },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -167,18 +165,18 @@ export const updateMany = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  params?: {
-    filter: Record<string, unknown> | undefined | null;
-    upsert: boolean | undefined | null;
-  },
-  opts?: ClientOptions
+  opts: {
+    filter?: Record<string, unknown> | undefined | null;
+    upsert?: boolean | undefined | null;
+    client?: ClientOptions;
+  } = {}
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
-  const { filter = null, upsert = null } = params || {};
+  const { filter, upsert, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_updateMany",
     { collection, update, filter, upsert },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
