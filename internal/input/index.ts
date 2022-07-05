@@ -9,6 +9,12 @@ export const text = async (name: string, opts: InputOptions<string> = {}): Promi
   return values[param.slug] as string;
 };
 
+export const text2 = async (name: string, opts: InputOptions<string> = {}): Promise<string> => {
+  const param = optionsToSchema(name, "string", opts);
+  const values = await getRuntime().prompt([param], opts.client);
+  return values[param.slug] as string;
+};
+
 export const longText = async (name: string, opts: InputOptions<string> = {}): Promise<string> => {
   const param = optionsToSchema(name, "string", opts);
   param.component = "textarea";
