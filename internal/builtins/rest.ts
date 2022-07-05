@@ -25,7 +25,7 @@ export type RequestOutput = {
 export type RequestOptions = {
   headers?: Record<string, unknown> | null;
   urlParams?: Record<string, unknown> | null;
-  bodyType?: BodyType | undefined | null;
+  bodyType?: BodyType | null;
   body?: Record<string, unknown> | string | null;
   formData?: Record<string, unknown> | null;
   client?: ClientOptions;

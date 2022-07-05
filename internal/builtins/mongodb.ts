@@ -5,28 +5,7 @@ import { convertResourceAliasToID } from "./builtins";
 
 export type DocumentOutput = Record<string, unknown>;
 
-export const find = async (
-  mongodbResource: string,
-  collection: string,
-  opts: {
-    filter?: Record<string, unknown> | null;
-    projection?: Record<string, unknown> | null;
-    sort?: Record<string, unknown> | null;
-    skip?: number | null;
-    limit?: number | null;
-    client?: ClientOptions;
-  } = {}
-): Promise<Run<ParamValues, DocumentOutput[] | undefined | null>> => {
-  const { filter, projection, sort, skip, limit, client } = opts;
-  return getRuntime().execute(
-    "airplane:mongodb_find",
-    { collection, filter, projection, sort, skip, limit },
-    { db: convertResourceAliasToID(mongodbResource) },
-    client
-  );
-};
-
-export type FindOptions = {
+export type QueryOptions = {
   filter?: Record<string, unknown> | null;
   projection?: Record<string, unknown> | null;
   sort?: Record<string, unknown> | null;
@@ -39,10 +18,27 @@ export type UpdateOptions = {
   client?: ClientOptions;
 };
 
+export const find = async (
+  mongodbResource: string,
+  collection: string,
+  opts: QueryOptions & {
+    skip?: number | null;
+    limit?: number | null;
+  } = {}
+): Promise<Run<ParamValues, DocumentOutput[] | undefined | null>> => {
+  const { filter, projection, sort, skip, limit, client } = opts;
+  return getRuntime().execute(
+    "airplane:mongodb_find",
+    { collection, filter, projection, sort, skip, limit },
+    { db: convertResourceAliasToID(mongodbResource) },
+    client
+  );
+};
+
 export const findOne = async (
   mongodbResource: string,
   collection: string,
-  opts: FindOptions = {}
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
   const { filter, projection, sort, client } = opts;
   return getRuntime().execute(
@@ -56,7 +52,7 @@ export const findOne = async (
 export const findOneAndDelete = async (
   mongodbResource: string,
   collection: string,
-  opts: FindOptions = {}
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
   const { filter, projection, sort, client } = opts;
   return getRuntime().execute(
@@ -71,7 +67,7 @@ export const findOneAndUpdate = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  opts: FindOptions = {}
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
   const { filter, projection, sort, client } = opts;
 
@@ -87,9 +83,7 @@ export const findOneAndReplace = async (
   mongodbResource: string,
   collection: string,
   replacement: Record<string, unknown>,
-  opts: FindOptions & {
-    upsert?: boolean | null;
-  } = {}
+  opts: QueryOptions & UpdateOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
   const { filter, projection, sort, upsert, client } = opts;
 

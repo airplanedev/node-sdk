@@ -22,10 +22,10 @@ export const message = async (
   recipients: Contact[] | string[],
   opts: EmailOptions = {}
 ): Promise<Run<ParamValues, MessageOutput>> => {
-  const { subject = "", message = "", client } = opts;
+  const { subject, message, client } = opts;
   return getRuntime().execute(
     "airplane:email_message",
-    { sender, recipients, subject, message },
+    { sender, recipients, subject: subject ?? "", message: message ?? "" },
     { email: convertResourceAliasToID(emailResource) },
     client
   );

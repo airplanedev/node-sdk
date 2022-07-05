@@ -14,7 +14,7 @@ export type QueryOutput = Record<string, unknown[]>;
 
 export type QueryOptions = {
   args?: Record<string, unknown> | null;
-  transactionMode?: TransactionMode;
+  transactionMode?: TransactionMode | null;
   client?: ClientOptions;
 };
 
