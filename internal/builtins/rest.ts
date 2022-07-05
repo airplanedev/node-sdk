@@ -26,8 +26,8 @@ export type RequestOptions = {
   headers?: Record<string, unknown>;
   urlParams?: Record<string, unknown>;
   bodyType?: BodyType | undefined | null;
-  body?: Record<string, unknown> | string | undefined | null;
-  formData?: Record<string, unknown> | undefined | null;
+  body?: Record<string, unknown> | string | null;
+  formData?: Record<string, unknown> | null;
   client?: ClientOptions;
 };
 

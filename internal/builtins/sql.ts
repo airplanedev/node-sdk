@@ -13,7 +13,7 @@ export enum TransactionMode {
 export type QueryOutput = Record<string, unknown[]>;
 
 export type QueryOptions = {
-  args?: Record<string, unknown> | undefined | null;
+  args?: Record<string, unknown> | null;
   transactionMode?: TransactionMode;
   client?: ClientOptions;
 };
