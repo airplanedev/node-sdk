@@ -103,13 +103,14 @@ export const insertOne = async (
   mongodbResource: string,
   collection: string,
   document: Record<string, unknown>,
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, InsertOneOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_insertOne",
     { collection, document },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
