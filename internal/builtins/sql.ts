@@ -12,17 +12,22 @@ export enum TransactionMode {
 
 export type QueryOutput = Record<string, unknown[]>;
 
+export type QueryOptions = {
+  args?: Record<string, unknown> | null;
+  transactionMode?: TransactionMode | null;
+  client?: ClientOptions;
+};
+
 export const query = async (
   sqlResource: string,
   query: string,
-  queryArgs?: Record<string, unknown> | undefined | null,
-  transactionMode: TransactionMode = TransactionMode.Auto,
-  opts?: ClientOptions
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, QueryOutput | undefined | null>> => {
+  const { args, transactionMode, client } = opts;
   return getRuntime().execute(
     "airplane:sql_query",
-    { query, queryArgs, transactionMode },
+    { query, args, transactionMode: transactionMode ?? TransactionMode.Auto },
     { db: convertResourceAliasToID(sqlResource) },
-    opts
+    client
   );
 };

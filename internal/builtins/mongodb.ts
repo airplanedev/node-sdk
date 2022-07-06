@@ -5,53 +5,61 @@ import { convertResourceAliasToID } from "./builtins";
 
 export type DocumentOutput = Record<string, unknown>;
 
+export type QueryOptions = {
+  filter?: Record<string, unknown> | null;
+  projection?: Record<string, unknown> | null;
+  sort?: Record<string, unknown> | null;
+  client?: ClientOptions;
+};
+
+export type UpdateOptions = {
+  filter?: Record<string, unknown> | null;
+  upsert?: boolean | null;
+  client?: ClientOptions;
+};
+
 export const find = async (
   mongodbResource: string,
   collection: string,
-  filter: Record<string, unknown> | undefined | null = null,
-  projection: Record<string, unknown> | undefined | null = null,
-  sort: Record<string, unknown> | undefined | null = null,
-  skip: number | undefined | null = null,
-  limit: number | undefined | null = null,
-  opts?: ClientOptions
+  opts: QueryOptions & {
+    skip?: number | null;
+    limit?: number | null;
+  } = {}
 ): Promise<Run<ParamValues, DocumentOutput[] | undefined | null>> => {
+  const { filter, projection, sort, skip, limit, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_find",
     { collection, filter, projection, sort, skip, limit },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
 export const findOne = async (
   mongodbResource: string,
   collection: string,
-  filter: Record<string, unknown> | undefined | null = null,
-  projection: Record<string, unknown> | undefined | null = null,
-  sort: Record<string, unknown> | undefined | null = null,
-  opts?: ClientOptions
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
+  const { filter, projection, sort, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_findOne",
     { collection, filter, projection, sort },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
 export const findOneAndDelete = async (
   mongodbResource: string,
   collection: string,
-  filter: Record<string, unknown> | undefined | null = null,
-  projection: Record<string, unknown> | undefined | null = null,
-  sort: Record<string, unknown> | undefined | null = null,
-  opts?: ClientOptions
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
+  const { filter, projection, sort, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_findOneAndDelete",
     { collection, filter, projection, sort },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -59,16 +67,15 @@ export const findOneAndUpdate = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  filter: Record<string, unknown> | undefined | null = null,
-  projection: Record<string, unknown> | undefined | null = null,
-  sort: Record<string, unknown> | undefined | null = null,
-  opts?: ClientOptions
+  opts: QueryOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
+  const { filter, projection, sort, client } = opts;
+
   return getRuntime().execute(
     "airplane:mongodb_findOneAndUpdate",
     { collection, update, filter, projection, sort },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -76,17 +83,15 @@ export const findOneAndReplace = async (
   mongodbResource: string,
   collection: string,
   replacement: Record<string, unknown>,
-  filter: Record<string, unknown> | undefined | null = null,
-  projection: Record<string, unknown> | undefined | null = null,
-  sort: Record<string, unknown> | undefined | null = null,
-  upsert: boolean | undefined | null = null,
-  opts?: ClientOptions
+  opts: QueryOptions & UpdateOptions = {}
 ): Promise<Run<ParamValues, DocumentOutput | undefined | null>> => {
+  const { filter, projection, sort, upsert, client } = opts;
+
   return getRuntime().execute(
     "airplane:mongodb_findOneAndReplace",
     { collection, replacement, filter, projection, sort, upsert },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -98,13 +103,14 @@ export const insertOne = async (
   mongodbResource: string,
   collection: string,
   document: Record<string, unknown>,
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, InsertOneOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_insertOne",
     { collection, document },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -116,13 +122,14 @@ export const insertMany = async (
   mongodbResource: string,
   collection: string,
   documents: Record<string, unknown>[],
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, InsertManyOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_insertMany",
     { collection, documents },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -137,15 +144,14 @@ export const updateOne = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  filter: Record<string, unknown> | undefined | null = null,
-  upsert: boolean | undefined | null = null,
-  opts?: ClientOptions
+  opts: UpdateOptions = {}
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
+  const { filter, upsert, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_updateOne",
     { collection, update, filter, upsert },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -153,15 +159,14 @@ export const updateMany = async (
   mongodbResource: string,
   collection: string,
   update: Record<string, unknown>,
-  filter: Record<string, unknown> | undefined | null = null,
-  upsert: boolean | undefined | null = null,
-  opts?: ClientOptions
+  opts: UpdateOptions = {}
 ): Promise<Run<ParamValues, UpdateOutput | undefined | null>> => {
+  const { filter, upsert, client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_updateMany",
     { collection, update, filter, upsert },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -173,13 +178,14 @@ export const deleteOne = async (
   mongodbResource: string,
   collection: string,
   filter: Record<string, unknown>,
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, DeleteOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_deleteOne",
     { collection, filter },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -187,13 +193,14 @@ export const deleteMany = async (
   mongodbResource: string,
   collection: string,
   filter: Record<string, unknown>,
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, DeleteOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_deleteMany",
     { collection, filter },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -201,13 +208,14 @@ export const aggregate = async (
   mongodbResource: string,
   collection: string,
   pipeline: Record<string, unknown>[],
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, DocumentOutput[] | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_aggregate",
     { collection, pipeline },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -217,13 +225,14 @@ export const countDocuments = async (
   mongodbResource: string,
   collection: string,
   filter: Record<string, unknown>,
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, CountOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_countDocuments",
     { collection, filter },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
 
@@ -234,12 +243,13 @@ export const distinct = async (
   collection: string,
   field: string,
   filter: Record<string, unknown>,
-  opts?: ClientOptions
+  opts: { client?: ClientOptions } = {}
 ): Promise<Run<ParamValues, DistinctOutput | undefined | null>> => {
+  const { client } = opts;
   return getRuntime().execute(
     "airplane:mongodb_distinct",
     { collection, field, filter },
     { db: convertResourceAliasToID(mongodbResource) },
-    opts
+    client
   );
 };
