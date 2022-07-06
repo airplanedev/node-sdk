@@ -62,7 +62,7 @@ export const runtime: RuntimeInterface = {
     } else {
       const chunkKey = uuidv4();
       for (let i = 0; i < output.length; i += CHUNK_SIZE) {
-        console.log(`airplane_chunk:${chunkKey} ${output.substring(i, CHUNK_SIZE)}`);
+        console.log(`airplane_chunk:${chunkKey} ${output.substring(i, i + CHUNK_SIZE)}`);
       }
       console.log(`airplane_chunk_end:${chunkKey}`);
     }

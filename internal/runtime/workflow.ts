@@ -117,7 +117,7 @@ export const runtime: RuntimeInterface = {
     } else {
       const chunkKey = wf.uuid4();
       for (let i = 0; i < output.length; i += CHUNK_SIZE) {
-        logger.info(`airplane_chunk:${chunkKey} ${output.substr(i, CHUNK_SIZE)}`);
+        logger.info(`airplane_chunk:${chunkKey} ${output.substring(i, i + CHUNK_SIZE)}`);
       }
       logger.info(`airplane_chunk_end:${chunkKey}`);
     }
