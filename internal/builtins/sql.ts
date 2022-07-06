@@ -23,10 +23,10 @@ export const query = async (
   query: string,
   opts: QueryOptions = {}
 ): Promise<Run<ParamValues, QueryOutput | undefined | null>> => {
-  const { args, transactionMode = TransactionMode.Auto, client } = opts;
+  const { args, transactionMode, client } = opts;
   return getRuntime().execute(
     "airplane:sql_query",
-    { query, args, transactionMode },
+    { query, args, transactionMode: transactionMode ?? TransactionMode.Auto },
     { db: convertResourceAliasToID(sqlResource) },
     client
   );
