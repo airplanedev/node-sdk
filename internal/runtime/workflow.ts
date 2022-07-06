@@ -1,5 +1,6 @@
 import * as wf from "@temporalio/workflow";
-import { proxyActivities } from "@temporalio/workflow";
+import { proxyActivities, proxySinks } from "@temporalio/workflow";
+const { logger } = proxySinks();
 
 import { Client, ClientOptions } from "../api/client";
 import { isStatusTerminal, ParamSchema, ParamValues, Run, RunStatus } from "../api/types";
@@ -107,6 +108,19 @@ export const runtime: RuntimeInterface = {
     await wf.condition(() => done);
 
     return values;
+  },
+
+  logChunks: (output: string): void => {
+    const CHUNK_SIZE = 8192;
+    if (output.length <= CHUNK_SIZE) {
+      logger.info(output);
+    } else {
+      const chunkKey = wf.uuid4();
+      for (let i = 0; i < output.length; i += CHUNK_SIZE) {
+        logger.info(`airplane_chunk:${chunkKey} ${output.substring(i, i + CHUNK_SIZE)}`);
+      }
+      logger.info(`airplane_chunk_end:${chunkKey}`);
+    }
   },
 };
 
