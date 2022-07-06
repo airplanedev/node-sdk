@@ -1,6 +1,6 @@
 import { ClientOptions } from "./api/client";
 import { ParamValues, Run, RunStatus } from "./api/types";
-import { RunError } from "./errors";
+import { RunTerminationError } from "./errors";
 import { getRuntime } from "./runtime";
 
 export const execute = async <Output = unknown>(
@@ -11,7 +11,7 @@ export const execute = async <Output = unknown>(
   const run = await getRuntime().execute<Output>(slug, params, {}, opts);
 
   if (run.status === RunStatus.Failed || run.status === RunStatus.Cancelled) {
-    throw new RunError(run);
+    throw new RunTerminationError(run);
   }
 
   return run;
