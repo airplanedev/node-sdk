@@ -12,6 +12,8 @@ export type RuntimeInterface = {
   ): Promise<Run<typeof params, Output>>;
 
   prompt(params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues>;
+
+  logChunks(output: string): void;
 };
 
 export enum RuntimeKind {

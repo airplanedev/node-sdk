@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { getRuntime } from "./runtime";
 
 /**
  * This sets the Airplane output (`value`). If a path is provided, it sets the
@@ -31,7 +31,7 @@ export const setOutput = (value: unknown, ...path: (string | number)[]) => {
   const output = value === undefined ? null : JSON.stringify(value);
   const jsPath = toJSPath(path);
   const maybePath = jsPath ? `:${jsPath}` : "";
-  logChunks(`airplane_output_set${maybePath} ${output}`);
+  getRuntime().logChunks(`airplane_output_set${maybePath} ${output}`);
 };
 
 /**
@@ -63,20 +63,7 @@ export const appendOutput = (value: unknown, ...path: (string | number)[]) => {
   const output = value === undefined ? null : JSON.stringify(value);
   const jsPath = toJSPath(path);
   const maybePath = jsPath ? `:${jsPath}` : "";
-  logChunks(`airplane_output_append${maybePath} ${output}`);
-};
-
-const logChunks = (output: string) => {
-  const CHUNK_SIZE = 8192;
-  if (output.length <= CHUNK_SIZE) {
-    console.log(output);
-  } else {
-    const chunkKey = uuidv4();
-    for (let i = 0; i < output.length; i += CHUNK_SIZE) {
-      console.log(`airplane_chunk:${chunkKey} ${output.substr(i, CHUNK_SIZE)}`);
-    }
-    console.log(`airplane_chunk_end:${chunkKey}`);
-  }
+  getRuntime().logChunks(`airplane_output_append${maybePath} ${output}`);
 };
 
 const toJSPath = (path: (string | number)[]) => {
