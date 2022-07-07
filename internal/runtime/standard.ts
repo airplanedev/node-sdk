@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 import { Client, ClientOptions } from "../api/client";
 import { Poller } from "../api/poller";
 import { isStatusTerminal, ParamSchema, ParamValues, Run } from "../api/types";
@@ -51,5 +53,18 @@ export const runtime: RuntimeInterface = {
 
       return prompt.values;
     });
+  },
+
+  logChunks: (output: string): void => {
+    const CHUNK_SIZE = 8192;
+    if (output.length <= CHUNK_SIZE) {
+      console.log(output);
+    } else {
+      const chunkKey = uuidv4();
+      for (let i = 0; i < output.length; i += CHUNK_SIZE) {
+        console.log(`airplane_chunk:${chunkKey} ${output.substring(i, i + CHUNK_SIZE)}`);
+      }
+      console.log(`airplane_chunk_end:${chunkKey}`);
+    }
   },
 };

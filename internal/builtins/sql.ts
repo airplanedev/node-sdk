@@ -26,7 +26,7 @@ export const query = async (
   const { args, transactionMode, client } = opts;
   return getRuntime().execute(
     "airplane:sql_query",
-    { query, args, transactionMode: transactionMode ?? TransactionMode.Auto },
+    { query, queryArgs: args, transactionMode: transactionMode ?? TransactionMode.Auto },
     { db: convertResourceAliasToID(sqlResource) },
     client
   );
