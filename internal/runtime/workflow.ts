@@ -51,12 +51,12 @@ export const runtime: RuntimeInterface = {
 
     // Register termination signal for the workflow. We ensure signal name uniqueness by including the run ID of the task
     // being executed in the signal name, as a workflow task may execute any number of other tasks.
-    const taskSignal = wf.defineSignal<
+    const signal = wf.defineSignal<
       [
         {
-          TaskID: string;
-          ParamValues: typeof params;
-          Status: RunStatus;
+          taskID: string;
+          paramValues: typeof params;
+          status: RunStatus;
         }
       ]
     >(`${runID}-termination`);
@@ -64,10 +64,10 @@ export const runtime: RuntimeInterface = {
     let taskID = "";
     let paramValues: typeof params = {};
     let status: RunStatus = RunStatus.NotStarted;
-    wf.setHandler(taskSignal, (payload) => {
-      taskID = payload.TaskID;
-      paramValues = payload.ParamValues;
-      status = payload.Status;
+    wf.setHandler(signal, (payload) => {
+      taskID = payload.taskID;
+      paramValues = payload.paramValues;
+      status = payload.status;
     });
 
     // Defer workflow execution until the task has been completed.
@@ -92,7 +92,7 @@ export const runtime: RuntimeInterface = {
     const signal = wf.defineSignal<
       [
         {
-          Values: ParamValues;
+          values: ParamValues;
         }
       ]
     >(`${promptID}-submitted`);
@@ -100,7 +100,7 @@ export const runtime: RuntimeInterface = {
     let done = false;
     let values: ParamValues = {};
     wf.setHandler(signal, (payload) => {
-      values = payload.Values;
+      values = payload.values;
       done = true;
     });
 
