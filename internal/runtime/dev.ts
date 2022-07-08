@@ -1,9 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
-
 import { Client, ClientOptions } from "../api/client";
-import { Poller } from "../api/poller";
 import { ParamSchema, ParamValues, Run } from "../api/types";
 import { RuntimeInterface } from "./index";
+import { runtime as standardRuntime } from "./standard";
 
 export const runtime: RuntimeInterface = {
   execute: async <Output = unknown>(
@@ -28,33 +26,10 @@ export const runtime: RuntimeInterface = {
   },
 
   prompt: async (params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues> => {
-    const client = new Client(opts);
-
-    const id = await client.createPrompt(params);
-
-    // Poll until the prompt is submitted:
-    const poller = new Poller({ delayMs: 500 });
-    return poller.run(async () => {
-      const prompt = await client.getPrompt(id);
-
-      if (prompt.submittedAt == null) {
-        return null;
-      }
-
-      return prompt.values;
-    });
+    return standardRuntime.prompt(params, opts);
   },
 
   logChunks: (output: string): void => {
-    const CHUNK_SIZE = 8192;
-    if (output.length <= CHUNK_SIZE) {
-      console.log(output);
-    } else {
-      const chunkKey = uuidv4();
-      for (let i = 0; i < output.length; i += CHUNK_SIZE) {
-        console.log(`airplane_chunk:${chunkKey} ${output.substring(i, i + CHUNK_SIZE)}`);
-      }
-      console.log(`airplane_chunk_end:${chunkKey}`);
-    }
+    return standardRuntime.logChunks(output);
   },
 };
