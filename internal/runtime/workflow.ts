@@ -37,6 +37,9 @@ const { executeTaskActivity, getRunOutputActivity, createPromptActivity } = prox
   ReturnType<typeof createActivities>
 >({
   startToCloseTimeout: "120s",
+  retry: {
+    maximumAttempts: 1,
+  },
 });
 
 export const runtime: RuntimeInterface = {
