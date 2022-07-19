@@ -48,6 +48,7 @@
     "printWidth": 100
   },
   "dependencies": {
+    "@temporalio/worker": "1.0.0-rc.1",
     "@temporalio/workflow": "1.0.0-rc.0",
     "cross-fetch": "3.1.5",
     "fetch-retry": "5.0.3",
