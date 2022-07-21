@@ -3,7 +3,7 @@ import * as mongodb from "./internal/builtins/mongodb";
 import * as rest from "./internal/builtins/rest";
 import * as slack from "./internal/builtins/slack";
 import * as sql from "./internal/builtins/sql";
-import { Task } from "./internal/codeConfiguration/task";
+import { task } from "./internal/config";
 import { execute } from "./internal/execute";
 import * as input from "./internal/input";
 import { appendOutput, setOutput } from "./internal/output";
@@ -28,7 +28,7 @@ export default {
   slack,
   sql,
   input,
-  Task,
+  task,
 };
 
 // Exported types
