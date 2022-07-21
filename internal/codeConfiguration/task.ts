@@ -40,7 +40,7 @@ export const Task = <TParams extends Params>(
     }
     return f.apply(null, [params]);
   };
-  wrappedF._airplane = {
+  wrappedF.__airplane = {
     config: config,
     baseFunc: f,
   };
