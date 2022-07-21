@@ -19,6 +19,7 @@ export type TaskConfig<TParams extends Params> = {
   runtime?: "standard" | "workflow";
 };
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export type UserFunc<TParams extends Params> = (params: ParamValues<TParams>) => any;
 
 export type AirplaneFunc<TParams extends Params> = (
