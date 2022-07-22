@@ -1,9 +1,9 @@
 // Attributes for different types of params
 export type ParamBase<T> = {
-  kind: string;
+  type: string;
   name?: string;
   description?: string;
-  optional?: boolean;
+  required?: boolean;
   default?: T;
 };
 
@@ -33,7 +33,7 @@ export type File = {
   url: string;
 };
 
-// JS Types for Kinds
+// JS Types for param types
 export type JSParamTypes = {
   shorttext: string;
   longtext: string;
@@ -62,43 +62,43 @@ export type JSParamValues = {
 
 // Airplane param types
 export type ShortTextParam = RegexableParam<JSParamTypes["shorttext"]> & {
-  kind: "shorttext";
+  type: "shorttext";
 };
 
 export type LongTextParam = RegexableParam<JSParamTypes["longtext"]> & {
-  kind: "longtext";
+  type: "longtext";
 };
 
 export type SQLParam = RegexableParam<JSParamTypes["sql"]> & {
-  kind: "sql";
+  type: "sql";
 };
 
 export type BooleanParam = ParamBase<JSParamTypes["boolean"]> & {
-  kind: "boolean";
+  type: "boolean";
 };
 
 export type FileParam = ParamBase<JSParamTypes["file"]> & {
-  kind: "file";
+  type: "file";
 };
 
 export type IntegerParam = SelectableParam<JSParamTypes["integer"]> & {
-  kind: "integer";
+  type: "integer";
 };
 
 export type FloatParam = SelectableParam<JSParamTypes["float"]> & {
-  kind: "float";
+  type: "float";
 };
 
 export type DateParam = SelectableParam<JSParamTypes["date"]> & {
-  kind: "date";
+  type: "date";
 };
 
 export type DatetimeParam = SelectableParam<JSParamTypes["datetime"]> & {
-  kind: "datetime";
+  type: "datetime";
 };
 
 export type ConfigVarParam = SelectableParam<JSParamTypes["configvar"]> & {
-  kind: "configvar";
+  type: "configvar";
 };
 
 // Used by task templating
@@ -114,4 +114,4 @@ export type Param =
   | DatetimeParam
   | ConfigVarParam;
 
-export type ParamKinds = Param["kind"];
+export type ParamTypes = Param["type"];

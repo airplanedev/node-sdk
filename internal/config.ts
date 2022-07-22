@@ -1,20 +1,20 @@
 import { execute } from "./execute";
-import { Param, JSParamValues, ParamKinds } from "./parameters";
+import { Param, JSParamValues, ParamTypes } from "./parameters";
 import { RuntimeKind } from "./runtime";
 
-export type ParamKind<PSchema extends ParamKinds | Param> = PSchema extends Param
-  ? PSchema["kind"]
-  : PSchema;
+export type ParamType<TSchema extends ParamTypes | Param> = TSchema extends Param
+  ? TSchema["type"]
+  : TSchema;
 
-export type Params = Record<string, ParamKinds | Param>;
+export type Params = Record<string, ParamTypes | Param>;
 
 export type ParamValues<TParams extends Params> = {
-  [PSlug in keyof TParams]: JSParamValues[ParamKind<TParams[PSlug]>];
+  [TSlug in keyof TParams]: JSParamValues[ParamType<TParams[TSlug]>];
 };
 
 export type TaskConfig<TParams extends Params> = {
   slug: string;
-  name: string;
+  name?: string;
   description?: string;
   parameters?: TParams;
   requireRequests?: boolean;
@@ -24,7 +24,6 @@ export type TaskConfig<TParams extends Params> = {
   runtime?: "standard" | "workflow";
 };
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export type UserFunc<TParams extends Params, TOutput> = (params: ParamValues<TParams>) => TOutput;
 
 export type AirplaneFunc<TParams extends Params, TOutput> = (
@@ -40,9 +39,9 @@ export const task = <TParams extends Params, TOutput>(
 
   const wrappedF = async (params: ParamValues<TParams>): Promise<Awaited<TOutput>> => {
     if (inAirplaneRuntime) {
-      return (await execute(config.slug, params)).output as Awaited<TOutput>;
+      return (await execute<Awaited<TOutput>>(config.slug, params)).output;
     }
-    return f.apply(null, [params]) as Awaited<TOutput>;
+    return await f.apply(null, [params]);
   };
   wrappedF.__airplane = {
     config: config,
