@@ -34,8 +34,9 @@ export const task = <TParams extends Params, TOutput>(
   config: TaskConfig<TParams>,
   f: UserFunc<TParams, TOutput>
 ): AirplaneFunc<TParams, TOutput> => {
+  const env = globalThis.process?.env;
   const inAirplaneRuntime =
-    process.env.AIRPLANE_RUNTIME !== undefined && process.env.AIRPLANE_RUNTIME !== RuntimeKind.Dev;
+    env && env.AIRPLANE_RUNTIME !== undefined && env.AIRPLANE_RUNTIME !== RuntimeKind.Dev;
 
   const wrappedF = async (params: ParamValues<TParams>): Promise<Awaited<TOutput>> => {
     if (inAirplaneRuntime) {
