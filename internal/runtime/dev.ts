@@ -1,5 +1,5 @@
 import { Client, ClientOptions } from "../api/client";
-import { ParamSchema, ParamValues, Run } from "../api/types";
+import { DisplayConfig, ParamSchema, ParamValues, Run } from "../api/types";
 import { RuntimeInterface } from "./index";
 import { runtime as standardRuntime } from "./standard";
 
@@ -27,6 +27,10 @@ export const runtime: RuntimeInterface = {
 
   prompt: async (params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues> => {
     return standardRuntime.prompt(params, opts);
+  },
+
+  display: async (display: DisplayConfig, opts?: ClientOptions): Promise<void> => {
+    standardRuntime.display(display, opts);
   },
 
   logChunks: (output: string): void => {

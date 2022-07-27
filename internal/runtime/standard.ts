@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Client, ClientOptions } from "../api/client";
 import { Poller } from "../api/poller";
-import { isStatusTerminal, ParamSchema, ParamValues, Run } from "../api/types";
+import { DisplayConfig, isStatusTerminal, ParamSchema, ParamValues, Run } from "../api/types";
 import { RuntimeInterface } from "./index";
 
 export const runtime: RuntimeInterface = {
@@ -53,6 +53,12 @@ export const runtime: RuntimeInterface = {
 
       return prompt.values;
     });
+  },
+
+  display: async (display: DisplayConfig, opts?: ClientOptions): Promise<void> => {
+    const client = new Client(opts);
+
+    await client.createDisplay(display);
   },
 
   logChunks: (output: string): void => {

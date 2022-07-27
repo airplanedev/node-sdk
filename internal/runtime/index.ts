@@ -1,5 +1,5 @@
 import { ClientOptions } from "../api/client";
-import { ParamSchema, ParamValues, Run } from "../api/types";
+import { DisplayConfig, ParamSchema, ParamValues, Run } from "../api/types";
 import { runtime as devRuntime } from "./dev";
 import { runtime as standardRuntime } from "./standard";
 import { runtime as workflowRuntime } from "./workflow";
@@ -13,6 +13,8 @@ export type RuntimeInterface = {
   ): Promise<Run<typeof params, Output>>;
 
   prompt(params: ParamSchema[], opts?: ClientOptions): Promise<ParamValues>;
+
+  display(display: DisplayConfig, opts?: ClientOptions): Promise<void>;
 
   logChunks(output: string): void;
 };
