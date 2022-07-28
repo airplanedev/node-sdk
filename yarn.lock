@@ -1202,78 +1202,78 @@
     "@swc/core-win32-ia32-msvc" "1.2.218"
     "@swc/core-win32-x64-msvc" "1.2.218"
 
-"@temporalio/activity@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/activity/-/activity-1.0.0-rc.1.tgz#0326214a42775f3fbf543ac42f335c1cff84897c"
-  integrity sha512-LBWDqwrPgjP2rNnVSiFm+yxO8+eTPxExsjBM2WV6VIg706Y4KsdAbM8xEZWgzt1AqXCeJNlWvuw/d58QDJK/2g==
+"@temporalio/activity@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/activity/-/activity-1.0.0.tgz#8481937099f5103bfb36e54f64d78e4511e6bd61"
+  integrity sha512-7Q2wI5vUolZu/TBOZCZnCwG8fTGUE5xy/I/fOKLgtsRW8KhM+EgKbPVgYJ5iYoX9bW+Sz/2YnsBfmLSXFaM/UQ==
   dependencies:
-    "@temporalio/common" "^1.0.0-rc.1"
-    "@temporalio/internal-workflow-common" "^1.0.0-rc.1"
+    "@temporalio/common" "^1.0.0"
+    "@temporalio/internal-workflow-common" "^1.0.0"
     abort-controller "^3.0.0"
 
-"@temporalio/common@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/common/-/common-1.0.0-rc.1.tgz#d039ef87d682d1eb3f72364a25fa1d21b2e02fb0"
-  integrity sha512-NyhRojq1fCfuROphIr13IxwhoKFWKhjefYEElhe6t9mDnUGrqm/n+9OUIIl7EtKlPwgE6fBOfSbwuSkU5GgzNA==
+"@temporalio/common@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/common/-/common-1.0.0.tgz#80f80fbc376450693c2a9e6fba6a75606d0d4419"
+  integrity sha512-by2e26m7jLDQ1OlnhhDZvlw7vKR8aHvdOi/QBg7RMf8NRXkHTLSwP5dGw26jo5yTsRE7xFLo+8WLSKen89dkxg==
   dependencies:
     "@opentelemetry/api" "^1.0.3"
-    "@temporalio/internal-workflow-common" "^1.0.0-rc.1"
-    "@temporalio/proto" "^1.0.0-rc.1"
+    "@temporalio/internal-workflow-common" "^1.0.0"
+    "@temporalio/proto" "^1.0.0"
     proto3-json-serializer "^1.0.2"
     protobufjs "6.11.2"
 
-"@temporalio/core-bridge@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/core-bridge/-/core-bridge-1.0.0-rc.1.tgz#989ef523ed6d8d05e429718501e050070a98899f"
-  integrity sha512-6t1uPIV4Td5+6x3a+HJhK73auLt8bQvKBM13Gi4uustIrkVBZ/GlPjbz8KNUjafwOl72F4S0kD7vkCXil2zwiw==
+"@temporalio/core-bridge@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/core-bridge/-/core-bridge-1.0.0.tgz#bb2a692ecd4886f2928e1a99ac44331cd21716f4"
+  integrity sha512-1cztPjw0zIkSgmdqrU5B7P8cC28IR6rAamvVoCk55AUOnEZ2NOAUhltPCow8HNE3XC78aKJodlMaqa2IFrImUQ==
   dependencies:
     "@opentelemetry/api" "^1.1.0"
-    "@temporalio/internal-non-workflow-common" "^1.0.0-rc.1"
+    "@temporalio/internal-non-workflow-common" "^1.0.0"
     arg "^5.0.2"
     cargo-cp-artifact "^0.1.6"
     which "^2.0.2"
 
-"@temporalio/internal-non-workflow-common@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/internal-non-workflow-common/-/internal-non-workflow-common-1.0.0-rc.1.tgz#9c455a20a2ebd50899f86ca021ad00a247fa0a5d"
-  integrity sha512-ktvxSftZPyWH0wptRC0Bef2n0NwdNVmErWCLsJKf+4gBhBZSuncULAP/BA6ScR2HTWeS2zCDUZeuJLv7alR1Hw==
+"@temporalio/internal-non-workflow-common@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/internal-non-workflow-common/-/internal-non-workflow-common-1.0.0.tgz#4b0feee0ae54c8a105e86b298f2ce9c43fb1e7ae"
+  integrity sha512-Qa9jEfaP79IlRIJDs+eTkIlncqdCNkUOzXyg3WuFTPL10fpBwa0ofwA34ujQyKo3FULP2FjzLNAzoLmt5ImBrg==
   dependencies:
     "@opentelemetry/api" "^1.0.3"
-    "@temporalio/common" "^1.0.0-rc.1"
-    "@temporalio/internal-workflow-common" "^1.0.0-rc.1"
+    "@temporalio/common" "^1.0.0"
+    "@temporalio/internal-workflow-common" "^1.0.0"
 
-"@temporalio/internal-workflow-common@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/internal-workflow-common/-/internal-workflow-common-1.0.0-rc.1.tgz#2cc157c858239635f3f86e04485f7c5e1472ad02"
-  integrity sha512-rYZTwYejsJtAjYsTfkTN5+cDiXbIgvh2UxvCP6QP264jb0Go6KgmVP4GrniaZW/zeEuYmIJw/aF7MjeNj3i5Wg==
+"@temporalio/internal-workflow-common@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/internal-workflow-common/-/internal-workflow-common-1.0.0.tgz#c26a9229a58631b9a5d884e685677d29c713d0e2"
+  integrity sha512-z01c6QftVDXVvGJwszQnIvyJRwD0QhEGinsWcYoYXkrxKlr3ctEyqmFX/AA3f1abRQaR/s9MFJlULLuuzpxsMA==
   dependencies:
-    "@temporalio/proto" "^1.0.0-rc.1"
+    "@temporalio/proto" "^1.0.0"
     long "^5.2.0"
     ms "^2.1.3"
 
-"@temporalio/proto@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/proto/-/proto-1.0.0-rc.1.tgz#3fb058071f599ab584026db5d7247bd370303542"
-  integrity sha512-kjwIgPqwTjj7yHBV6b/4skqLcjCgQYPMfjhtw2to9xNFeEG0oFrGrumulpSMVCeB7mVvsVu5PKvSqsI8EibWDQ==
+"@temporalio/proto@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/proto/-/proto-1.0.0.tgz#7493c65e0b99d2468c66a2890d0fa231820e330a"
+  integrity sha512-tssU8voyUxI6BbzWvgdxvJnOmNCI5DmcrJr/MQh5aX4I+FZIGt0DZPfwIfrlmFrf7+XD9k5SaW2XL344rj/y7g==
   dependencies:
     "@types/long" "^4.0.2"
     long "^5.2.0"
     protobufjs "6.11.2"
 
-"@temporalio/worker@1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/worker/-/worker-1.0.0-rc.1.tgz#f31353b368415092adec37a45cde13111ebd73b9"
-  integrity sha512-RoiNJCkZ+BX/WRQ12EW4PohFWXpiYsp24yJ4+YdOFK/onVrCkrUeqBp4vRV07DlvT+4wnSqqG9zJMZAf17mwEQ==
+"@temporalio/worker@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/worker/-/worker-1.0.0.tgz#55e95cbf87b9753972c2693cffedbae4c6d9a46b"
+  integrity sha512-v+mQAFP/5wipVEZ5Lh0nXtoCd+IZI6JqIiawaE/FEVr06KdkzmU/jjJ1tNJqklOYdGKnXE41qepIwXAEWphA3w==
   dependencies:
     "@opentelemetry/api" "^1.1.0"
     "@swc/core" "^1.2.204"
-    "@temporalio/activity" "^1.0.0-rc.1"
-    "@temporalio/common" "^1.0.0-rc.1"
-    "@temporalio/core-bridge" "^1.0.0-rc.1"
-    "@temporalio/internal-non-workflow-common" "^1.0.0-rc.1"
-    "@temporalio/internal-workflow-common" "^1.0.0-rc.1"
-    "@temporalio/proto" "^1.0.0-rc.1"
-    "@temporalio/workflow" "^1.0.0-rc.1"
+    "@temporalio/activity" "^1.0.0"
+    "@temporalio/common" "^1.0.0"
+    "@temporalio/core-bridge" "^1.0.0"
+    "@temporalio/internal-non-workflow-common" "^1.0.0"
+    "@temporalio/internal-workflow-common" "^1.0.0"
+    "@temporalio/proto" "^1.0.0"
+    "@temporalio/workflow" "^1.0.0"
     abort-controller "^3.0.0"
     cargo-cp-artifact "^0.1.6"
     heap-js "^2.2.0"
@@ -1284,17 +1284,18 @@
     source-map "^0.7.4"
     source-map-loader "^4.0.0"
     swc-loader "^0.2.3"
+    terser "^5.14.2"
     unionfs "^4.4.0"
     webpack "^5.73.0"
 
-"@temporalio/workflow@1.0.0-rc.1", "@temporalio/workflow@^1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@temporalio/workflow/-/workflow-1.0.0-rc.1.tgz#a171c4c01c5492540bfa0d4a4bba85d0137a7ff0"
-  integrity sha512-nrfB91hjHkrqhwIZUonIQQfVv2t7mz3np/Om+YaFuPi2aMZfQpTGWuf9qRYpOi6mxQSQCT3YNQ1S6js/TSCkvg==
+"@temporalio/workflow@1.0.0", "@temporalio/workflow@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@temporalio/workflow/-/workflow-1.0.0.tgz#55727f8bed08e9d8ca31ee7c2dc4b792d6723652"
+  integrity sha512-V3+pd5UX4HyBbB88T4ZE7CWrdtHMVavkJta4+RYFzw/aW93glIWtrTQXaQTgvc+2wZaFiKIde6XRBFuC6fkw+g==
   dependencies:
-    "@temporalio/common" "^1.0.0-rc.1"
-    "@temporalio/internal-workflow-common" "^1.0.0-rc.1"
-    "@temporalio/proto" "^1.0.0-rc.1"
+    "@temporalio/common" "^1.0.0"
+    "@temporalio/internal-workflow-common" "^1.0.0"
+    "@temporalio/proto" "^1.0.0"
 
 "@types/babel__core@^7.1.14":
   version "7.1.19"
@@ -1417,10 +1418,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.6.1.tgz#32d43390d5c62c5b6ec486a9bc9c59544de39a08"
   integrity sha512-7EIraBEyRHEe7CH+Fm1XvgqU6uwZN8Q7jppJGcqjROMT29qhAuuOxYB1uEY5UMYQKEmA5D+5tBnhdaPXSsLONA==
 
-"@types/node@16.11.45":
-  version "16.11.45"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.45.tgz#155b13a33c665ef2b136f7f245fa525da419e810"
-  integrity sha512-3rKg/L5x0rofKuuUt5zlXzOnKyIHXmIu5R8A0TuNDMF2062/AOIDBciFIjToLEJ/9F9DzkHNot+BpNsMI1OLdQ==
+"@types/node@16.11.46":
+  version "16.11.46"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.46.tgz#26047602eefa47b36759d9ebb1b55ad08ce97a73"
+  integrity sha512-x+sfpb2dMrhCQPL4NAGs64Z9hh0t72aP0dg+PuZidmPr/0Gj5ELQTjD/t46dq3DF/8ZvSHOaIyDIbAsdPshyVQ==
 
 "@types/node@>=13.7.0":
   version "18.0.6"
@@ -1454,14 +1455,14 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.30.7.tgz#1621dabc1ae4084310e19e9efc80dfdbb97e7493"
-  integrity sha512-l4L6Do+tfeM2OK0GJsU7TUcM/1oN/N25xHm3Jb4z3OiDU4Lj8dIuxX9LpVMS9riSXQs42D1ieX7b85/r16H9Fw==
+"@typescript-eslint/eslint-plugin@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.31.0.tgz#cae1967b1e569e6171bbc6bec2afa4e0c8efccfe"
+  integrity sha512-VKW4JPHzG5yhYQrQ1AzXgVgX8ZAJEvCz0QI6mLRX4tf7rnFfh5D8SKm0Pq6w5PyNfAWJk6sv313+nEt3ohWMBQ==
   dependencies:
-    "@typescript-eslint/scope-manager" "5.30.7"
-    "@typescript-eslint/type-utils" "5.30.7"
-    "@typescript-eslint/utils" "5.30.7"
+    "@typescript-eslint/scope-manager" "5.31.0"
+    "@typescript-eslint/type-utils" "5.31.0"
+    "@typescript-eslint/utils" "5.31.0"
     debug "^4.3.4"
     functional-red-black-tree "^1.0.1"
     ignore "^5.2.0"
@@ -1469,69 +1470,69 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/parser@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.30.7.tgz#99d09729392aec9e64b1de45cd63cb81a4ddd980"
-  integrity sha512-Rg5xwznHWWSy7v2o0cdho6n+xLhK2gntImp0rJroVVFkcYFYQ8C8UJTSuTw/3CnExBmPjycjmUJkxVmjXsld6A==
+"@typescript-eslint/parser@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.31.0.tgz#7f42d7dcc68a0a6d80a0f3d9a65063aee7bb8d2c"
+  integrity sha512-UStjQiZ9OFTFReTrN+iGrC6O/ko9LVDhreEK5S3edmXgR396JGq7CoX2TWIptqt/ESzU2iRKXAHfSF2WJFcWHw==
   dependencies:
-    "@typescript-eslint/scope-manager" "5.30.7"
-    "@typescript-eslint/types" "5.30.7"
-    "@typescript-eslint/typescript-estree" "5.30.7"
+    "@typescript-eslint/scope-manager" "5.31.0"
+    "@typescript-eslint/types" "5.31.0"
+    "@typescript-eslint/typescript-estree" "5.31.0"
     debug "^4.3.4"
 
-"@typescript-eslint/scope-manager@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.30.7.tgz#8269a931ef1e5ae68b5eb80743cc515c4ffe3dd7"
-  integrity sha512-7BM1bwvdF1UUvt+b9smhqdc/eniOnCKxQT/kj3oXtj3LqnTWCAM0qHRHfyzCzhEfWX0zrW7KqXXeE4DlchZBKw==
+"@typescript-eslint/scope-manager@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.31.0.tgz#f47a794ba84d9b818ab7f8f44fff55a61016c606"
+  integrity sha512-8jfEzBYDBG88rcXFxajdVavGxb5/XKXyvWgvD8Qix3EEJLCFIdVloJw+r9ww0wbyNLOTYyBsR+4ALNGdlalLLg==
   dependencies:
-    "@typescript-eslint/types" "5.30.7"
-    "@typescript-eslint/visitor-keys" "5.30.7"
+    "@typescript-eslint/types" "5.31.0"
+    "@typescript-eslint/visitor-keys" "5.31.0"
 
-"@typescript-eslint/type-utils@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-5.30.7.tgz#5693dc3db6f313f302764282d614cfdbc8a9fcfd"
-  integrity sha512-nD5qAE2aJX/YLyKMvOU5jvJyku4QN5XBVsoTynFrjQZaDgDV6i7QHFiYCx10wvn7hFvfuqIRNBtsgaLe0DbWhw==
+"@typescript-eslint/type-utils@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-5.31.0.tgz#70a0b7201360b5adbddb0c36080495aa08f6f3d9"
+  integrity sha512-7ZYqFbvEvYXFn9ax02GsPcEOmuWNg+14HIf4q+oUuLnMbpJ6eHAivCg7tZMVwzrIuzX3QCeAOqKoyMZCv5xe+w==
   dependencies:
-    "@typescript-eslint/utils" "5.30.7"
+    "@typescript-eslint/utils" "5.31.0"
     debug "^4.3.4"
     tsutils "^3.21.0"
 
-"@typescript-eslint/types@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.30.7.tgz#18331487cc92d0f1fb1a6f580c8ec832528079d0"
-  integrity sha512-ocVkETUs82+U+HowkovV6uxf1AnVRKCmDRNUBUUo46/5SQv1owC/EBFkiu4MOHeZqhKz2ktZ3kvJJ1uFqQ8QPg==
+"@typescript-eslint/types@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.31.0.tgz#7aa389122b64b18e473c1672fb3b8310e5f07a9a"
+  integrity sha512-/f/rMaEseux+I4wmR6mfpM2wvtNZb1p9hAV77hWfuKc3pmaANp5dLAZSiE3/8oXTYTt3uV9KW5yZKJsMievp6g==
 
-"@typescript-eslint/typescript-estree@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.30.7.tgz#05da9f1b281985bfedcf62349847f8d168eecc07"
-  integrity sha512-tNslqXI1ZdmXXrHER83TJ8OTYl4epUzJC0aj2i4DMDT4iU+UqLT3EJeGQvJ17BMbm31x5scSwo3hPM0nqQ1AEA==
+"@typescript-eslint/typescript-estree@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.31.0.tgz#eb92970c9d6e3946690d50c346fb9b1d745ee882"
+  integrity sha512-3S625TMcARX71wBc2qubHaoUwMEn+l9TCsaIzYI/ET31Xm2c9YQ+zhGgpydjorwQO9pLfR/6peTzS/0G3J/hDw==
   dependencies:
-    "@typescript-eslint/types" "5.30.7"
-    "@typescript-eslint/visitor-keys" "5.30.7"
+    "@typescript-eslint/types" "5.31.0"
+    "@typescript-eslint/visitor-keys" "5.31.0"
     debug "^4.3.4"
     globby "^11.1.0"
     is-glob "^4.0.3"
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/utils@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-5.30.7.tgz#7135be070349e9f7caa262b0ca59dc96123351bb"
-  integrity sha512-Z3pHdbFw+ftZiGUnm1GZhkJgVqsDL5CYW2yj+TB2mfXDFOMqtbzQi2dNJIyPqPbx9mv2kUxS1gU+r2gKlKi1rQ==
+"@typescript-eslint/utils@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-5.31.0.tgz#e146fa00dca948bfe547d665b2138a2dc1b79acd"
+  integrity sha512-kcVPdQS6VIpVTQ7QnGNKMFtdJdvnStkqS5LeALr4rcwx11G6OWb2HB17NMPnlRHvaZP38hL9iK8DdE9Fne7NYg==
   dependencies:
     "@types/json-schema" "^7.0.9"
-    "@typescript-eslint/scope-manager" "5.30.7"
-    "@typescript-eslint/types" "5.30.7"
-    "@typescript-eslint/typescript-estree" "5.30.7"
+    "@typescript-eslint/scope-manager" "5.31.0"
+    "@typescript-eslint/types" "5.31.0"
+    "@typescript-eslint/typescript-estree" "5.31.0"
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-"@typescript-eslint/visitor-keys@5.30.7":
-  version "5.30.7"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.30.7.tgz#c093abae75b4fd822bfbad9fc337f38a7a14909a"
-  integrity sha512-KrRXf8nnjvcpxDFOKej4xkD7657+PClJs5cJVSG7NNoCNnjEdc46juNAQt7AyuWctuCgs6mVRc1xGctEqrjxWw==
+"@typescript-eslint/visitor-keys@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.31.0.tgz#b0eca264df01ce85dceb76aebff3784629258f54"
+  integrity sha512-ZK0jVxSjS4gnPirpVjXHz7mgdOsZUHzNYSfTw2yPa3agfbt9YfqaBiBZFSSxeBWnpWkzCxTfUpnzA3Vily/CSg==
   dependencies:
-    "@typescript-eslint/types" "5.30.7"
+    "@typescript-eslint/types" "5.31.0"
     eslint-visitor-keys "^3.3.0"
 
 "@webassemblyjs/ast@1.11.1":
@@ -4814,7 +4815,7 @@ terser-webpack-plugin@^5.1.3:
     serialize-javascript "^6.0.0"
     terser "^5.7.2"
 
-terser@^5.7.2:
+terser@^5.14.2, terser@^5.7.2:
   version "5.14.2"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.14.2.tgz#9ac9f22b06994d736174f4091aa368db896f1c10"
   integrity sha512-oL0rGeM/WFQCUd0y2QrWxYnq7tfSuKBiqTjRPWrRgB46WD/kiwHwF8T23z78H6Q6kGCuuHcPB+KULHRdxvVGQA==
