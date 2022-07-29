@@ -3,7 +3,14 @@ import { proxyActivities, proxySinks } from "@temporalio/workflow";
 const { logger } = proxySinks();
 
 import { Client, ClientOptions } from "../api/client";
-import { isStatusTerminal, ParamSchema, ParamValues, Run, RunStatus } from "../api/types";
+import {
+  DisplayConfig,
+  isStatusTerminal,
+  ParamSchema,
+  ParamValues,
+  Run,
+  RunStatus,
+} from "../api/types";
 import { RuntimeInterface } from "./index";
 
 // Recommended activity factory by Temporal: https://docs.temporal.io/typescript/activities/#important-design-patterns
@@ -31,16 +38,19 @@ export const createActivities = () => ({
     const client = new Client(opts);
     return client.createPrompt(params);
   },
-});
-
-const { executeTaskActivity, getRunOutputActivity, createPromptActivity } = proxyActivities<
-  ReturnType<typeof createActivities>
->({
-  startToCloseTimeout: "120s",
-  retry: {
-    maximumAttempts: 1,
+  createDisplayActivity: async (display: DisplayConfig, opts?: ClientOptions): Promise<void> => {
+    const client = new Client(opts);
+    await client.createDisplay(display);
   },
 });
+
+const { executeTaskActivity, getRunOutputActivity, createPromptActivity, createDisplayActivity } =
+  proxyActivities<ReturnType<typeof createActivities>>({
+    startToCloseTimeout: "120s",
+    retry: {
+      maximumAttempts: 1,
+    },
+  });
 
 export const runtime: RuntimeInterface = {
   execute: async <Output = unknown>(
@@ -111,6 +121,11 @@ export const runtime: RuntimeInterface = {
     await wf.condition(() => done);
 
     return values;
+  },
+
+  display: async (display: DisplayConfig, opts: ClientOptions = {}): Promise<void> => {
+    opts = passthroughOptions(opts);
+    await createDisplayActivity(display, opts);
   },
 
   logChunks: (output: string): void => {

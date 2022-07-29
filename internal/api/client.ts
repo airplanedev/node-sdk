@@ -1,5 +1,5 @@
 import { Fetcher } from "./fetcher";
-import { ParamSchema, Prompt, RunStatus } from "./types";
+import { DisplayConfig, ParamSchema, Prompt, RunStatus } from "./types";
 
 export type ClientOptions = {
   host?: string;
@@ -68,6 +68,13 @@ export class Client {
     const resp = await this.fetcher.post<{
       id: string;
     }>("/v0/prompts/create", { schema: { parameters: params } });
+    return resp.id;
+  }
+
+  async createDisplay(display: DisplayConfig): Promise<string> {
+    const resp = await this.fetcher.post<{
+      id: string;
+    }>("/v0/displays/create", { display });
     return resp.id;
   }
 

@@ -77,3 +77,19 @@ export type Prompt = {
   values: ParamValues;
   submittedAt: string | null;
 };
+
+type DisplayBase = {
+  id: string;
+  createdAt: string;
+};
+
+export type Display = DisplayBase & DisplayConfig;
+
+export type DisplayConfig = DisplayMarkdownConfig;
+
+export type DisplayKind = Display["kind"];
+
+export type DisplayMarkdownConfig = {
+  kind: "markdown";
+  content: string;
+};

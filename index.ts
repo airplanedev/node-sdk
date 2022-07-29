@@ -4,6 +4,7 @@ import * as rest from "./internal/builtins/rest";
 import * as slack from "./internal/builtins/slack";
 import * as sql from "./internal/builtins/sql";
 import { task } from "./internal/config";
+import * as display from "./internal/display";
 import { execute } from "./internal/execute";
 import * as input from "./internal/input";
 import { appendOutput, setOutput } from "./internal/output";
@@ -29,6 +30,7 @@ export default {
   sql,
   input,
   task,
+  display,
 };
 
 // Exported types
