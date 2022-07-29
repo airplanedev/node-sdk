@@ -20,6 +20,7 @@ export class Client {
     const apiKey = opts.apiKey || env?.AIRPLANE_API_KEY;
     const envID = opts.envID || env?.AIRPLANE_ENV_ID;
     const envSlug = opts.envSlug || env?.AIRPLANE_ENV_SLUG;
+    const source = opts.source || "sdk/node";
 
     this.fetcher = new Fetcher({
       host,
@@ -27,7 +28,7 @@ export class Client {
       apiKey,
       envID,
       envSlug,
-      source: opts?.source,
+      source,
     });
   }
 
