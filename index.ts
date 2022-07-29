@@ -34,3 +34,4 @@ export default {
 // Exported types
 export type { ClientOptions } from "./internal/api/client";
 export type { RunStatus, Run } from "./internal/api/types";
+export type { File } from "./internal/parameters";
