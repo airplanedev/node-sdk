@@ -1,3 +1,4 @@
+import { ParamValues as APIParamValues } from "./api/types";
 import { execute } from "./execute";
 import { Param, JSParamValues, ParamTypes } from "./parameters";
 import { RuntimeKind } from "./runtime";
@@ -26,16 +27,18 @@ export type TaskConfig<TParams extends Params> = {
 
 export type UserFunc<TParams extends Params, TOutput> = (params: ParamValues<TParams>) => TOutput;
 
-export type AirplaneFunc<TParams extends Params, TOutput> = (
-  params: ParamValues<TParams>
+export type AirplaneFunc<TParams extends APIParamValues, TOutput> = (
+  params: TParams
 ) => Promise<Awaited<TOutput>>;
 
 export const task = <TParams extends Params, TOutput>(
   config: TaskConfig<TParams>,
   f: UserFunc<TParams, TOutput>
-): AirplaneFunc<TParams, TOutput> => {
+): AirplaneFunc<ParamValues<TParams>, TOutput> => {
   const inAirplaneRuntime =
-    process.env.AIRPLANE_RUNTIME !== undefined && process.env.AIRPLANE_RUNTIME !== RuntimeKind.Dev;
+    typeof process === "undefined" ||
+    (process.env.AIRPLANE_RUNTIME !== undefined &&
+      process.env.AIRPLANE_RUNTIME !== RuntimeKind.Dev);
 
   const wrappedF = async (params: ParamValues<TParams>): Promise<Awaited<TOutput>> => {
     if (inAirplaneRuntime) {
