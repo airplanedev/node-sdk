@@ -1,6 +1,5 @@
 import { execute } from "./execute";
 import { Param, JSParamValues, ParamTypes } from "./parameters";
-import { RuntimeKind } from "./runtime";
 
 export type ParamType<TSchema extends ParamTypes | Param> = TSchema extends Param
   ? TSchema["type"]
@@ -34,14 +33,8 @@ export const task = <TParams extends Params, TOutput>(
   config: TaskConfig<TParams>,
   f: UserFunc<TParams, TOutput>
 ): AirplaneFunc<TParams, TOutput> => {
-  const inAirplaneRuntime =
-    process.env.AIRPLANE_RUNTIME !== undefined && process.env.AIRPLANE_RUNTIME !== RuntimeKind.Dev;
-
   const wrappedF = async (params: ParamValues<TParams>): Promise<Awaited<TOutput>> => {
-    if (inAirplaneRuntime) {
-      return (await execute<Awaited<TOutput>>(config.slug, params)).output;
-    }
-    return await f.apply(null, [params]);
+    return (await execute<Awaited<TOutput>>(config.slug, params)).output;
   };
   wrappedF.__airplane = {
     config: config,
