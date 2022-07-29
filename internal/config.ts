@@ -12,6 +12,13 @@ export type ParamValues<TParams extends Params> = {
   [TSlug in keyof TParams]: JSParamValues[ParamType<TParams[TSlug]>];
 };
 
+export type Schedule<TParams extends Params> = {
+  cron: string;
+  name?: string;
+  description?: string;
+  paramValues?: ParamValues<TParams>;
+};
+
 export type TaskConfig<TParams extends Params> = {
   slug: string;
   name?: string;
@@ -22,6 +29,8 @@ export type TaskConfig<TParams extends Params> = {
   timeout?: number;
   constraints?: Record<string, string>;
   runtime?: "standard" | "workflow";
+  resources?: Record<string, string>;
+  schedules?: Record<string, Schedule<TParams>>;
 };
 
 export type UserFunc<TParams extends Params, TOutput> = (params: ParamValues<TParams>) => TOutput;
