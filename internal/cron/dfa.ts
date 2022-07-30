@@ -8,14 +8,33 @@ type Tail<TStr extends string> = TStr extends `${string}${infer TTail}` ? TTail 
 export interface DFA {
   startState: string;
   acceptStates: string;
+  errorStates: Record<string, string>;
   transitions: Record<string, Record<string, string>>;
 }
 
-type AcceptsImpl<TDFA extends DFA, TState extends string, TInput extends string> = TInput extends ""
+type AcceptsImpl<
+  TDFA extends DFA,
+  TState extends string,
+  TInput extends string
+> = TState extends keyof TDFA["errorStates"]
+  ? TDFA["errorStates"][TState]
+  : TInput extends ""
   ? TState extends TDFA["acceptStates"]
     ? true
     : false
   : AcceptsImpl<TDFA, TDFA["transitions"][TState][Head<TInput>], Tail<TInput>>;
+
+export type AcceptsImplDebug<
+  TDFA extends DFA,
+  TState extends string,
+  TInput extends string
+> = TState extends TDFA["errorStates"]
+  ? TDFA["errorStates"][TState]
+  : TInput extends ""
+  ? TState extends TDFA["acceptStates"]
+    ? true
+    : false
+  : [TDFA["transitions"][TState][Head<TInput>], Tail<TInput>];
 
 export type Accepts<TDFA extends DFA, TInput extends string> = AcceptsImpl<
   TDFA,
@@ -23,9 +42,9 @@ export type Accepts<TDFA extends DFA, TInput extends string> = AcceptsImpl<
   TInput
 >;
 
-export type CheckType<TDFA extends DFA, TStr extends string, TErr extends string> = Accepts<
-  TDFA,
-  TStr
-> extends true
-  ? TStr
-  : TErr;
+export type CheckType<
+  TDFA extends DFA,
+  TStr extends string,
+  TErr extends string,
+  _TResponse = Accepts<TDFA, TStr>
+> = _TResponse extends true ? TStr : _TResponse extends string ? _TResponse : TErr;
